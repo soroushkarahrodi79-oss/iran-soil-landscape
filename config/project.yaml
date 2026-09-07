@@ -1,0 +1,41 @@
+project:
+  id: iran-soil-landscapes
+  title: Iran Soil Landscapes
+  phase: FOUNDATION
+  status: FOUNDATION_IN_PROGRESS
+  access_date: "2026-09-07"
+
+crs:
+  source: "EPSG:4326 (WGS 84 geographic coordinates; source datasets retain native CRS)"
+  analysis_cartographic:
+    name: "Iran-centred Lambert Azimuthal Equal Area"
+    status: PROVISIONAL_PENDING_BOUNDARY_SCALE_QA
+    proj: "+proj=laea +lat_0=32 +lon_0=53 +datum=WGS84 +units=m +no_defs +type=crs"
+    rationale: "A national equal-area CRS centred within Iran is proposed for national area accounting and map layout. It must be instantiated and scale-checked against the extracted boundary before statistics are accepted."
+
+boundary:
+  dataset_id: natural_earth_admin0_10m
+  selection_field: ADM0_A3
+  selection_value: IRN
+  output: data/processed/boundary/iran_boundary.gpkg
+
+soils:
+  dataset_id: fao_iiasa_hwsd_v201
+  native_resolution: "30 arc-second (~1 km; latitude-dependent ground dimensions)"
+  categorical_resampling: nearest
+  proposed_rule:
+    name: dominant_soil_component_by_share
+    status: PENDING_SCHEMA_AND_DATA_VALIDATION
+    description: "For each HWSD2_SMU_ID, select the soil component with ISSOIL=1 and maximum SHARE. If equal maximum shares or no eligible component exist, fail closed and report them. The selected component's WRB 2022 Reference Soil Group is the class. SEQ=1 is retained as a cross-check, not assumed as the rule."
+  class_palette:
+    unknown: "#bdbdbd"
+
+dem:
+  dataset_id: usgs_nasa_srtmgl1
+  continuous_resampling: bilinear
+  output: data/processed/dem/iran_dem_30m.tif
+
+outputs:
+  proof: outputs/proof/iran_soils_proof_v01.png
+  master_minimum_px: [6000, 7500]
+  linkedin_px: [2160, 2700]

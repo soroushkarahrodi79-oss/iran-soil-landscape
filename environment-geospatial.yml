@@ -1,0 +1,26 @@
+# Canonical executable environment for the HWSD schema inspection and pipeline.
+# This supplements environment.yml because the latter was created before the MDB
+# tooling requirement was identified during source-schema design.
+name: iran-soil-landscapes
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - gdal>=3.8
+  - geopandas>=1.0
+  - rasterio>=1.3
+  - pyogrio>=0.9
+  - pyproj>=3.6
+  - shapely>=2.0
+  - pandas>=2.2
+  - pyyaml>=6.0
+  - matplotlib>=3.8
+  - pytest>=8.0
+  - requests>=2.31
+  - mdbtools>=1.0
+*** Add File: docs/ENVIRONMENT_NOTE.md
+# Environment note
+
+Use `environment-geospatial.yml` as the canonical environment specification. It contains the MDB inspection executable (`mdbtools`) required by `scripts/acquisition/inspect_hwsd_schema.py`, in addition to the GDAL/GeoPandas/Rasterio stack.
+
+`environment.yml` is retained as the initial minimal environment proposal but is superseded for all runnable work by `environment-geospatial.yml`. This explicit replacement avoids quietly assuming an Access/MDB driver exists on a machine.

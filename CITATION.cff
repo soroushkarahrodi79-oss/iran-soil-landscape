@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the project and the authoritative datasets listed in docs/DATA_SOURCES.md."
+title: "Iran Soil Landscapes"
+type: software
+version: 0.1.0
+date-released: 2026-09-07
+abstract: "Reproducible source-of-truth workflow for a terrain-enhanced cartographic depiction of HWSD dominant soil groups in Iran."
+license: "CC-BY-NC-SA-3.0-IGO"
+keywords:
+  - soil geography
+  - Iran
+  - cartography
+  - reproducible geospatial processing
+references:
+  - type: report
+    authors:
+      - name: "FAO and IIASA"
+    title: "Harmonized World Soil Database version 2.0"
+    year: 2023
+    doi: 10.4060/cc3823en

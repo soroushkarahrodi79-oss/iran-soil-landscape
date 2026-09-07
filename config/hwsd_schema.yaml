@@ -1,0 +1,17 @@
+# This file is intentionally incomplete. Populate it only from the generated
+# provenance/metadata/hwsd_schema_report.json and the official HWSD v2.01 report.
+# A null value is a processing stop condition, not a default.
+schema_contract:
+  status: PENDING_SCHEMA_REVIEW
+  database_table: null
+  raster_mapping_unit_field: null
+  database_mapping_unit_field: null
+  soil_indicator_field: null
+  soil_indicator_value: null
+  component_share_field: null
+  component_sequence_field: null
+  wrb_2022_reference_soil_group_field: null
+  fao_1990_soil_unit_field: null
+  acceptance_note: null
+  accepted_by: null
+  accepted_date: null

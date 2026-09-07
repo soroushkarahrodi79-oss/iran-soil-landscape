@@ -1,0 +1,29 @@
+# Immutable/raw and generated geospatial data
+data/raw/**
+!data/raw/**/.gitkeep
+data/interim/**
+!data/interim/.gitkeep
+data/processed/**
+!data/processed/**/.gitkeep
+outputs/**
+!outputs/**/.gitkeep
+
+# QGIS/Blender temporary files
+qgis/*.qgd
+qgis/*.qgz~
+qgis/.qgis-lock
+blender/*.blend1
+blender/*.blend2
+
+# Python and environment files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+env/
+
+# Local acquisition credentials and temporary archives
+.netrc
+*.part
+*.tmp
