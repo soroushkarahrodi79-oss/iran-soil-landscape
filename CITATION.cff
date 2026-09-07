@@ -5,7 +5,7 @@ type: software
 version: 0.1.0
 date-released: 2026-09-07
 abstract: "Reproducible source-of-truth workflow for a terrain-enhanced cartographic depiction of HWSD dominant soil groups in Iran."
-license: "CC-BY-NC-SA-3.0-IGO"
+license: "CC-BY-NC-SA-4.0"
 keywords:
   - soil geography
   - Iran

@@ -4,7 +4,7 @@
 
 ## Primary soil source — SOURCE_VERIFIED / DOWNLOAD_PENDING
 
-**Harmonized World Soil Database v2.01 (HWSD v2.0, September 2023 revision)** is the authoritative primary soil source. FAO's current HWSD page identifies the 2023 v2.0 release and a revised v2.01 release in September 2023. The supplied technical report is *FAO & IIASA (2023), Harmonized World Soil Database version 2.0*, DOI `10.4060/cc3823en`.
+**Harmonized World Soil Database v2.01 (HWSD v2.0, September 2023 revision)** is the authoritative primary soil source. FAO's current HWSD page identifies the 2023 v2.0 release and a revised v2.01 release in September 2023. The supplied technical report is *FAO & IIASA (2023), Harmonized World Soil Database version 2.0* (report title), DOI `10.4060/cc3823en`; the dataset release itself is cited as *FAO & IIASA. Harmonized World Soil Database version 2.01. Rome and Laxenburg.*
 
 Official assets, linked by FAO:
 
@@ -13,9 +13,9 @@ Official assets, linked by FAO:
 - Viewer/soil-type installer: `https://data.apps.fao.org/static/downloads/HWSD/hwsd21_setup_v20230905.exe`
 - Source landing page: `https://www.fao.org/land-water/resources/tools/databases/hwsd/en`
 
-HWSD is a 30 arc-second global GIS raster linked to a Microsoft Access 2003-format attribute database. FAO reports approximately 1 km resolution, 29,385 soil association mapping units, up to 12 soil-unit/phase component records per mapping unit, and seven depth layers (0–20 through 150–200 cm). Soil units use the FAO 1990 Revised Legend with correlation to WRB 2022. This project will render only a derived **dominant component WRB Reference Soil Group**, after the exact database fields and joins are verified from the downloaded archive.
+HWSD is a 30 arc-second global GIS raster linked to a Microsoft Access 2003-format attribute database. The raster is a **GeoTIFF, UInt16, nodata = 65535, 43,200 × 21,600 cells, ~0.0083333° cell size, EPSG:4326** (verified 2026-09-07 against the FAO catalog record `ff5c613c`). FAO reports approximately 1 km resolution and seven depth layers (0–20 through 150–200 cm). The exact mapping-unit count, the maximum number of soil-unit/phase component records per mapping unit, and every field name **will be counted/read directly from the downloaded database** — no specific counts are asserted from memory here, because an earlier draft carried an unverified "29,385 mapping units / up to 12 components" figure that this project does not vouch for until measured. Soil units use the FAO 1990 Revised Legend with correlation to WRB 2022. This project will render only a derived **dominant component WRB Reference Soil Group**, after the exact database fields and joins are verified from the downloaded archive.
 
-Required citation: *FAO & IIASA. 2023. Harmonized World Soil Database version 2.0. Rome and Laxenburg. https://doi.org/10.4060/cc3823en.* The report is released under CC BY-NC-SA 3.0 IGO; its terms must be retained in downstream publication notes. The team must not infer that all individual source layers have broader redistribution rights than this record states.
+Required citation: *FAO & IIASA. Harmonized World Soil Database version 2.01. Rome and Laxenburg.* (technical report DOI `https://doi.org/10.4060/cc3823en`). The dataset is released under **CC BY-NC-SA 4.0** (verified against FAO catalog record `ff5c613c`, 2026-09-07; corrected from a prior "3.0 IGO" record — see DECISIONS D-007) with additional FAO terms prohibiting commercial resale/redistribution without written permission; its terms must be retained in downstream publication notes. The team must not infer that all individual source layers have broader redistribution rights than this record states.
 
 ## National boundary — SOURCE_VERIFIED / DOWNLOAD_PENDING
 
@@ -42,3 +42,10 @@ The HWSD technical report and authoritative FAO soil materials may be used to va
 ## Source discrepancy resolution
 
 FAO retains a legacy HWSD v1.2 page while its current database page presents v2.0/v2.01. This project resolves the ambiguity in favour of the current FAO HWSD page, its official v2.01 assets, and the 2023 technical report. The legacy v1.2 page is not an input.
+
+**License / format discrepancy (resolved 2026-09-07, second verification pass).** An earlier record in this repository stated the HWSD licence as "CC BY-NC-SA 3.0 IGO" and the raster format as "ESRI BIL". Independent re-verification found:
+
+- The **FAO primary catalog** record `ff5c613c-75bb-46a9-a162-bc728059b465` (data.apps.fao.org) states **CC BY-NC-SA 4.0**, a **GeoTIFF (UInt16, nodata 65535, 43,200 × 21,600)** raster, and the citation *FAO & IIASA. Harmonized World Soil Database version 2.01. Rome and Laxenburg.*
+- The **ISRIC geonetwork** mirror record (`54aebf11-…`) is internally inconsistent: it labels the licence "3.0" in one field while linking the `by-nc-sa/4.0/` URL.
+
+Resolution: the FAO primary catalog is authoritative. The manifest, LICENSES.md, and CITATION.cff have been corrected to CC BY-NC-SA 4.0 and GeoTIFF/UInt16. See DECISIONS D-007. The raster's exact internal encoding and the database's exact fields will still be re-confirmed directly from the downloaded archives before any processing.

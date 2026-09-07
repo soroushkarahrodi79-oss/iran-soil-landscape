@@ -10,7 +10,7 @@ Use: “Dominant soil group according to the FAO/IIASA Harmonized World Soil Dat
 
 ## Attribution draft
 
-Soil data: FAO & IIASA (2023), *Harmonized World Soil Database version 2.0*, https://doi.org/10.4060/cc3823en. Boundary: Natural Earth. Terrain (if used): USGS/NASA SRTMGL1. Processing and cartography: Iran Soil Landscapes project.
+Soil data: FAO & IIASA, *Harmonized World Soil Database version 2.01*, Rome and Laxenburg (technical report DOI https://doi.org/10.4060/cc3823en), licensed CC BY-NC-SA 4.0. Boundary: Made with Natural Earth. Terrain (if used): USGS/NASA SRTMGL1. Processing and cartography: Iran Soil Landscapes project.
 
 ## Visual direction
 

@@ -13,10 +13,20 @@
 | DEM | BLOCKED_USER_ACTION | SRTM requires the user's official EarthExplorer/Earthdata acquisition path. |
 | QGIS/Blender production | NOT_STARTED | Out of scope for this foundation phase. |
 
+## Second verification pass — 2026-09-07 (this session)
+
+Source identity was independently re-verified against the FAO **primary catalog** ISO record `ff5c613c` (data.apps.fao.org), the ISRIC mirror, the Natural Earth 10m cultural download page, and USGS/NASA SRTM documentation. This pass **corrected three records** that had been asserted from a weaker/second-hand source (see DECISIONS D-007):
+
+- HWSD licence: `CC BY-NC-SA 3.0 IGO` → **`CC BY-NC-SA 4.0`** (manifest, LICENSES.md, CITATION.cff, DATA_SOURCES.md).
+- HWSD raster format: `ESRI BIL` → **GeoTIFF, UInt16, nodata 65535, 43,200 × 21,600** (manifest, DATA_SOURCES.md).
+- Removed an unverified `29,385 mapping units / up to 12 components` figure pending direct measurement.
+
+Natural Earth v5.1.1 (1:10m, public domain) and the SRTMGL1 authenticated-access requirement were re-confirmed unchanged.
+
 ## Explicit unresolved issues
 
-1. The workspace has no installed Python or geospatial runtime. `environment.yml` is the reproducible solution, but has not been created locally.
-2. No official HWSD or Natural Earth archive is present, so their generated SHA-256 values and all downstream products are intentionally absent.
+1. **No geospatial runtime for the current user.** `py` reports Python 3.14.5, but there is no `python` on PATH, no conda/miniforge, and none of GDAL, geopandas, rasterio, pyproj, or **mdbtools** (required by `inspect_hwsd_schema.py`) is installed. The prior `__pycache__` (cpython-312) came from a different Windows account's sandbox that this user cannot access. `environment.yml` is the reproducible solution but has not been built locally, and note that geospatial binary wheels may not yet exist for Python 3.14 — a 3.11/3.12 conda env is the safer target.
+2. No official HWSD or Natural Earth archive is present, so their generated SHA-256 values and all downstream products are intentionally absent. Downloads require the user's explicit go-ahead.
 3. HWSD's actual MDB table/field names have not been inspected; `config/hwsd_schema.yaml` remains an explicit null-valued stop gate.
 4. The official SRTM download route requires a user-authenticated EarthExplorer/Earthdata action. No credential bypass or substitute source is permitted.
 

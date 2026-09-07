@@ -4,7 +4,7 @@
 
 **Decision:** Use FAO/IIASA HWSD v2.01, not the legacy v1.2 download.
 
-**Evidence:** FAO's current HWSD landing page identifies v2.0 (2023) and a September 2023 revision called v2.01. It documents a 30 arc-second raster linked to 29,385 soil association mapping units, FAO 1990 / WRB 2022 correlation, and seven depth layers.
+**Evidence:** FAO's current HWSD landing page identifies v2.0 (2023) and a September 2023 revision called v2.01. It documents a 30 arc-second raster linked to a mapping-unit / component attribute database, FAO 1990 / WRB 2022 correlation, and seven depth layers. (The exact mapping-unit and component counts are deliberately **not** asserted here; they will be measured from the downloaded database. A prior draft's "29,385 mapping units / up to 12 components" figure was unverified and has been removed pending measurement.)
 
 **Status:** SOURCE_VERIFIED; raw archives remain DOWNLOAD_PENDING.
 
@@ -35,3 +35,15 @@
 ## D-006 — Sensitive labels
 
 **Decision:** The future publication may use “Persian Gulf” for the relevant water-body label, independently of the authoritative boundary geometry. Labels remain separate from geometries and must be cited in publication notes.
+
+## D-007 — HWSD licence & raster-format discrepancy resolution (second verification pass, 2026-09-07)
+
+**Decision:** Record the HWSD v2.01 licence as **CC BY-NC-SA 4.0** and the raster format as **GeoTIFF, UInt16, nodata 65535, 43,200 × 21,600, EPSG:4326**, superseding an earlier repository record of "CC BY-NC-SA 3.0 IGO" and "ESRI BIL".
+
+**Evidence:** Independent re-verification of the FAO **primary catalog** ISO record `ff5c613c-75bb-46a9-a162-bc728059b465` (data.apps.fao.org) confirms CC BY-NC-SA 4.0, GeoTIFF/UInt16/nodata 65535/43200×21600, and the citation *FAO & IIASA. Harmonized World Soil Database version 2.01. Rome and Laxenburg.* The ISRIC geonetwork mirror record `54aebf11-…` is internally inconsistent (labels "3.0" but links the 4.0 licence URL) and is treated as a non-authoritative secondary mirror.
+
+**Rejected alternative:** Trusting the ISRIC "3.0" field, or retaining the "3.0 IGO" / "BIL" values from memory. Rejected because the FAO catalog is the strongest primary source and the two disagreed.
+
+**Residual uncertainty:** The raster's exact internal byte layout and the database's exact table/field names are still confirmed **only** by direct inspection of the downloaded archives (D-004 gate); this decision fixes the licence and top-level format metadata, not the internal schema.
+
+**Status:** ACCEPTED. Applied to `source_manifest.csv`, `docs/LICENSES.md`, `docs/DATA_SOURCES.md`, and `CITATION.cff`.
