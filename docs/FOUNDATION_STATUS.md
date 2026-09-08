@@ -1,35 +1,32 @@
-# Foundation status — 2026-09-07
+# Project status — updated 2026-09-08 (DATA_GATE_COMPLETE)
 
 | Exit criterion | Status | Evidence / reason |
 | --- | --- | --- |
-| Coherent repository structure | READY | Directories, ignore rules, environment specification, provenance folders, and scripts are present. |
-| Populated documentation | READY | README and all required records are populated. |
-| Verified source manifest | SOURCE_VERIFIED | Source identity/URLs, versions, access date, licences, and attribution recorded; no raw checksum yet. |
-| Raw-file provenance/checksums | PENDING_DOWNLOAD | Scripts generate checksums; no file has been downloaded or represented as present. |
-| Processed Iran boundary | PENDING_DOWNLOAD | Script is ready but will not fabricate a boundary without the official archive. |
-| HWSD schema interpretation | PENDING_SCHEMA_REVIEW | Report-driven schema contract exists but deliberately contains no guessed fields. |
-| Dominant-soil raster/statistics/area QA | PROCESSING_NOT_STARTED | Blocked by official HWSD files and accepted schema contract. |
-| Plain 2D proof | PROOF_PENDING | Blocked by the absence of derived soil data and actual data-derived palette. |
-| DEM | BLOCKED_USER_ACTION | SRTM requires the user's official EarthExplorer/Earthdata acquisition path. |
-| QGIS/Blender production | NOT_STARTED | Out of scope for this foundation phase. |
+| Coherent repository structure | DONE | Directories, ignore rules, `environment-geospatial.yml`, provenance folders, scripts. |
+| Populated documentation | DONE | README + all records populated and updated to the executed pipeline. |
+| Verified source manifest | DONE | Identity/URLs/versions/licences/attribution; downloaded rows carry SHA-256 and byte sizes. |
+| Reproducible environment | DONE | Miniforge conda env `iran-soil-geospatial`, Python 3.12 (GDAL 3.13.3, rasterio 1.5.1, geopandas 1.1.4, pyproj 3.8.0). |
+| Raw-file provenance/checksums | DONE | `provenance/checksums/raw_sha256.txt` (verifies OK) + `acquisition_2026-09-08.json`. |
+| Processed Iran boundary | DONE | `data/processed/boundary/iran_boundary.gpkg` (EPSG:4326, unaltered); CRS QA in metadata. |
+| HWSD schema interpretation | SCHEMA_LOCKED | Read from `HWSD2.mdb` (ODBC); `config/hwsd_schema.yaml` + `docs/HWSD_SCHEMA.md`; DECISIONS D-008. |
+| Dominant-soil raster + statistics | DONE | `iran_hwsd_mapping_units.tif`, `iran_dominant_soil_group.tif`, `soil_groups_iran.csv` (16 classes). |
+| Area QA | DONE | `area_qa.json`; B = C+E+F exactly; A−B = 0.081 % explained by nodata. |
+| Plain 2D proof | DONE | `outputs/proof/iran_soils_proof_v01.png` (2D categorical, no terrain/AI). |
+| Automated tests | DONE (10 passed) | Provenance guards + scientific invariants (shares≈100 %, reconciliation, palette coverage). |
+| DEM / SRTM | BLOCKED_USER_ACTION | Requires the user's authenticated EarthExplorer/Earthdata download. |
+| QGIS / Blender production | NOT_STARTED | Out of scope until `GO_3D_CARTOGRAPHY`. |
 
-## Second verification pass — 2026-09-07 (this session)
+## Verification/correction trail
 
-Source identity was independently re-verified against the FAO **primary catalog** ISO record `ff5c613c` (data.apps.fao.org), the ISRIC mirror, the Natural Earth 10m cultural download page, and USGS/NASA SRTM documentation. This pass **corrected three records** that had been asserted from a weaker/second-hand source (see DECISIONS D-007):
+- **2026-09-07 (metadata pass):** re-verified source identity against the FAO primary catalog `ff5c613c`; corrected licence `3.0 IGO`→`4.0` for the dataset and (over-)corrected raster format to GeoTIFF.
+- **2026-09-08 (artifact pass):** downloading and inspecting the artifacts **reverted the format to ESRI BIL** (confirmed by `HWSD2.hdr` and the report, which recommends converting BIL→GeoTIFF — explaining the catalog's GeoTIFF). Also clarified the licence nuance: the **report PDF** is CC BY-NC-SA 3.0 IGO (its own copyright page); the **dataset** is 4.0. See DECISIONS D-007.
 
-- HWSD licence: `CC BY-NC-SA 3.0 IGO` → **`CC BY-NC-SA 4.0`** (manifest, LICENSES.md, CITATION.cff, DATA_SOURCES.md).
-- HWSD raster format: `ESRI BIL` → **GeoTIFF, UInt16, nodata 65535, 43,200 × 21,600** (manifest, DATA_SOURCES.md).
-- Removed an unverified `29,385 mapping units / up to 12 components` figure pending direct measurement.
+## Key results
 
-Natural Earth v5.1.1 (1:10m, public domain) and the SRTMGL1 authenticated-access requirement were re-confirmed unchanged.
+- Dominant WRB-2022 RSG of Iran: Leptosols 40.7 %, Regosols 18.7 %, Solonchaks 18.6 %, Calcisols 16.8 % (12 more classes; 0 unmapped SMUs).
+- Boundary area 1,622,510 km²; classified soil area 1,612,385 km²; non-soil (water) 8,817 km²; nodata-in-polygon 1,334 km².
 
-## Explicit unresolved issues
+## Remaining blockers / next gate
 
-1. **No geospatial runtime for the current user.** `py` reports Python 3.14.5, but there is no `python` on PATH, no conda/miniforge, and none of GDAL, geopandas, rasterio, pyproj, or **mdbtools** (required by `inspect_hwsd_schema.py`) is installed. The prior `__pycache__` (cpython-312) came from a different Windows account's sandbox that this user cannot access. `environment.yml` is the reproducible solution but has not been built locally, and note that geospatial binary wheels may not yet exist for Python 3.14 — a 3.11/3.12 conda env is the safer target.
-2. No official HWSD or Natural Earth archive is present, so their generated SHA-256 values and all downstream products are intentionally absent. Downloads require the user's explicit go-ahead.
-3. HWSD's actual MDB table/field names have not been inspected; `config/hwsd_schema.yaml` remains an explicit null-valued stop gate.
-4. The official SRTM download route requires a user-authenticated EarthExplorer/Earthdata action. No credential bypass or substitute source is permitted.
-
-## Required next gate
-
-Run the reproducible environment setup and acquire/inspect the two non-authenticated primary archives. Review the data-derived HWSD schema record, explicitly accept the mapping fields, then execute the soil derivation and area QA. Only if those gates pass may the first 2D proof be rendered. Do not begin Blender without explicit `GO_3D_CARTOGRAPHY`.
+1. **SRTMGL1 terrain** requires the user's authenticated EarthExplorer/Earthdata download (no bypass, no mirror). Everything else for terrain is ready.
+2. Optional polish before publication: QGIS inspection project, palette refinement, and the master/LinkedIn render specs — all deferred until `GO_3D_CARTOGRAPHY`.

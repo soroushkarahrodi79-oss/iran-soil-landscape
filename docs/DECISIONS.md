@@ -20,7 +20,7 @@
 
 **Reason:** An equal-area, Iran-centred CRS avoids Web Mercator area distortion and avoids imposing one UTM zone across the national extent.
 
-**Status:** PROVISIONAL_PENDING_BOUNDARY_SCALE_QA. The processing script will record the exact WKT/PROJ representation and compare its area with a WGS84 geodesic calculation. If the geometry or scale behaviour is materially unsuitable, this decision must be revisited before any statistics are accepted.
+**Status:** LOCKED (2026-09-08). On the extracted Iran boundary, the LAEA projected area = 1,622,509.5 km² vs the WGS84 geodesic area = 1,622,510.2 km² — a relative difference of 4.2e-5 %. Negligible distortion at the national extent, so the candidate is adopted for national area statistics. Exact WKT/PROJ recorded in `provenance/metadata/iran_boundary_processing.json`.
 
 ## D-004 — Dominant class semantics
 
@@ -36,14 +36,46 @@
 
 **Decision:** The future publication may use “Persian Gulf” for the relevant water-body label, independently of the authoritative boundary geometry. Labels remain separate from geometries and must be cited in publication notes.
 
-## D-007 — HWSD licence & raster-format discrepancy resolution (second verification pass, 2026-09-07)
+## D-007 — HWSD licence & raster-format resolution (verification pass 2026-09-07, corrected by artifact inspection 2026-09-08)
 
-**Decision:** Record the HWSD v2.01 licence as **CC BY-NC-SA 4.0** and the raster format as **GeoTIFF, UInt16, nodata 65535, 43,200 × 21,600, EPSG:4326**, superseding an earlier repository record of "CC BY-NC-SA 3.0 IGO" and "ESRI BIL".
+**Decision:** Record the HWSD v2.01 **licence as CC BY-NC-SA 4.0** and the **raster format as ESRI BIL** (`HWSD2.bil`+`.hdr`+`.prj`+`.stx`; UInt16 LE; nodata 65535; 43,200 × 21,600; EPSG:4326).
 
-**Evidence:** Independent re-verification of the FAO **primary catalog** ISO record `ff5c613c-75bb-46a9-a162-bc728059b465` (data.apps.fao.org) confirms CC BY-NC-SA 4.0, GeoTIFF/UInt16/nodata 65535/43200×21600, and the citation *FAO & IIASA. Harmonized World Soil Database version 2.01. Rome and Laxenburg.* The ISRIC geonetwork mirror record `54aebf11-…` is internally inconsistent (labels "3.0" but links the 4.0 licence URL) and is treated as a non-authoritative secondary mirror.
+**Two-step evidence trail (kept deliberately, to show how the record was corrected):**
 
-**Rejected alternative:** Trusting the ISRIC "3.0" field, or retaining the "3.0 IGO" / "BIL" values from memory. Rejected because the FAO catalog is the strongest primary source and the two disagreed.
+1. *2026-09-07 (metadata pass):* the FAO **primary catalog** ISO record `ff5c613c` (data.apps.fao.org) gave licence CC BY-NC-SA 4.0 (correcting a prior "3.0 IGO") and *described* a GeoTIFF/UInt16 distribution. Trusting that catalog description, the format record was changed from the scaffold's "ESRI BIL" to "GeoTIFF". The ISRIC mirror `54aebf11` was found internally inconsistent (labels "3.0", links the 4.0 URL) and set aside.
+2. *2026-09-08 (artifact pass):* the actual `HWSD2_RASTER.zip` was downloaded and inspected. `HWSD2.hdr` shows **LAYOUT BIL**, UInt16 LE, nodata 65535, 43200×21600, EPSG:4326. **The asset is ESRI BIL, not GeoTIFF.** The 2026-09-07 GeoTIFF change was an over-correction based on catalog metadata; it is reverted. The original scaffold's "ESRI BIL" was correct. Cell size, UInt16 type, and nodata are consistent throughout.
 
-**Residual uncertainty:** The raster's exact internal byte layout and the database's exact table/field names are still confirmed **only** by direct inspection of the downloaded archives (D-004 gate); this decision fixes the licence and top-level format metadata, not the internal schema.
+**Principle affirmed:** where third-party/catalog metadata and the actual downloaded artifact disagree on the data's own properties, **the artifact is authoritative**. Catalog records remain authoritative for licence/citation, which the artifact does not carry.
 
-**Status:** ACCEPTED. Applied to `source_manifest.csv`, `docs/LICENSES.md`, `docs/DATA_SOURCES.md`, and `CITATION.cff`.
+**Rejected alternatives:** trusting the ISRIC "3.0" licence field (rejected — inconsistent mirror); keeping "GeoTIFF" from the catalog after the `.hdr` contradicted it (rejected — artifact wins).
+
+**Residual uncertainty:** the database's exact table/field names are still confirmed only by direct inspection of `HWSD2.mdb` (D-004 gate).
+
+**Status:** ACCEPTED. Applied to `source_manifest.csv`, `docs/LICENSES.md`, `docs/DATA_SOURCES.md`, `CITATION.cff`, and `provenance/metadata/acquisition_2026-09-08.json`.
+
+**Addendum (2026-09-08, from the report PDF):** the technical report's own copyright page (p.3) states the *report document* is CC BY-NC-SA **3.0 IGO**, while the FAO catalog states the *dataset* is CC BY-NC-SA **4.0**. These are not contradictory — they license different artifacts. The manifest records the **report row** as 3.0 IGO and the **dataset rows** (raster/DB) as 4.0. Derived products inherit the dataset's 4.0 NC-SA terms.
+
+## D-008 — Dominant-soil rule, LOCKED from MDB evidence (2026-09-08)
+
+**Decision:** For each `HWSD2_SMU_ID`, the dominant soil is the **`SEQUENCE=1` component in `HWSD2_LAYERS`** (`LAYER='D1'`); the class is that component's **`WRB2`** (WRB 2022 Reference Soil Group), **uppercased** and resolved to a name via `D_WRB2`. Non-soil WRB2 codes (`GG` Glaciers, `IS` Islands, `ND` No Data, `WR` Open Water) are reported separately, not counted as soil. `HWSD_SCHEMA_STATUS = SCHEMA_LOCKED`.
+
+**Evidence (provenance/metadata/hwsd_mdb_report.json + cross-check):**
+- `HWSD2_SMU` has 29,538 rows (= SMU count; this resolves the report's internal 29,538-vs-29,385 inconsistency in favour of **29,538**).
+- `HWSD2_SMU.WRB2` is NULL for 1,748 SMUs, but **every** SMU has a `SEQUENCE=1` row in `HWSD2_LAYERS` → LAYERS is the complete, authoritative dominant source.
+- `SEQUENCE=1` equals the max-`SHARE` component in only 97.78 % of SMUs; the report defines `SEQUENCE=1` as the dominant, so the dataset's designation is used rather than a recomputed max-share.
+- Casing inconsistencies exist in the data (`NT`/`Nt`, `GL`/`Gl`, `PT`/`Pt`); codes are uppercased before the `D_WRB2` join.
+
+**Modification vs the D-004 hypothesis:** D-004 proposed "dominant by max SHARE among ISSOIL=1". Evidence changed two things: (a) HWSD2 has **no ISSOIL field** — non-soil is identified by WRB2 code instead; (b) dominant is **SEQUENCE=1**, not recomputed max-share. The hypothesis is thus *modified*, exactly as the gate permits.
+
+**Result:** 16 classes present in Iran; Leptosols 40.7 %, Regosols 18.7 %, Solonchaks 18.6 %, Calcisols 16.8 % lead; 0 unmapped SMUs; area reconciles (see D-010 / area_qa.json).
+
+## D-009 — Tooling workarounds on this Windows/conda stack (2026-09-08)
+
+Three environment-specific issues were found and worked around **without changing the science**:
+1. **MDB access:** conda-forge GDAL has no Java `MDB` driver; the **ODBC** driver opens `HWSD2.mdb` (a system Access ODBC driver is present). No mdbtools, no Access/Office install, no web converter — consistent with the environment decision.
+2. **`rasterio.windows.from_bounds` hard-aborts** (exit 127) on this GDAL build; the Iran window is computed manually from the inverse geotransform instead (identical result).
+3. **DLL resolution:** running `python.exe` without activating the env let a stray system `libpng`/`zlib` load, hard-aborting matplotlib PNG writes and `geopandas.plot()`. Fixed reproducibly in `scripts/_geoenv.py` (registers the env `Library/bin` via `os.add_dll_directory` + PATH) and by drawing boundary rings directly with matplotlib rather than `GeoDataFrame.plot()`.
+
+## D-010 — Area accounting method (2026-09-08)
+
+**Decision:** Compute national area statistics on the **native EPSG:4326 grid using latitude-correct WGS84 cell areas** (no categorical resampling), and the boundary area in the locked LAEA. Reconciliation A ≈ B + D and B = C + E + F held: A=1,622,509.5, B=1,621,202.1, C(soil)=1,612,385.2, E(non-soil)=8,816.9, F(unmapped)=0.0, D(nodata in polygon)=1,334.4 km²; A−B=1,307 km² (0.081 %) explained by the NE 1:10m coastline/border vs HWSD land-mask mismatch. No value was forced to a remembered national area.

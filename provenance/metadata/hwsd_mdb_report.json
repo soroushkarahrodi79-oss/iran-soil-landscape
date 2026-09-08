@@ -1,0 +1,715 @@
+{
+  "created_utc": "2026-09-08T11:08:01.503310+00:00",
+  "engine": "ogr",
+  "mdb": "data/interim/hwsd/HWSD2.mdb",
+  "table_count": 25,
+  "tables": {
+    "D_ADD_PROP": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 3
+    },
+    "D_AWC": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 7
+    },
+    "D_COVERAGE": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 9
+    },
+    "D_DRAINAGE": {
+      "fields": [
+        {
+          "name": "SYMBOL",
+          "type": "Integer"
+        },
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 7
+    },
+    "D_FAO90": {
+      "fields": [
+        {
+          "name": "SYMBOL",
+          "type": "Integer"
+        },
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 193
+    },
+    "D_IL": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 5
+    },
+    "D_KOPPEN": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 5
+    },
+    "D_PHASE": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 31
+    },
+    "D_ROOT_DEPTH": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 4
+    },
+    "D_ROOTS": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 7
+    },
+    "D_SWR": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 5
+    },
+    "D_TEXTURE": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 4
+    },
+    "D_TEXTURE_SOTER": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 5
+    },
+    "D_TEXTURE_USDA": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 13
+    },
+    "D_WRB_PHASES": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        }
+      ],
+      "row_count": 556
+    },
+    "D_WRB2": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "Value",
+          "type": "String"
+        }
+      ],
+      "row_count": 35
+    },
+    "D_WRB2code": {
+      "fields": [
+        {
+          "name": "CODE",
+          "type": "String"
+        },
+        {
+          "name": "Value",
+          "type": "String"
+        }
+      ],
+      "row_count": 35
+    },
+    "D_WRB4": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Real"
+        },
+        {
+          "name": "VALUE",
+          "type": "String"
+        },
+        {
+          "name": "CODE",
+          "type": "String"
+        }
+      ],
+      "row_count": 191
+    },
+    "HWSD2_LAYERS": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "HWSD2_SMU_ID",
+          "type": "Integer"
+        },
+        {
+          "name": "NSC_MU_SOURCE1",
+          "type": "String"
+        },
+        {
+          "name": "NSC_MU_SOURCE2",
+          "type": "String"
+        },
+        {
+          "name": "WISE30s_SMU_ID",
+          "type": "String"
+        },
+        {
+          "name": "HWSD1_SMU_ID",
+          "type": "Integer"
+        },
+        {
+          "name": "COVERAGE",
+          "type": "Integer"
+        },
+        {
+          "name": "SEQUENCE",
+          "type": "Integer"
+        },
+        {
+          "name": "SHARE",
+          "type": "Integer"
+        },
+        {
+          "name": "NSC",
+          "type": "String"
+        },
+        {
+          "name": "WRB_PHASES",
+          "type": "String"
+        },
+        {
+          "name": "WRB4",
+          "type": "String"
+        },
+        {
+          "name": "WRB2",
+          "type": "String"
+        },
+        {
+          "name": "FAO90",
+          "type": "String"
+        },
+        {
+          "name": "ROOT_DEPTH",
+          "type": "Integer"
+        },
+        {
+          "name": "PHASE1",
+          "type": "Integer"
+        },
+        {
+          "name": "PHASE2",
+          "type": "Integer"
+        },
+        {
+          "name": "ROOTS",
+          "type": "Integer"
+        },
+        {
+          "name": "IL",
+          "type": "Integer"
+        },
+        {
+          "name": "SWR",
+          "type": "Integer"
+        },
+        {
+          "name": "DRAINAGE",
+          "type": "String"
+        },
+        {
+          "name": "AWC",
+          "type": "Integer"
+        },
+        {
+          "name": "ADD_PROP",
+          "type": "Integer"
+        },
+        {
+          "name": "LAYER",
+          "type": "String"
+        },
+        {
+          "name": "TOPDEP",
+          "type": "Integer"
+        },
+        {
+          "name": "BOTDEP",
+          "type": "Integer"
+        },
+        {
+          "name": "COARSE",
+          "type": "Integer"
+        },
+        {
+          "name": "SAND",
+          "type": "Integer"
+        },
+        {
+          "name": "SILT",
+          "type": "Integer"
+        },
+        {
+          "name": "CLAY",
+          "type": "Integer"
+        },
+        {
+          "name": "TEXTURE_USDA",
+          "type": "Integer"
+        },
+        {
+          "name": "TEXTURE_SOTER",
+          "type": "String"
+        },
+        {
+          "name": "BULK",
+          "type": "Real"
+        },
+        {
+          "name": "REF_BULK",
+          "type": "Real"
+        },
+        {
+          "name": "ORG_CARBON",
+          "type": "Real"
+        },
+        {
+          "name": "PH_WATER",
+          "type": "Real"
+        },
+        {
+          "name": "TOTAL_N",
+          "type": "Real"
+        },
+        {
+          "name": "CN_RATIO",
+          "type": "Real"
+        },
+        {
+          "name": "CEC_SOIL",
+          "type": "Integer"
+        },
+        {
+          "name": "CEC_CLAY",
+          "type": "Integer"
+        },
+        {
+          "name": "CEC_EFF",
+          "type": "Real"
+        },
+        {
+          "name": "TEB",
+          "type": "Real"
+        },
+        {
+          "name": "BSAT",
+          "type": "Integer"
+        },
+        {
+          "name": "ALUM_SAT",
+          "type": "Integer"
+        },
+        {
+          "name": "ESP",
+          "type": "Integer"
+        },
+        {
+          "name": "TCARBON_EQ",
+          "type": "Real"
+        },
+        {
+          "name": "GYPSUM",
+          "type": "Real"
+        },
+        {
+          "name": "ELEC_COND",
+          "type": "Integer"
+        }
+      ],
+      "row_count": 408835
+    },
+    "HWSD2_LAYERS_METADATA": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "FIELD",
+          "type": "String"
+        },
+        {
+          "name": "UNIT",
+          "type": "String"
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "String"
+        },
+        {
+          "name": "DATATYPE",
+          "type": "String"
+        },
+        {
+          "name": "DOMAIN",
+          "type": "String"
+        }
+      ],
+      "row_count": 47
+    },
+    "HWSD2_SMU": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "HWSD2_SMU_ID",
+          "type": "Integer"
+        },
+        {
+          "name": "WISE30s_SMU_ID",
+          "type": "String"
+        },
+        {
+          "name": "HWSD1_SMU_ID",
+          "type": "Integer"
+        },
+        {
+          "name": "COVERAGE",
+          "type": "Integer"
+        },
+        {
+          "name": "SHARE",
+          "type": "Integer"
+        },
+        {
+          "name": "WRB4",
+          "type": "String"
+        },
+        {
+          "name": "WRB_PHASES",
+          "type": "String"
+        },
+        {
+          "name": "WRB2",
+          "type": "String"
+        },
+        {
+          "name": "WRB2_CODE",
+          "type": "Integer"
+        },
+        {
+          "name": "FAO90",
+          "type": "String"
+        },
+        {
+          "name": "KOPPEN",
+          "type": "String"
+        },
+        {
+          "name": "TEXTURE_USDA",
+          "type": "Integer"
+        },
+        {
+          "name": "REF_BULK_DENSITY",
+          "type": "Real"
+        },
+        {
+          "name": "BULK_DENSITY",
+          "type": "Real"
+        },
+        {
+          "name": "DRAINAGE",
+          "type": "String"
+        },
+        {
+          "name": "ROOT_DEPTH",
+          "type": "Integer"
+        },
+        {
+          "name": "AWC",
+          "type": "Integer"
+        },
+        {
+          "name": "PHASE1",
+          "type": "Integer"
+        },
+        {
+          "name": "PHASE2",
+          "type": "Integer"
+        },
+        {
+          "name": "ROOTS",
+          "type": "Integer"
+        },
+        {
+          "name": "IL",
+          "type": "Integer"
+        },
+        {
+          "name": "ADD_PROP",
+          "type": "Integer"
+        }
+      ],
+      "row_count": 29538
+    },
+    "HWSD2_SMU_METADATA": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Real"
+        },
+        {
+          "name": "FIELD",
+          "type": "String"
+        },
+        {
+          "name": "UNIT",
+          "type": "String"
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "String"
+        },
+        {
+          "name": "DATATYPE",
+          "type": "String"
+        },
+        {
+          "name": "DOMAIN",
+          "type": "String"
+        }
+      ],
+      "row_count": 23
+    },
+    "WRB_Class": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "ID_Class",
+          "type": "Integer"
+        },
+        {
+          "name": "ClassNumber",
+          "type": "Integer"
+        },
+        {
+          "name": "Divider",
+          "type": "Real"
+        },
+        {
+          "name": "Label",
+          "type": "String"
+        },
+        {
+          "name": "Symbol",
+          "type": "String"
+        },
+        {
+          "name": "Red",
+          "type": "Integer"
+        },
+        {
+          "name": "Green",
+          "type": "Integer"
+        },
+        {
+          "name": "Blue",
+          "type": "Integer"
+        }
+      ],
+      "row_count": 34
+    },
+    "WRB_Layer": {
+      "fields": [
+        {
+          "name": "ID",
+          "type": "Integer"
+        },
+        {
+          "name": "ID_AezLibrary",
+          "type": "Integer"
+        },
+        {
+          "name": "LayerName",
+          "type": "String"
+        },
+        {
+          "name": "Filename",
+          "type": "String"
+        },
+        {
+          "name": "Units",
+          "type": "String"
+        },
+        {
+          "name": "Bytes",
+          "type": "Integer"
+        },
+        {
+          "name": "Multiplier",
+          "type": "Integer"
+        },
+        {
+          "name": "ZeroIsValue",
+          "type": "String"
+        },
+        {
+          "name": "ID_Class_Type",
+          "type": "Integer"
+        },
+        {
+          "name": "ID_Class",
+          "type": "Integer"
+        }
+      ],
+      "row_count": 1
+    },
+    "WRB_Library": {
+      "fields": [
+        {
+          "name": "ID_AezLibrary",
+          "type": "Integer"
+        },
+        {
+          "name": "AezLibrary",
+          "type": "String"
+        },
+        {
+          "name": "FileName",
+          "type": "String"
+        }
+      ],
+      "row_count": 1
+    }
+  },
+  "decision": "NO_FIELDS_ACCEPTED_AUTOMATICALLY",
+  "next_action": "Match these tables/fields to docs/HWSD_SCHEMA.md and the technical report, then populate config/hwsd_schema.yaml explicitly."
+}

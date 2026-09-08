@@ -1,17 +1,37 @@
-# This file is intentionally incomplete. Populate it only from the generated
-# provenance/metadata/hwsd_schema_report.json and the official HWSD v2.01 report.
+# HWSD v2.01 schema contract — LOCKED from artifact evidence.
+# Evidence: provenance/metadata/hwsd_mdb_report.json (actual HWSD2.mdb, read via
+# GDAL/OGR ODBC) + docs/HWSD_SCHEMA.md + technical report cc3823en (sec 2.3, Annex I/II).
 # A null value is a processing stop condition, not a default.
 schema_contract:
-  status: PENDING_SCHEMA_REVIEW
-  database_table: null
-  raster_mapping_unit_field: null
-  database_mapping_unit_field: null
-  soil_indicator_field: null
+  status: SCHEMA_LOCKED
+  raster_link:
+    raster_pixel_meaning: HWSD2_SMU_ID
+    raster_nodata: 65535
+  database_table: HWSD2_LAYERS          # component x depth-layer table (408835 rows)
+  smu_summary_table: HWSD2_SMU          # one row per SMU (29538); WRB2 has 1748 NULLs, so NOT used as the source of truth
+  database_mapping_unit_field: HWSD2_SMU_ID
+  component_sequence_field: SEQUENCE     # 1..12; SEQUENCE=1 = dataset-designated dominant
+  component_share_field: SHARE           # % within SMU, sums to 100
+  depth_layer_field: LAYER               # D1..D7; use LAYER='D1' to take one row per component
+  wrb_2022_reference_soil_group_field: WRB2   # 2-letter RSG code; lookup table D_WRB2 (CODE -> Value)
+  wrb_2022_full_symbol_field: WRB4
+  fao_1990_soil_unit_field: FAO90
+  rsg_lookup_table: D_WRB2               # 35 rows: 31 soil RSGs + 4 non-soil (GG,IS,ND,WR)
+  soil_indicator_field: null             # HWSD2 has NO explicit ISSOIL flag
   soil_indicator_value: null
-  component_share_field: null
-  component_sequence_field: null
-  wrb_2022_reference_soil_group_field: null
-  fao_1990_soil_unit_field: null
-  acceptance_note: null
-  accepted_by: null
-  accepted_date: null
+  non_soil_wrb2_codes:                   # excluded from "soil" classes; reported separately
+    GG: Glaciers
+    IS: Islands
+    ND: No Data
+    WR: Open Water
+
+  dominant_rule:
+    definition: "For each HWSD2_SMU_ID, the dominant soil = the component with SEQUENCE=1 in HWSD2_LAYERS (LAYER='D1'). Class = that component's WRB2 (WRB 2022 Reference Soil Group), normalized to uppercase and resolved to a name via D_WRB2."
+    why_sequence_not_maxshare: "The technical report (sec 2.3.2) defines SEQUENCE=1 as the dominant soil. Empirically SEQUENCE=1 equals the max-SHARE component in only 97.78% of SMUs (28883/29538); the remaining 2.22% are ties/ordering cases where the dataset's designated dominant (SEQUENCE=1) is authoritative rather than a recomputed max-SHARE."
+    why_layers_not_smu_table: "HWSD2_SMU.WRB2 is NULL for 1748/29538 SMUs; HWSD2_LAYERS has a SEQUENCE=1 row for all 29538 SMUs. LAYERS is therefore the complete, authoritative dominant source."
+    case_normalization: "WRB2 values contain casing inconsistencies (e.g. NT/Nt, GL/Gl, PT/Pt). Codes are uppercased before the D_WRB2 join so variants collapse to the correct RSG."
+    tie_and_missing_handling: "If a SEQUENCE=1/D1 row is absent, or WRB2 is empty after normalization, the SMU is left unmapped (raster 0) and counted as an anomaly in area QA rather than guessed."
+
+  acceptance_note: "Locked from direct inspection of HWSD2.mdb (ODBC) and the technical report. Dominant=SEQUENCE=1 WRB2 (uppercased) via HWSD2_LAYERS; non-soil WRB2 codes reported separately; no field guessed; no interpolation of categorical classes."
+  accepted_by: "Iran Soil Landscapes pipeline (data gate A+B), evidence-based"
+  accepted_date: "2026-09-08"

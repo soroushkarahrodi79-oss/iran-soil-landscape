@@ -7,4 +7,9 @@
 - The boundary source has its own scale, coastline, and de facto representation. Boundary area, raster coverage, and any remembered national-area figure are not expected to be identical.
 - SRTMGL1’s ~30 m elevation support does not confer ~30 m soil resolution. Terrain detail is a visual enhancement and cannot change the categorical soil geography.
 - SRTM elevation is referenced to EGM96 and may include radar-surface/void-fill limitations. Any vertical exaggeration in a future render must be numerical and disclosed.
-- This foundation stage contains no processed soil raster, no soil-class statistics, no DEM, and no proof map. These are intentionally reported as pending, not estimated.
+- **Dominant-soil simplification (explicit).** The map shows the `SEQUENCE=1` component per SMU. The HWSD technical report warns: *"Relying on dominant soils within soil associations only, may lead to misleading results."* Each ~1 km cell may contain up to 12 soil components; associated/inclusion soils are not shown.
+- **`SEQUENCE=1` ≠ strictly largest share everywhere.** In 2.22 % of SMUs globally the `SEQUENCE=1` component is not the maximum-`SHARE` component. We use the dataset's `SEQUENCE=1` designation (the report's definition of dominant), not a recomputed max-share.
+- **Non-soil classes.** `WR` (Open Water, e.g. Lake Urmia), `GG`, `IS`, `ND` are HWSD categories, not soils; they are reported separately and excluded from soil-class shares.
+- **Data quirks handled, not hidden.** `HWSD2_SMU.WRB2` is NULL for 1,748 SMUs (we use `HWSD2_LAYERS` instead); WRB2 codes have casing inconsistencies (uppercased before lookup). These are documented in DECISIONS D-008.
+- **Area accounting is internally consistent, not an official cadastral figure.** Boundary area 1,622,510 km² (Natural Earth 1:10m) is ~1.5 % below commonly cited official areas (~1.648 M km²) due to the generalized 1:10m coastline/borders and inland-water treatment — expected and documented, not an error.
+- SRTM/terrain is not yet acquired; no DEM, hillshade, or 3D exists. The current proof is a plain 2D categorical QA image only.

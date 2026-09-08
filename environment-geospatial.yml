@@ -1,26 +1,28 @@
-# Canonical executable environment for the HWSD schema inspection and pipeline.
-# This supplements environment.yml because the latter was created before the MDB
-# tooling requirement was identified during source-schema design.
-name: iran-soil-landscapes
+# Canonical reproducible environment for the Iran Soil Landscapes pipeline.
+# Built with Miniforge / conda-forge. Python 3.12 is the project runtime.
+#
+# Create with:
+#   conda env create -f environment-geospatial.yml
+# (or: mamba env create -f environment-geospatial.yml)
+#
+# MDB (Access) note: mdbtools is intentionally NOT pinned here. On native
+# Windows it has no reliable conda-forge build and is not assumed appropriate.
+# HWSD2.mdb is read via GDAL/OGR first; if that fails, a documented pure-Python
+# fallback is used (see docs/HWSD_SCHEMA.md / docs/ENVIRONMENT_NOTE.md). No
+# proprietary Office/Access install and no web converter are used.
+name: iran-soil-geospatial
 channels:
   - conda-forge
 dependencies:
   - python=3.12
   - gdal>=3.8
-  - geopandas>=1.0
   - rasterio>=1.3
+  - geopandas>=1.0
   - pyogrio>=0.9
-  - pyproj>=3.6
   - shapely>=2.0
+  - pyproj>=3.6
   - pandas>=2.2
-  - pyyaml>=6.0
+  - numpy>=1.26
   - matplotlib>=3.8
+  - pyyaml>=6.0
   - pytest>=8.0
-  - requests>=2.31
-  - mdbtools>=1.0
-*** Add File: docs/ENVIRONMENT_NOTE.md
-# Environment note
-
-Use `environment-geospatial.yml` as the canonical environment specification. It contains the MDB inspection executable (`mdbtools`) required by `scripts/acquisition/inspect_hwsd_schema.py`, in addition to the GDAL/GeoPandas/Rasterio stack.
-
-`environment.yml` is retained as the initial minimal environment proposal but is superseded for all runnable work by `environment-geospatial.yml`. This explicit replacement avoids quietly assuming an Access/MDB driver exists on a machine.

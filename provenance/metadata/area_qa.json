@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-09-08T11:12:27.682301+00:00",
+  "window_shape": [
+    1766,
+    2318
+  ],
+  "native_cell_deg": [
+    0.00833333333333333,
+    0.00833333333333333
+  ],
+  "A_boundary_area_laea_km2": 1622509.5,
+  "B_hwsd_supported_area_km2": 1621202.1,
+  "C_classified_soil_area_km2": 1612385.2,
+  "E_nonsoil_special_area_km2": 8816.9,
+  "F_unmapped_smu_area_km2": 0.0,
+  "unmapped_smu_ids": [],
+  "D_raster_nodata_within_polygon_km2": 1334.4,
+  "reconciliation_B_minus_C_E_F": -0.0,
+  "A_minus_B_km2": 1307.4,
+  "A_minus_B_pct": 0.0806,
+  "note": "A from LAEA polygon; B/C/D/E from latitude-correct WGS84 pixel areas on the native grid (no categorical resampling). A-B reflects coastline/border mismatch between the NE 1:10m vector and the HWSD land mask plus boundary rasterization."
+}

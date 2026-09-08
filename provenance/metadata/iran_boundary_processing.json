@@ -1,0 +1,35 @@
+{
+  "created_utc": "2026-09-08T09:34:51.245442+00:00",
+  "source": "data/raw/natural_earth/ne_10m_admin_0_countries.zip",
+  "source_crs": "EPSG:4326",
+  "selection_field": "ADM0_A3",
+  "selection_value": "IRN",
+  "selection_counts_by_candidate": {
+    "ADM0_A3==IRN": 1,
+    "SOV_A3==IRN": 1,
+    "ISO_A3==IRN": 1,
+    "ADMIN==Iran": 1,
+    "NAME==Iran": 1,
+    "NAME_EN==Iran": 1,
+    "SOVEREIGNT==Iran": 1
+  },
+  "selected_features": 1,
+  "multipolygon_parts": 12,
+  "bounds_4326": {
+    "minx": 44.01486332200011,
+    "miny": 25.059408165000036,
+    "maxx": 63.31962813300004,
+    "maxy": 39.771526998000084
+  },
+  "bbox_plausible": true,
+  "geometry_valid": true,
+  "geodesic_area_km2_wgs84": 1622510.1785523195,
+  "laea_area_km2": 1622509.4956791434,
+  "laea_vs_geodesic_rel_diff_pct": 4.208745098827395e-05,
+  "laea_proj4": "+proj=laea +lat_0=32 +lon_0=53 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs",
+  "laea_wkt": "PROJCRS[\"unknown\",BASEGEOGCRS[\"unknown\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]],ID[\"EPSG\",6326]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8901]]],CONVERSION[\"unknown\",METHOD[\"Lambert Azimuthal Equal Area\",ID[\"EPSG\",9820]],PARAMETER[\"Latitude of natural origin\",32,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8801]],PARAMETER[\"Longitude of natural origin\",53,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8802]],PARAMETER[\"False easting\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8806]],PARAMETER[\"False northing\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8807]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]",
+  "laea_status": "PROVISIONAL_PENDING_BOUNDARY_QA (evaluated here; lock decision recorded in DECISIONS)",
+  "output": "data/processed/boundary/iran_boundary.gpkg",
+  "output_crs": "EPSG:4326 (source CRS preserved; geometry unaltered)",
+  "status": "BOUNDARY_PROCESSED"
+}

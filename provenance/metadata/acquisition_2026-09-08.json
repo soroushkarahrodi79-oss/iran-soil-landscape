@@ -1,0 +1,60 @@
+{
+  "acquisition_event": "iran-soil-landscapes data gate (A+B)",
+  "access_date": "2026-09-08",
+  "download_utc": "2026-09-08T09:13:06Z",
+  "downloader_tool": "curl 8.16.0 (Schannel)",
+  "note": "Official provider sources only. No third-party mirrors. Files under data/raw/ are immutable.",
+  "artifacts": [
+    {
+      "dataset_id": "natural_earth_admin0_10m",
+      "filename": "ne_10m_admin_0_countries.zip",
+      "local_raw_path": "data/raw/natural_earth/ne_10m_admin_0_countries.zip",
+      "acquisition_url": "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_countries.zip",
+      "canonical_landing_page": "https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-0-countries/",
+      "source_authority": "Natural Earth official CDN (naciscdn.org, NACIS). Used because the www.naturalearthdata.com direct download endpoint returned HTTP 500 at access time; naciscdn.org is the same official S3 the .com download buttons redirect to. No GADM/OSM/geoBoundaries substitution.",
+      "bytes": 4930492,
+      "sha256": "ce1ac7036499a0edd641fbc093cd209a98f96a49d2eca8480aaacad35138a7f6",
+      "declared_version": "5.1.1 (from ne_10m_admin_0_countries.VERSION.txt)",
+      "zip_members": [
+        "ne_10m_admin_0_countries.shp", "ne_10m_admin_0_countries.shx",
+        "ne_10m_admin_0_countries.dbf", "ne_10m_admin_0_countries.prj",
+        "ne_10m_admin_0_countries.cpg", "ne_10m_admin_0_countries.VERSION.txt",
+        "ne_10m_admin_0_countries.README.html"
+      ],
+      "prj": "GEOGCS GCS_WGS_1984 / D_WGS_1984 / WGS_1984 (EPSG:4326)"
+    },
+    {
+      "dataset_id": "fao_iiasa_hwsd_v201_raster",
+      "filename": "HWSD2_RASTER.zip",
+      "local_raw_path": "data/raw/hwsd/HWSD2_RASTER.zip",
+      "acquisition_url": "https://s3.eu-west-1.amazonaws.com/data.gaezdev.aws.fao.org/HWSD/HWSD2_RASTER.zip",
+      "source_authority": "FAO/IIASA official S3 bucket linked from the FAO HWSD v2.0 page.",
+      "bytes": 22439811,
+      "sha256": "55612130174f228f48d0691a2e01ab92150617dfd0d6605e65e3619eb5c123d8",
+      "zip_members": ["HWSD2.bil (1866240000 B)", "HWSD2.hdr", "HWSD2.prj", "HWSD2.stx"],
+      "actual_format": "ESRI BIL, LAYOUT=BIL, BYTEORDER=I (LE), NBITS=16 UNSIGNEDINT (UInt16), NROWS=21600, NCOLS=43200, XDIM=YDIM=0.0083333333, ULXMAP=-179.9958333333, ULYMAP=89.9958333333, NODATA=65535, CRS=EPSG:4326 (from HWSD2.hdr/.prj)",
+      "stx_band1_min_max": "min=2.0, max=49830.0 (SMU_ID value range in raster)",
+      "format_note": "The actual downloaded S3 asset is ESRI BIL. The FAO catalog record ff5c613c describes a GeoTIFF/UInt16 distribution; that describes a different (catalog/derived) distribution, not this HWSD2_RASTER.zip asset. Dimensions/UInt16/nodata match; the container is BIL. See DECISIONS D-007 (revised)."
+    },
+    {
+      "dataset_id": "fao_iiasa_hwsd_v201_database",
+      "filename": "HWSD2_DB.zip",
+      "local_raw_path": "data/raw/hwsd/HWSD2_DB.zip",
+      "acquisition_url": "https://s3.eu-west-1.amazonaws.com/data.gaezdev.aws.fao.org/HWSD/HWSD2_DB.zip",
+      "source_authority": "FAO/IIASA official S3 bucket linked from the FAO HWSD v2.0 page.",
+      "bytes": 9304008,
+      "sha256": "6c69e09137a8150f53c8a893fe3e4426d6b5cceb635c00378b54b7d64a9736c0",
+      "zip_members": ["HWSD2.mdb (91594752 B, Microsoft Access)"]
+    },
+    {
+      "dataset_id": "fao_iiasa_hwsd_v201_report",
+      "filename": "HWSD2_technical_report_cc3823en.pdf",
+      "local_raw_path": "data/raw/hwsd/HWSD2_technical_report_cc3823en.pdf",
+      "acquisition_url": "https://www.fao.org/3/cc3823en/cc3823en.pdf",
+      "source_authority": "FAO official document repository (DOI 10.4060/cc3823en).",
+      "bytes": 3008356,
+      "sha256": "62c11398ccde39c1c94903d3a1add053625202d78e14997ad49aade7b9047585",
+      "role": "Authoritative schema/interpretation documentation for HWSD2."
+    }
+  ]
+}

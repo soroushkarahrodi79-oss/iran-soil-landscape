@@ -1,0 +1,17 @@
+soil_group,classification_code,wrb2_project_int,is_soil,area_km2,share_percent,mapping_unit_count,source_classification,notes
+Leptosols,LP,18,True,659880.517,40.7032,30,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Regosols,RG,27,True,302364.673,18.6506,29,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Solonchaks,SC,29,True,300756.924,18.5515,16,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Calcisols,CL,7,True,271696.273,16.7589,25,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Arenosols,AR,4,True,34674.179,2.1388,3,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Cambisols,CM,8,True,23916.347,1.4752,22,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Open Water,WR,35,False,8816.906,0.5438,2,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",non-soil/special class
+Gleysols,GL,13,True,7566.716,0.4667,5,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Technosols,TC,32,True,6798.243,0.4193,1,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Fluvisols,FL,10,True,4293.871,0.2649,5,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Kastanozems,KS,17,True,247.727,0.0153,10,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Gypsisols,GY,14,True,89.574,0.0055,1,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Luvisols,LV,19,True,71.099,0.0044,1,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Histosols,HS,15,True,16.308,0.001,3,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Chernozems,CH,6,True,6.689,0.0004,1,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",
+Acrisols,AC,1,True,6.059,0.0004,1,"WRB 2022 Reference Soil Group (HWSD2 WRB2), dominant component per SMU",

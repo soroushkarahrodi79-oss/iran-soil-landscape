@@ -1,6 +1,6 @@
 # Iran Soil Landscapes
 
-**Status:** FOUNDATION_IN_PROGRESS — source contracts verified; no soil or DEM data have yet been processed.
+**Status:** DATA_GATE_COMPLETE — HWSD v2.01 + Natural Earth acquired, verified, and processed into a dominant WRB-2022 soil-group map of Iran with area QA and a 2D data proof. Terrain (SRTM) remains pending user-authenticated acquisition. Not yet a publication map.
 
 Iran Soil Landscapes is a reproducible geospatial-cartography project to produce a terrain-enhanced depiction of **dominant soil groups in Iran according to the Harmonized World Soil Database (HWSD) v2.01 schema**. The intended publication is a professional LinkedIn and portfolio work. This repository is the source of record for source acquisition, transformations, quality controls, and cartographic outputs.
 
@@ -14,11 +14,15 @@ Every geographic claim must follow: **source data → scripted processing → de
 
 | Dataset | Role | Status |
 | --- | --- | --- |
-| FAO/IIASA HWSD v2.01 | Primary soil mapping units and component database | SOURCE_VERIFIED / DOWNLOAD_PENDING |
-| Natural Earth Admin 0 Countries 1:10m v5.1.1 | National boundary | SOURCE_VERIFIED / DOWNLOAD_PENDING |
+| FAO/IIASA HWSD v2.01 | Primary soil mapping units and component database | DOWNLOADED_VERIFIED / SCHEMA_LOCKED / PROCESSED |
+| Natural Earth Admin 0 Countries 1:10m v5.1.1 | National boundary | DOWNLOADED_VERIFIED / PROCESSED |
 | USGS/NASA SRTMGL1 | Terrain source | SOURCE_VERIFIED / BLOCKED_USER_ACTION (EarthExplorer/Earthdata access) |
 
-The exact URLs, licenses, dates, and open questions are in [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md) and `provenance/manifests/source_manifest.csv`.
+The exact URLs, licenses, dates, and open questions are in [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md) and `provenance/manifests/source_manifest.csv`. Raw SHA-256 checksums are in `provenance/checksums/raw_sha256.txt`; the acquisition record is `provenance/metadata/acquisition_2026-09-08.json`.
+
+## Current result (data proof, not publication)
+
+Dominant WRB-2022 Reference Soil Group of Iran from HWSD v2.01 (rule: `SEQUENCE=1` component per SMU; see [docs/HWSD_SCHEMA.md](docs/HWSD_SCHEMA.md)). Leading classes by area: **Leptosols 40.7 %**, **Regosols 18.7 %**, **Solonchaks 18.6 %**, **Calcisols 16.8 %**. Boundary area 1,622,510 km² (Natural Earth 1:10m), classified soil area 1,612,385 km²; full accounting in `provenance/metadata/area_qa.json`. Proof: `outputs/proof/iran_soils_proof_v01.png` (2D, no terrain/AI). Reproduce with `scripts/` in the numbered pipeline order.
 
 ## Workflow
 
@@ -31,7 +35,20 @@ The exact URLs, licenses, dates, and open questions are in [docs/DATA_SOURCES.md
 
 ## Reproducibility
 
-Create the environment from `environment.yml`, then run the numbered scripts in `scripts/`. Scripts intentionally fail closed when an expected source, schema field, or invariant is missing. See [docs/METHODS.md](docs/METHODS.md) and [docs/QA_PLAN.md](docs/QA_PLAN.md).
+Create the environment from `environment-geospatial.yml` (Miniforge/conda-forge, Python 3.12, env `iran-soil-geospatial`):
+
+```
+conda env create -f environment-geospatial.yml
+```
+
+Then run the numbered pipeline with that environment's interpreter (scripts import `scripts/_geoenv.py`, which points PROJ/GDAL and native DLLs at the env so runs are reproducible without manual activation):
+
+1. `scripts/acquisition/inspect_hwsd_schema.py` — read HWSD2.mdb structure (GDAL/OGR ODBC)
+2. `scripts/processing/preprocess_boundary.py` — extract Iran + CRS QA
+3. `scripts/processing/derive_hwsd_iran.py` — dominant WRB soil group + area QA + tables
+4. `scripts/rendering/render_proof.py` — 2D data proof
+
+Scripts intentionally fail closed when an expected source, schema field, or invariant is missing. See [docs/METHODS.md](docs/METHODS.md) and [docs/QA_PLAN.md](docs/QA_PLAN.md).
 
 ## Layout
 

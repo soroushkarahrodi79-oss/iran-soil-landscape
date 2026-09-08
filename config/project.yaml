@@ -2,16 +2,17 @@ project:
   id: iran-soil-landscapes
   title: Iran Soil Landscapes
   phase: FOUNDATION
-  status: FOUNDATION_IN_PROGRESS
+  status: DATA_GATE_COMPLETE
   access_date: "2026-09-07"
+  acquisition_date: "2026-09-08"
 
 crs:
   source: "EPSG:4326 (WGS 84 geographic coordinates; source datasets retain native CRS)"
   analysis_cartographic:
     name: "Iran-centred Lambert Azimuthal Equal Area"
-    status: PROVISIONAL_PENDING_BOUNDARY_SCALE_QA
+    status: LOCKED
     proj: "+proj=laea +lat_0=32 +lon_0=53 +datum=WGS84 +units=m +no_defs +type=crs"
-    rationale: "A national equal-area CRS centred within Iran is proposed for national area accounting and map layout. It must be instantiated and scale-checked against the extracted boundary before statistics are accepted."
+    rationale: "National equal-area CRS for area accounting. LOCKED 2026-09-08: on the extracted Iran boundary the LAEA area (1,622,509 km2) matches the WGS84 geodesic area (1,622,510 km2) to 4e-5 % — negligible distortion at the national extent. See DECISIONS D-003."
 
 boundary:
   dataset_id: natural_earth_admin0_10m
@@ -23,12 +24,13 @@ soils:
   dataset_id: fao_iiasa_hwsd_v201
   native_resolution: "30 arc-second (~1 km; latitude-dependent ground dimensions)"
   categorical_resampling: nearest
-  proposed_rule:
-    name: dominant_soil_component_by_share
-    status: PENDING_SCHEMA_AND_DATA_VALIDATION
-    description: "For each HWSD2_SMU_ID, select the soil component with ISSOIL=1 and maximum SHARE. If equal maximum shares or no eligible component exist, fail closed and report them. The selected component's WRB 2022 Reference Soil Group is the class. SEQ=1 is retained as a cross-check, not assumed as the rule."
-  class_palette:
-    unknown: "#bdbdbd"
+  rule:
+    name: dominant_soil_by_sequence1
+    status: LOCKED
+    description: "For each HWSD2_SMU_ID, the dominant soil = the SEQUENCE=1 component in HWSD2_LAYERS (LAYER='D1'). Class = that component's WRB2 (WRB 2022 Reference Soil Group), uppercased and resolved via D_WRB2. See config/hwsd_schema.yaml (SCHEMA_LOCKED) and DECISIONS D-008."
+    evidence: "SEQUENCE=1 present for all 29538 SMUs; HWSD2_SMU.WRB2 has 1748 nulls so LAYERS is used. SEQ=1 == max-SHARE in 97.78% (SEQ=1 is the dataset-designated dominant, not recomputed max-share)."
+  non_soil_wrb2_codes: [GG, IS, ND, WR]   # reported separately from soil classes
+  class_palette_file: config/soil_palette.yaml
 
 dem:
   dataset_id: usgs_nasa_srtmgl1

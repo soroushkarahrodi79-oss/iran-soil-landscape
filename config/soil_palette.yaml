@@ -1,0 +1,42 @@
+# Deterministic class-to-colour mapping for HWSD2 WRB-2022 Reference Soil Groups.
+# Keyed by the D_WRB2 CODE. Stored in configuration (not in any GUI project) so
+# the proof/rendering is reproducible. Non-soil/special codes at the bottom.
+# Colours are a curated qualitative palette; edit here to restyle deterministically.
+wrb2_rsg_colours:
+  AC: "#C1440E"   # Acrisols
+  AL: "#A83210"   # Alisols
+  AN: "#3B2F2F"   # Andosols
+  AR: "#EDD59E"   # Arenosols
+  AT: "#8C6D4F"   # Anthrosols
+  CH: "#2B2B2B"   # Chernozems
+  CL: "#E9DC9B"   # Calcisols
+  CM: "#B5834A"   # Cambisols
+  CR: "#B7D7E8"   # Cryosols
+  FL: "#79A86B"   # Fluvisols
+  FR: "#D1490E"   # Ferralsols
+  GL: "#7FA9AE"   # Gleysols
+  GY: "#E7C9E0"   # Gypsisols
+  HS: "#5B3A29"   # Histosols
+  KS: "#B5651D"   # Kastanozems
+  LP: "#A9A18C"   # Leptosols
+  LV: "#C98A3B"   # Luvisols
+  LX: "#D98E5A"   # Lixisols
+  NT: "#B03A2E"   # Nitisols
+  PH: "#4A3C2A"   # Phaeozems
+  PL: "#9DB4C0"   # Planosols
+  PT: "#C0603A"   # Plinthosols
+  PZ: "#8E7CC3"   # Podzols
+  RG: "#D9C7A3"   # Regosols
+  RT: "#A9746E"   # Retisols
+  SC: "#E3B9D6"   # Solonchaks
+  SN: "#C99BC0"   # Solonetz
+  ST: "#8FA9B8"   # Stagnosols
+  TC: "#7F7F7F"   # Technosols
+  UM: "#4D4030"   # Umbrisols
+  VR: "#3F3F3F"   # Vertisols
+  # non-soil / special
+  GG: "#E8F4F8"   # Glaciers
+  IS: "#F0EAD6"   # Islands
+  ND: "#D0D0D0"   # No Data
+  WR: "#4E79A7"   # Open Water
+background: "#FFFFFF"
