@@ -53,19 +53,19 @@ def main() -> None:
                 tiles.append((tile_name(lat, lon), lat, lon))
     tiles.sort()
 
+    # Current official LP DAAC Earthdata Cloud distribution (the legacy Data Pool
+    # host e4ftl01.cr.usgs.gov is deprecated). Pattern confirmed from the Earthdata
+    # forum: .../SRTMGL3.003/{TILE}.SRTMGL3.hgt/{TILE}.SRTMGL3.hgt.zip
+    BASE = "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL3.003"
     CSV.parent.mkdir(parents=True, exist_ok=True)
     with CSV.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["tile_id", "sw_lat", "sw_lon",
-                    "gl3_file", "gl1_file",
-                    "gl3_dir_url", "status"])
+        w.writerow(["tile_id", "sw_lat", "sw_lon", "product", "version",
+                    "official_download_url", "status", "bytes", "sha256"])
         for name, lat, lon in tiles:
-            w.writerow([
-                name, lat, lon,
-                f"{name}.SRTMGL3.hgt.zip", f"{name}.SRTMGL1.hgt.zip",
-                "https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/2000.02.11/",
-                "PLANNED_BLOCKED_USER_AUTH",
-            ])
+            url = f"{BASE}/{name}.SRTMGL3.hgt/{name}.SRTMGL3.hgt.zip"
+            w.writerow([name, lat, lon, "SRTMGL3", "003", url,
+                        "PLANNED_BLOCKED_USER_AUTH", "", ""])
 
     n = len(tiles)
     est = {

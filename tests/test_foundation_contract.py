@@ -115,3 +115,36 @@ def test_area_reconciliation_holds():
     assert abs(qa["reconciliation_B_minus_C_E_F"]) < 1.0
     assert abs(qa["A_minus_B_pct"]) < 2.0, qa["A_minus_B_pct"]
     assert qa["F_unmapped_smu_area_km2"] == 0.0
+
+
+# --- Terrain-precheck / credential-safety invariants ---
+import subprocess  # noqa: E402
+
+SRTM_TILES = ROOT / "provenance/manifests/srtm_tiles_iran.csv"
+
+
+def test_no_credential_files_are_git_tracked():
+    tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+    bad = [f for f in tracked if any(tok in f.lower()
+           for tok in ("netrc", ".urs_cookies", ".edl_token", "credential", ".env"))
+           and not f.endswith(".gitignore")]
+    assert not bad, f"credential-bearing files are tracked: {bad}"
+
+
+def test_gitignore_protects_credentials():
+    for rel in ("_netrc", ".netrc", ".urs_cookies", ".env"):
+        out = subprocess.run(["git", "check-ignore", rel], cwd=ROOT, capture_output=True, text=True)
+        assert out.stdout.strip() == rel, f"{rel} is not gitignored"
+
+
+def test_srtm_tile_manifest_coverage_and_official_endpoint():
+    if not SRTM_TILES.exists():
+        pytest.skip("srtm tile manifest not generated")
+    rows = list(csv.DictReader(SRTM_TILES.open(encoding="utf-8")))
+    assert len(rows) == 198, f"expected 198 Iran tiles, got {len(rows)}"
+    for r in rows:
+        assert r["product"] == "SRTMGL3" and r["version"] == "003"
+        assert r["official_download_url"].startswith(
+            "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL3.003/")
+        # legacy deprecated host must not reappear
+        assert "e4ftl01.cr.usgs.gov" not in r["official_download_url"]

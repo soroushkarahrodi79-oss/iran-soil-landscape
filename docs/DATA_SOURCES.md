@@ -37,8 +37,8 @@ Natural Earth describes this theme as WGS 84 geographic data and as a de facto c
 | Vertical datum | EGM96 geoid; elevation in **metres** |
 | NoData | `-32768` |
 | Tile convention | SW-corner name, e.g. `N25E044` (all Iran = N/E) |
-| Distributor | NASA LP DAAC via Earthdata (`https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/`, `https://search.earthdata.nasa.gov/`) |
-| Access mechanism | **Earthdata Login required** (authenticated HTTPS / `.netrc` / bearer token) |
+| Distributor | NASA LP DAAC **Earthdata Cloud** — `https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL3.003/{TILE}.SRTMGL3.hgt/{TILE}.SRTMGL3.hgt.zip` (collection `C2763264762-LPCLOUD`; Earthdata Search `https://search.earthdata.nasa.gov/`). The legacy Data Pool host `e4ftl01.cr.usgs.gov` is **deprecated** for SRTM (migrated to Earthdata Cloud, 2026-09-08 confirmation). |
+| Access mechanism | **Earthdata Login required** (`.netrc` for `urs.earthdata.nasa.gov` + cookie jar, or `EARTHDATA_TOKEN` bearer). Verified 2026-09-08: an unauthenticated GET returns "HTTP Basic: Access denied", so downloads fail closed without credentials. |
 | Licence | U.S. Government work, public domain; cite NASA/USGS |
 | Iran tile set | **198** tiles intersecting the boundary (`provenance/manifests/srtm_tiles_iran.csv`) |
 

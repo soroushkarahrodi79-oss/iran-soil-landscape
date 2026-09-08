@@ -23,7 +23,16 @@ __pycache__/
 .venv/
 env/
 
-# Local acquisition credentials and temporary archives
+# Local acquisition credentials and temporary archives — NEVER commit
 .netrc
+_netrc
+*.netrc
+.urs_cookies
+.dodsrc
+.edl_token
+*.token
+.env
+.env.*
+*credentials*
 *.part
 *.tmp
