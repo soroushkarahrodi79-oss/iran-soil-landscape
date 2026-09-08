@@ -79,3 +79,38 @@ Three environment-specific issues were found and worked around **without changin
 ## D-010 — Area accounting method (2026-09-08)
 
 **Decision:** Compute national area statistics on the **native EPSG:4326 grid using latitude-correct WGS84 cell areas** (no categorical resampling), and the boundary area in the locked LAEA. Reconciliation A ≈ B + D and B = C + E + F held: A=1,622,509.5, B=1,621,202.1, C(soil)=1,612,385.2, E(non-soil)=8,816.9, F(unmapped)=0.0, D(nodata in polygon)=1,334.4 km²; A−B=1,307 km² (0.081 %) explained by the NE 1:10m coastline/border vs HWSD land-mask mismatch. No value was forced to a remembered national area.
+
+## D-011 — National source DEM = SRTMGL3 (~90 m), not SRTMGL1 (~30 m) (2026-09-08)
+
+**Decision:** Use **NASA/USGS SRTMGL3 v003 (~90 m, 3 arc-second)** as the national SOURCE_DEM for the terrain-enhanced poster. Reserve SRTMGL1 (~30 m) for possible future detail/inset work only.
+
+**Evidence (`provenance/metadata/srtm_storage_estimate.json`, `scripts/acquisition/plan_srtm_tiles.py`):**
+- Iran intersects **198** 1°×1° tiles (of 300 in the full rectangle).
+- **GL3 (~90 m):** ~571 MB extracted / ~314 MB download. With mosaic/reproject/clip transients, peak ≲ ~1.5–2 GB.
+- **GL1 (~30 m):** ~5,135 MB extracted / ~2.8 GB download; peak with transients ≳ ~10 GB — **exceeds the ~4.9 GB free disk** (D-Storage).
+- **Publication adequacy:** the master is ~6,000–9,000 px across ~1,900 km → ground sampling ≈ 210–320 m/px. 90 m is ~2.5–3× finer than the render grid; 30 m would merely be downsampled away. 90 m is scientifically and visually adequate at national scale.
+
+**Rejected alternative:** SRTMGL1 for the national base — rejected on storage (would risk exhausting the disk) with no visible benefit at poster scale.
+
+**Reproducibility caveat:** SRTMGL3 v003 is void-filled/aggregated from SRTMGL1 by the provider; it is a distinct official product, not a resample we perform. Provenance recorded per D-Terrain-Contract.
+
+## D-Storage — Storage gate before any terrain download (2026-09-08)
+
+**MINIMUM_SAFE_FREE_SPACE = 3.0 GB** for the GL3 (~90 m) workflow (peak transient ≈ 1.5–2 GB + margin). Current free ≈ 4.9 GB → **adequate for GL3, inadequate for GL1**. Policy: prefer VRT/streaming mosaics; delete reproducible intermediates (extracted `.hgt`, VRT, full-bbox reprojected DEM) after the clipped DEM is written; **never** delete immutable `data/raw/` provenance without an explicit policy change. Re-check free space immediately before acquisition.
+
+## D-012 — Water representation: HWSD accounting vs cartographic hydrology (2026-09-08)
+
+**Decision:** Keep HWSD `WR` "Open Water" as a **non-soil accounting class only** (it is HWSD's land-mask category, not a hydrographic layer). For final cartography, use a **separate authoritative water/coastline source** — **Natural Earth 10m physical** (`ne_10m_ocean`, `ne_10m_lakes`; same provider/scale as the boundary) — for the Caspian Sea, Persian Gulf, Gulf of Oman, Lake Urmia, and major inland water. **Never** inject contemporary hydrology into the HWSD soil raster. Water-body **labels** ("Persian Gulf" per D-006) remain separate from geometry. NE physical layers are acquired in the render gate, not here.
+
+## D-013 — Render-resolution strategy (SOURCE ≠ RENDER) (2026-09-08)
+
+**Decision:** Three distinct artifacts, documented separately:
+- **SOURCE_DEM** — SRTMGL3 tiles as downloaded, traceable to NASA/USGS (immutable in `data/raw/srtm/`).
+- **PROCESSING_DEM** — mosaicked, reprojected, clipped to the Iran boundary; provenance recorded.
+- **RENDER_HEIGHTMAP** — resampled (bilinear, **downsample only**) to the render grid (target ≈ master px dimension, e.g. ~6,000–8,000 across), deterministic and documented.
+
+The project will **not** claim the render retains every native SRTM sample, and will not create a Blender vertex per native cell. Vertical exaggeration (future) will be a disclosed numeric factor. Terrain has exactly one role: **topographic context**; it never alters soil classification.
+
+## D-014 — Soil-truth freeze (2026-09-08)
+
+The four soil-truth products are frozen as immutable unless a documented defect is found: `iran_hwsd_mapping_units.tif`, `iran_dominant_soil_group.tif`, `soil_groups_iran.csv`, `iran_boundary.gpkg`. SHA-256 recorded in `provenance/checksums/soil_truth_frozen_2026-09-08.txt`; reproducible checkpoint tagged `data-gate-v1` at commit `df8cd5f`. No cosmetic alteration of soil geography is permitted.

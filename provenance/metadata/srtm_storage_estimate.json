@@ -1,0 +1,29 @@
+{
+  "boundary_bounds_4326": [
+    44.01486332200011,
+    25.059408165000036,
+    63.31962813300004,
+    39.771526998000084
+  ],
+  "tile_grid_lon_range": [
+    44,
+    63
+  ],
+  "tile_grid_lat_range": [
+    25,
+    39
+  ],
+  "candidate_full_rectangle_tiles": 300,
+  "tiles_intersecting_iran": 198,
+  "srtmgl3_90m": {
+    "extracted_bytes_per_tile": 2884802,
+    "extracted_total_mb": 571.2,
+    "approx_zip_download_mb": 314.2
+  },
+  "srtmgl1_30m": {
+    "extracted_bytes_per_tile": 25934402,
+    "extracted_total_mb": 5135.0,
+    "approx_zip_download_mb": 2824.3
+  },
+  "note": "Extracted .hgt sizes are exact (int16); zip sizes are ~0.55x heuristics. Mosaic/reproject/clip add transient copies of similar magnitude to the extracted total."
+}

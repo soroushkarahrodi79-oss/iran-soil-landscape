@@ -37,6 +37,27 @@ No field is used for derivation unless it is confirmed present in **MDB**. **DOC
 - DOC establishes dominant = `SEQ = 1` (also the maximum `SHARE`). This will be **verified in MDB**: that `SEQ=1` exists for every SMU and coincides with max `SHARE`; ties/missing handled fail-closed.
 - DOC limitation to carry into LIMITATIONS: *"Relying on dominant soils within soil associations only, may lead to misleading results"* — a dominant-soil map is a deliberate simplification of a soil-association database.
 
+### 4a. `SEQUENCE=1` evidence audit (graded)
+
+The rule "`SEQUENCE=1` = dataset-designated dominant" rests on evidence graded by strength, kept separate as required by the terrain-precheck gate:
+
+**A — Directly documented for HWSD v2.0 / v2.01** (technical report cc3823en, the v2.0 report that accompanies the v2.01 dataset; §2.3.2, verbatim):
+> "SEQ (Sequence within the mapping unit): the sequence in which soil units within the soil mapping unit are presented (in order of percentage share). **The dominant soil has sequence 1.** The sequence can range between 1 and 12."
+This explicitly defines the dominant as sequence 1 for this dataset generation.
+
+**B — Directly observed in the v2.01 MDB** (`provenance/metadata/hwsd_mdb_report.json` + cross-check):
+- The field is named **`SEQUENCE`** in `HWSD2_LAYERS` (the report calls it `SEQ`); values range 1–12.
+- A `SEQUENCE=1` row exists for **all 29,538** SMUs (0 missing).
+- `SEQUENCE=1` coincides with the maximum-`SHARE` component in **97.78 %** of SMUs (28,883 / 29,538).
+
+**C — Inherited from older HWSD documentation:** *not relied upon.* The definition above is taken from the v2.0 report itself, not from the HWSD v1.x manual. No older-manual statement is cited as if it were v2.01.
+
+**D — Project interpretation (declared):**
+1. We equate the report's `SEQ` with the MDB's `SEQUENCE` field (naming differs; identity is near-certain from the shared definition and 1–12 range, but it is an interpretation).
+2. Where the report's two clauses diverge — "in order of percentage share" vs "the dominant soil has sequence 1" — the observed 2.22 % of SMUs whose `SEQUENCE=1` is **not** the strict max-`SHARE` component show the "ordered by share" clause is a general description, not a strict invariant. We follow the **explicit definitional clause** ("dominant = sequence 1"), i.e. the dataset's own designation, rather than recomputing max-share. This is a documented interpretation, not a documented HWSD fact.
+
+**Conclusion:** the contract is supported by direct v2.01-generation documentation (A) and complete observation (B); the only judgement (D) is resolving an internal doc tension in favour of the explicit "dominant = sequence 1" statement. No change to the schema contract is warranted.
+
 ## 5. Non-soil / water handling (to confirm in MDB)
 
 Some mapping units represent non-soil (water bodies, glaciers, rock, dunes, urban). Whether a dedicated flag (e.g. an `ISSOIL`-type field) exists, and how water/`SHARE=0`/`nodata` are encoded, is **confirmed from MDB** before any class counting. Nodata (65535) in the raster is excluded from classified area.

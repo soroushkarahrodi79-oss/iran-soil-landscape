@@ -17,7 +17,7 @@ def test_source_manifest_has_required_columns():
         rows = list(reader)
     assert {row["dataset_id"] for row in rows} >= {
         "fao_iiasa_hwsd_v201_raster", "fao_iiasa_hwsd_v201_database",
-        "natural_earth_admin0_10m", "usgs_nasa_srtmgl1",
+        "natural_earth_admin0_10m", "usgs_nasa_srtmgl3",
     }
 
 

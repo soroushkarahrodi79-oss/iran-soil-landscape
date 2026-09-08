@@ -23,17 +23,26 @@ Required citation: *FAO & IIASA. Harmonized World Soil Database version 2.01. Ro
 
 Natural Earth describes this theme as WGS 84 geographic data and as a de facto country representation. The extraction criterion is exactly `ADM0_A3 == "IRN"`; no geometry will be redrawn, dissolved with a different source, or manually edited. Natural Earth says its data are public domain; the map should still credit “Made with Natural Earth” as good scholarly practice. The project uses its country polygon only, not a political claim beyond the provider’s representation.
 
-## Terrain — SOURCE_VERIFIED / BLOCKED_USER_ACTION
+## Terrain — SOURCE SELECTED / BLOCKED_USER_AUTH
 
-The selected terrain source is **USGS/NASA SRTMGL1, 1 Arc-Second Global**, acquired through USGS EarthExplorer or NASA Earthdata Search. USGS's SRTM collection page identifies 1-arc-second global data and EarthExplorer as an official acquisition route. SRTMGL1 tiles are 1° × 1°, 3601 × 3601 samples, WGS 84 horizontal datum, elevations in metres relative to EGM96. Product documentation says that non-void-filled data use `-32768` for voids; the chosen product/void treatment must be written to the run metadata before processing.
+**Selected national SOURCE_DEM: NASA/USGS SRTMGL3 v003 (~90 m, 3 arc-second)** — chosen over SRTMGL1 (~30 m) on storage/adequacy grounds (DECISIONS D-011); 30 m is reserved for possible future insets. Terrain's only role is **topographic context**; it never modifies soil classification (D-013).
 
-Official entry points:
+### Terrain scientific contract (SRTMGL3 v003)
 
-- `https://www.usgs.gov/centers/eros/science/usgs-eros-archive-digital-elevation-shuttle-radar-topography-mission-srtm`
-- `https://earthexplorer.usgs.gov/`
-- `https://search.earthdata.nasa.gov/`
+| Attribute | Value |
+| --- | --- |
+| Product / version | NASA Shuttle Radar Topography Mission Global 3 arc-second, **SRTMGL3.003** (NASADEM-adjacent SRTM release, void-filled) |
+| Native resolution | 3 arc-second (~90 m at equator); tiles 1°×1°, **1201 × 1201** samples |
+| Horizontal datum / CRS | WGS 84, EPSG:4326 |
+| Vertical datum | EGM96 geoid; elevation in **metres** |
+| NoData | `-32768` |
+| Tile convention | SW-corner name, e.g. `N25E044` (all Iran = N/E) |
+| Distributor | NASA LP DAAC via Earthdata (`https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/`, `https://search.earthdata.nasa.gov/`) |
+| Access mechanism | **Earthdata Login required** (authenticated HTTPS / `.netrc` / bearer token) |
+| Licence | U.S. Government work, public domain; cite NASA/USGS |
+| Iran tile set | **198** tiles intersecting the boundary (`provenance/manifests/srtm_tiles_iran.csv`) |
 
-Download requires the user's registered access path; no credentials are present in this workspace and the project will not bypass authentication, scrape a session, or substitute a third-party mirror. USGS data are generally U.S. public-domain works; cite USGS/NASA and retain product provenance regardless.
+Acquisition requires the user's Earthdata credentials; the project will not bypass authentication, scrape a session, or substitute a third-party mirror. See `docs/DECISIONS.md` D-011/D-Storage and the acquisition manifest.
 
 ## Secondary validation sources — NOT A SPATIAL OVERRIDE
 
