@@ -194,3 +194,30 @@ not a LinkedIn asset and no 6K/8K publication render was made.
   invents soils that exist in no class.
 - **Committing the `.blend` (214 MB) or the Blender build (~1.2 GB)**: rejected — both are
   regenerable; the scripts are the source of truth.
+
+---
+
+## Final selection: 2× (supersedes the 3× measurement for publication)
+
+The publication gate locks **2× vertical exaggeration**, overriding the 3× that the
+prototype rule selected. Recorded reasoning:
+
+- The measured difference is marginal. Relief contrast is 0.0590 at 2× against 0.0838 at
+  3×, and 2× missed the pre-declared visibility threshold of 0.060 by **0.001** — under 2%
+  of the threshold value. The prototype record already flagged this as effectively a tie.
+- **Lower exaggeration is the scientifically conservative choice.** Exaggeration is a
+  deliberate geometric distortion of real elevation; where two options are near-equivalent
+  in readability, the one that distorts the terrain less is preferred.
+- Shadow burden at 2× is 0.0001 against 0.0016 at 3× — an order of magnitude less soil
+  colour lost to shade, which matters because soil, not terrain, is the subject.
+- **3× remains a documented, valid visual alternative**, retained in
+  `exaggeration_test_topdown.png` and in the table above. This is a preference between two
+  defensible options, not a correction of an error.
+
+The `.blend`, the poster map renders and `selected_prototype_2x_topdown.png` are all at 2×.
+
+**Note on palette:** the prototype images above use the *prototype* palette. The final
+palette was revised after measurement in the publication gate (see `FINAL_CARTOGRAPHY.md`);
+`selected_prototype_2x_topdown.png` carries the final palette. The exaggeration and lighting
+measurements are unaffected: shading is computed as a ratio of the render to its own flat
+palette, so it is a property of geometry and light, not of the colours chosen.

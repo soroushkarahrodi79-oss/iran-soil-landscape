@@ -43,6 +43,13 @@ cameras:
     tilt_deg: 55                    # from vertical; viewer to the south looking north
     resolution: [2500, 1500]
     ortho_margin: 1.02
+  idpass:
+    # Registration test camera: one render pixel per render-grid cell, no margin, width
+    # pinned to the sensor so the mapping is exact rather than inferred.
+    tilt_deg: 0
+    resolution: [4096, 3714]
+    ortho_margin: 1.0
+    sensor_fit: HORIZONTAL
 
 render:
   engine: CYCLES                    # physically-based; EEVEE headless falls back to software GL here

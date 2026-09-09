@@ -45,3 +45,63 @@ Visual inspiration may acknowledge “Hemed Lungo’s terrain-enhanced geospatia
 ## Geopolitical/label policy
 
 Use the selected Natural Earth geometry consistently. No international boundary editing is permitted. Labels remain separate from source geometry. Use “Persian Gulf” for the relevant water label unless a future source/licensing constraint requires a documented alternative.
+
+---
+
+# Published asset (publication gate, base `74b435c`)
+
+## Final title
+
+**SOIL LANDSCAPES OF IRAN**
+*Terrain, climate and the geography beneath our feet*
+
+Supersedes the earlier working title. Meaning unchanged; only capitalisation was set.
+
+## Assets
+
+| Asset | File | Notes |
+| --- | --- | --- |
+| Archival master | `outputs/master/iran_soil_landscapes_6000x7500.png` | lossless PNG, 4:5, 22.3 MB |
+| Vector composition | `…6000x7500.pdf` / `.svg` | live text, map embedded as raster |
+| LinkedIn derivative | `outputs/linkedin/iran_soil_landscapes_linkedin_2160x2700.png` | Lanczos downsample of the master, 3.01 MB |
+
+All are gitignored: they are regenerable from the scripts, and the repository stores the
+method rather than the product.
+
+**Before posting, re-check LinkedIn's current image size/format limits.** The 5 MB budget
+used here is a conservative working figure, not a verified current platform limit.
+
+## Allowed framing
+
+> Terrain-enhanced cartographic visualization of dominant HWSD v2.01 soil groups across Iran.
+
+Do **not** describe it as a high-resolution soil map, a 30 m soil map, a field-validated or
+national soil survey, a real-time map, or as giving the precise soil at any point. The
+`test_publication_claim_ceiling_is_not_breached` test guards the wording in the repository;
+it cannot guard what is typed into a post.
+
+## Suggested post copy
+
+> **Soil Landscapes of Iran**
+> Every colour is the dominant soil group of a HWSD v2.01 mapping unit — the most extensive
+> soil in a unit that usually contains several, not the soil under any one field. Terrain is
+> SRTMGL3 shaded relief at 2× vertical exaggeration, used as context: it never changes a
+> soil class, and the finer terrain detail does not make the soil data finer than its native
+> ~1 km.
+>
+> Leptosols cover 40.7% of the country — thin soils over rock, tracing the Zagros and Alborz.
+> Solonchaks (18.6%) fill the closed central basins, where salts have nowhere to drain.
+>
+> Soils: FAO & IIASA, Harmonized World Soil Database v2.01 (CC BY-NC-SA 4.0).
+> Terrain: NASA/USGS SRTMGL3.003. Boundary and water: Natural Earth.
+> Projection: Lambert azimuthal equal-area. Map released under CC BY-NC-SA 4.0.
+>
+> Visual inspiration: Hemed Lungo's terrain-enhanced geospatial cartography — inspiration
+> only, with no affiliation, collaboration or endorsement implied.
+
+## Non-commercial reminder
+
+HWSD v2.01 is CC BY-NC-SA 4.0, so the ShareAlike notice must stay on the asset and the post
+must stay non-commercial: no boosted/sponsored placement, no paywall, no "hire me" framing
+on the asset itself. For anything commercial, contact FAO (copyright@fao.org) first. This is
+a practical summary, not legal advice.

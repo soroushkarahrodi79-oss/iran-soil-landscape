@@ -43,8 +43,9 @@ def blender_exe() -> Path:
     return exe
 
 
-def render_list(cfg: dict, which: str, selected: int,
-                percentage: int = 25, samples: int = 16) -> tuple[list[dict], int]:
+def render_list(cfg: dict, which: str, selected: int, percentage: int = 25,
+                samples: int = 16, map_size: tuple[int, int] = (2500, 2267)
+                ) -> tuple[list[dict], int]:
     lig = cfg["lighting"]
     az, el = lig["sun_azimuth_deg"], lig["sun_elevation_deg"]
     if which == "smoke":
@@ -59,6 +60,14 @@ def render_list(cfg: dict, which: str, selected: int,
             for cam in ("topdown", "oblique"):
                 renders.append({"name": f"iran_3d_{k}x_{cam}", "camera": cam, "exaggeration": k,
                                 "sun_azimuth_deg": az, "sun_elevation_deg": el})
+    if which == "final":                           # publication map render, one frame
+        return ([{"name": f"iran_map_2x_topdown_{map_size[0]}x{map_size[1]}",
+                  "camera": "poster", "exaggeration": selected,
+                  "sun_azimuth_deg": az, "sun_elevation_deg": el}], selected)
+    if which == "idpass":                          # UNSHADED_CLASS_ID_PASS
+        return ([{"name": "iran_class_id_pass", "camera": "idpass", "exaggeration": selected,
+                  "sun_azimuth_deg": az, "sun_elevation_deg": el,
+                  "unlit": True, "samples": 1}], selected)
     if which in ("lighting", "full"):              # LIGHTING_TEST at the SELECTED exaggeration
         for v in lig["variants"]:
             renders.append({"name": f"iran_3d_light_{v['name']}_{selected}x_topdown",
@@ -70,19 +79,26 @@ def render_list(cfg: dict, which: str, selected: int,
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", dest="which",
-                    choices=("smoke", "exaggeration", "lighting", "full"), default="smoke")
+                    choices=("smoke", "exaggeration", "lighting", "idpass", "final", "full"),
+                    default="smoke")
     ap.add_argument("--selected-exaggeration", type=int, default=2,
                     help="exaggeration used for the lighting test and saved in the .blend")
     ap.add_argument("--only", default=None,
                     help="render only frames whose name contains this substring (resume a set)")
+    ap.add_argument("--map-size", default="2500x2267",
+                    help="final set: map render size WxH (framing is identical at any size)")
     ap.add_argument("--percentage", type=int, default=25, help="smoke set: resolution percentage")
     ap.add_argument("--samples", type=int, default=16, help="smoke set: Cycles samples")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(CFG.read_text(encoding="utf-8"))
     meta = json.loads((BLENDER_DIR / "blender_inputs.json").read_text(encoding="utf-8"))
+    map_size = tuple(int(v) for v in args.map_size.lower().split("x"))
+    # The poster camera is the accepted top-down camera at a different pixel count; the
+    # ortho framing is resolution-independent, so proof, QA and master frame identically.
+    cfg["cameras"]["poster"] = dict(cfg["cameras"]["topdown"], resolution=list(map_size))
     renders, selected = render_list(cfg, args.which, args.selected_exaggeration,
-                                    args.percentage, args.samples)
+                                    args.percentage, args.samples, map_size)
     if args.only:
         renders = [r for r in renders if args.only in r["name"]]
         if not renders:
@@ -93,6 +109,7 @@ def main() -> None:
         "elev_npy": str(BLENDER_DIR / "elev_mesh.npy"),
         "basecolor_png": str(BLENDER_DIR / "iran_render_basecolor.png"),
         "water_png": str(ROOT / "data/processed/render/iran_water_mask.png"),
+        "class_id_png": str(BLENDER_DIR / "iran_class_id_texture.png"),
         "inputs_meta": meta,
         "surface": cfg["surface"],
         "lighting": cfg["lighting"],

@@ -54,3 +54,40 @@ Once the user has acquired SRTMGL1 tiles through EarthExplorer/Earthdata:
 ## Proof rendering
 
 The first proof is a deliberately plain 2D QA image: extracted boundary, derived classes only, deterministic palette, simple legend/title, source note, and CRS note. No terrain shading, texture, Blender, AI imagery, or decorative effects are permitted. The proof must be regenerated from `project.yaml` and the processed data.
+
+## Terrain (as executed — supersedes the deferred plan above)
+
+SRTM**GL3 (~90 m)** was selected and acquired, not GL1 (see DECISIONS D-011). Tiles were
+preserved and hashed, mosaicked, warped to the analysis CRS, and frozen as
+`data/processed/dem/iran_dem_90m.tif` (`provenance/checksums/dem_frozen_2026-09-09.txt`).
+
+## Final publication cartography
+
+1. **Render substrate.** `build_render_substrate.py` puts every layer on one LAEA grid
+   (4096 × 3714, ~438 m/px): heightmap (bilinear from the frozen DEM), soil IDs (**nearest**
+   only), soil texture from `config/soil_palette.yaml`, and Natural Earth water. Scientific
+   rasters are never modified.
+2. **Blender inputs.** `prepare_blender_inputs.py` decimates elevation to the mesh grid
+   (1536 × 1393, ~1.17 km posting) and composites a display basecolor plus a class-ID
+   texture. The geospatial stack stays on this side; Blender receives arrays and images
+   already on the frozen grid, so no reprojection occurs inside the renderer.
+3. **Scene.** `blender_build_scene.py` builds the whole scene by script: one mesh vertex per
+   heightmap sample (asserted), UVs derived from geometry, orthographic camera, sun at
+   40° NW, neutral ambient, Cycles, **Standard** view transform, **Closest** texture
+   sampling. Vertical exaggeration is applied as object z-scale; real metres are never
+   rescaled in the data.
+4. **Registration proof.** The scene is re-rendered unlit, as pure emission of the class-ID
+   texture at one render pixel per grid cell (1 sample, box filter, no denoise), and decoded
+   back to the source raster through the camera's own geometry. This separates geometric
+   registration from shaded readability instead of conflating them.
+5. **Composition.** `build_poster.py` composes title, legend, labels, scale, north
+   indicator, explanation and attribution as real text outside the renderer, exporting
+   vector PDF/SVG beside the raster. Layout is fixed at 20 × 25 in; only dpi varies, so the
+   proof, QA and master renders are the same composition.
+6. **Map furniture is derived, not imitated.** `build_map_furniture.py` measures the
+   projection's distance distortion before a scale bar is allowed, measures grid
+   convergence before a north arrow is allowed, and verifies every label against the
+   project's own rasters. The poster build aborts if a label fails.
+
+Render sequence is always proof (2500 px) → QA (4000 px) → master, never straight to the
+largest output.

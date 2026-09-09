@@ -6,32 +6,32 @@ wrb2_rsg_colours:
   AC: "#C1440E"   # Acrisols
   AL: "#A83210"   # Alisols
   AN: "#3B2F2F"   # Andosols
-  AR: "#EDD59E"   # Arenosols
+  AR: "#E3B15A"     # Arenosols
   AT: "#8C6D4F"   # Anthrosols
   CH: "#2B2B2B"   # Chernozems
-  CL: "#E9DC9B"   # Calcisols
-  CM: "#B5834A"   # Cambisols
+  CL: "#F2E8C6"     # Calcisols
+  CM: "#9A6234"     # Cambisols
   CR: "#B7D7E8"   # Cryosols
-  FL: "#79A86B"   # Fluvisols
+  FL: "#2E8B6B"     # Fluvisols
   FR: "#D1490E"   # Ferralsols
   GL: "#7FA9AE"   # Gleysols
   GY: "#E7C9E0"   # Gypsisols
   HS: "#5B3A29"   # Histosols
   KS: "#B5651D"   # Kastanozems
-  LP: "#A9A18C"   # Leptosols
-  LV: "#C98A3B"   # Luvisols
+  LP: "#8B8A83"     # Leptosols
+  LV: "#8B4726"     # Luvisols
   LX: "#D98E5A"   # Lixisols
   NT: "#B03A2E"   # Nitisols
   PH: "#4A3C2A"   # Phaeozems
   PL: "#9DB4C0"   # Planosols
   PT: "#C0603A"   # Plinthosols
   PZ: "#8E7CC3"   # Podzols
-  RG: "#D9C7A3"   # Regosols
+  RG: "#C0A176"     # Regosols
   RT: "#A9746E"   # Retisols
   SC: "#E3B9D6"   # Solonchaks
   SN: "#C99BC0"   # Solonetz
   ST: "#8FA9B8"   # Stagnosols
-  TC: "#7F7F7F"   # Technosols
+  TC: "#6B4F63"     # Technosols
   UM: "#4D4030"   # Umbrisols
   VR: "#3F3F3F"   # Vertisols
   # non-soil / special

@@ -82,6 +82,8 @@ def test_downloaded_rows_have_checksums():
 
 # --- Scientific-invariant tests over the derived products (skip cleanly if not yet run) ---
 import json  # noqa: E402
+import re  # noqa: E402
+import sys  # noqa: E402
 import pytest  # noqa: E402
 
 SOIL_CSV = ROOT / "data/processed/tables/soil_groups_iran.csv"
@@ -281,6 +283,93 @@ def test_render_still_shows_the_soil_class_the_substrate_says():
     if reg is None:
         pytest.skip("selected render absent")
     assert reg["class_agreement"] >= 0.99, reg
+
+
+# --- Publication cartography invariants ---
+IDPASS_QA = ROOT / "provenance/metadata/registration_idpass_qa.json"
+PALETTE_QA = ROOT / "provenance/metadata/palette_final_qa.json"
+FURNITURE_QA = ROOT / "provenance/metadata/map_furniture_qa.json"
+POSTER_SCRIPT = ROOT / "scripts/rendering/build_poster.py"
+
+
+def test_unshaded_id_pass_shows_no_geometric_offset():
+    # Geometry must be proven without lighting: a shaded score cannot stand in for this.
+    if not IDPASS_QA.exists():
+        pytest.skip("ID pass not run")
+    a = json.loads(IDPASS_QA.read_text(encoding="utf-8"))["A_geometric_registration"]
+    assert a["zero_offset_is_best"], f"registration offset detected: {a['best_offset_dy_dx']}"
+    assert a["best_offset_dy_dx"] == [0, 0]
+    assert a["exact_class_agreement"] >= 0.999, a["exact_class_agreement"]
+
+
+def test_final_palette_separates_every_high_contact_neighbour():
+    if not PALETTE_QA.exists():
+        pytest.skip("palette QA not run")
+    qa = json.loads(PALETTE_QA.read_text(encoding="utf-8"))
+    assert qa["major_adjacent_pairs_failing"] == [], qa["major_adjacent_pairs_failing"]
+
+
+def test_every_mapped_class_appears_in_exactly_one_legend_group():
+    # No class present in Iran may be dropped from the legend, and no absent class added.
+    sys.path.insert(0, str(ROOT / "scripts/rendering"))
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_poster", POSTER_SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    soils, nonsoil, minor = mod.load_classes()
+    listed = [c["code"] for c in soils + nonsoil + minor]
+    present = [r["classification_code"] for r in csv.DictReader(SOIL_CSV.open(encoding="utf-8"))]
+    assert sorted(listed) == sorted(present), (sorted(listed), sorted(present))
+    assert len(set(listed)) == len(listed), "a class appears in two legend groups"
+    assert [c["code"] for c in nonsoil] == ["WR"], "Open Water must be the non-soil group"
+    assert all(c["code"] != "WR" for c in soils + minor), "Open Water shown as a soil"
+
+
+def test_labels_are_verified_against_the_rasters():
+    if not FURNITURE_QA.exists():
+        pytest.skip("map furniture not built")
+    f = json.loads(FURNITURE_QA.read_text(encoding="utf-8"))
+    assert f["labels_failed_verification"] == [], f["labels_failed_verification"]
+    assert len(f["labels"]) >= 8
+    for lab in f["labels"]:
+        assert lab["verified"] and lab["inside_frame"], lab["text"]
+
+
+def test_scale_bar_decision_follows_the_measurement():
+    # A bar may only be drawn because distortion was measured and found small.
+    if not FURNITURE_QA.exists():
+        pytest.skip("map furniture not built")
+    sb = json.loads(FURNITURE_QA.read_text(encoding="utf-8"))["scale_bar"]
+    drawn = "bar_km" in POSTER_SCRIPT.read_text(encoding="utf-8")
+    if sb["worst_deviation_percent"] >= 2.0:
+        assert not drawn, "scale bar drawn although distance scale varies materially"
+    else:
+        assert "OMIT" not in sb["verdict"]
+
+
+def test_publication_claim_ceiling_is_not_breached():
+    # Wording that would overstate the product must not appear in map or publication text.
+    forbidden = ("high-resolution soil map", "30 m soil", "field-validated",
+                 "real-time soil", "national soil survey")
+    for rel in ("scripts/rendering/build_poster.py", "docs/PUBLICATION_NOTES.md",
+                "docs/FINAL_CARTOGRAPHY.md"):
+        text = (ROOT / rel).read_text(encoding="utf-8").lower()
+        for phrase in forbidden:
+            # allowed only where the document explicitly rejects the claim
+            # Prose wraps across lines, so check the whole paragraph: a rejection can
+            # sit a line above the phrase it rejects.
+            for para in text.split(chr(10) + chr(10)):
+                if phrase in para:
+                    negated = re.search(r"\b(not|never|no|avoid|avoided|"
+                                        r"forbidden|cannot|neither|without)\b", para)
+                    assert negated, f"{rel}: unqualified claim {phrase!r}"
+
+
+def test_master_outputs_are_not_git_tracked():
+    for rel in ("outputs/master/x.png", "outputs/linkedin/x.png"):
+        out = subprocess.run(["git", "check-ignore", rel], cwd=ROOT,
+                             capture_output=True, text=True)
+        assert out.stdout.strip() == rel, f"{rel} is not gitignored"
 
 
 def test_srtm_tile_manifest_coverage_and_official_endpoint():

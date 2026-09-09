@@ -1,0 +1,1075 @@
+{
+  "thresholds": {
+    "delta_e2000_adjacent_min": 10.0,
+    "delta_L_min": 5.0,
+    "major_border_px": 20000,
+    "shading_p01_at_2x": 0.7826
+  },
+  "classes": {
+    "LP": {
+      "name": "Leptosols",
+      "hex": "#8B8A83",
+      "share_percent": 40.7032,
+      "L_star": 57.4
+    },
+    "RG": {
+      "name": "Regosols",
+      "hex": "#C0A176",
+      "share_percent": 18.6506,
+      "L_star": 68.0
+    },
+    "SC": {
+      "name": "Solonchaks",
+      "hex": "#E3B9D6",
+      "share_percent": 18.5515,
+      "L_star": 79.5
+    },
+    "CL": {
+      "name": "Calcisols",
+      "hex": "#F2E8C6",
+      "share_percent": 16.7589,
+      "L_star": 92.0
+    },
+    "AR": {
+      "name": "Arenosols",
+      "hex": "#E3B15A",
+      "share_percent": 2.1388,
+      "L_star": 75.1
+    },
+    "CM": {
+      "name": "Cambisols",
+      "hex": "#9A6234",
+      "share_percent": 1.4752,
+      "L_star": 46.8
+    },
+    "WR": {
+      "name": "Open Water",
+      "hex": "#4E79A7",
+      "share_percent": 0.5438,
+      "L_star": 49.6
+    },
+    "GL": {
+      "name": "Gleysols",
+      "hex": "#7FA9AE",
+      "share_percent": 0.4667,
+      "L_star": 66.5
+    },
+    "TC": {
+      "name": "Technosols",
+      "hex": "#6B4F63",
+      "share_percent": 0.4193,
+      "L_star": 37.1
+    },
+    "FL": {
+      "name": "Fluvisols",
+      "hex": "#2E8B6B",
+      "share_percent": 0.2649,
+      "L_star": 52.0
+    },
+    "KS": {
+      "name": "Kastanozems",
+      "hex": "#B5651D",
+      "share_percent": 0.0153,
+      "L_star": 50.9
+    },
+    "GY": {
+      "name": "Gypsisols",
+      "hex": "#E7C9E0",
+      "share_percent": 0.0055,
+      "L_star": 84.0
+    },
+    "LV": {
+      "name": "Luvisols",
+      "hex": "#8B4726",
+      "share_percent": 0.0044,
+      "L_star": 38.1
+    },
+    "HS": {
+      "name": "Histosols",
+      "hex": "#5B3A29",
+      "share_percent": 0.001,
+      "L_star": 27.9
+    },
+    "CH": {
+      "name": "Chernozems",
+      "hex": "#2B2B2B",
+      "share_percent": 0.0004,
+      "L_star": 17.5
+    },
+    "AC": {
+      "name": "Acrisols",
+      "hex": "#C1440E",
+      "share_percent": 0.0004,
+      "L_star": 46.3
+    }
+  },
+  "adjacent_pairs": [
+    {
+      "pair": "Calcisols / Leptosols",
+      "codes": [
+        "CL",
+        "LP"
+      ],
+      "shared_border_px": 72528,
+      "delta_e2000": 27.05,
+      "delta_L": 34.61,
+      "delta_e_deuteranopia": 55.25,
+      "delta_e_protanopia": 54.52,
+      "delta_e_under_deepest_shade": 37.8,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Leptosols / Regosols",
+      "codes": [
+        "LP",
+        "RG"
+      ],
+      "shared_border_px": 38527,
+      "delta_e2000": 17.38,
+      "delta_L": 10.65,
+      "delta_e_deuteranopia": 20.13,
+      "delta_e_protanopia": 17.3,
+      "delta_e_under_deepest_shade": 13.07,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Leptosols / Solonchaks",
+      "codes": [
+        "LP",
+        "SC"
+      ],
+      "shared_border_px": 38198,
+      "delta_e2000": 28.46,
+      "delta_L": 22.18,
+      "delta_e_deuteranopia": 35.63,
+      "delta_e_protanopia": 34.25,
+      "delta_e_under_deepest_shade": 20.99,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Regosols",
+      "codes": [
+        "CL",
+        "RG"
+      ],
+      "shared_border_px": 26397,
+      "delta_e2000": 18.57,
+      "delta_L": 23.96,
+      "delta_e_deuteranopia": 34.41,
+      "delta_e_protanopia": 37.05,
+      "delta_e_under_deepest_shade": 29.05,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Regosols / Solonchaks",
+      "codes": [
+        "RG",
+        "SC"
+      ],
+      "shared_border_px": 18730,
+      "delta_e2000": 30.78,
+      "delta_L": 11.52,
+      "delta_e_deuteranopia": 38.82,
+      "delta_e_protanopia": 41.7,
+      "delta_e_under_deepest_shade": 27.89,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Solonchaks",
+      "codes": [
+        "CL",
+        "SC"
+      ],
+      "shared_border_px": 11820,
+      "delta_e2000": 31.84,
+      "delta_L": 12.44,
+      "delta_e_deuteranopia": 39.11,
+      "delta_e_protanopia": 44.93,
+      "delta_e_under_deepest_shade": 35.0,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Technosols",
+      "codes": [
+        "CL",
+        "TC"
+      ],
+      "shared_border_px": 9349,
+      "delta_e2000": 53.41,
+      "delta_L": 54.83,
+      "delta_e_deuteranopia": 76.54,
+      "delta_e_protanopia": 76.23,
+      "delta_e_under_deepest_shade": 60.89,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Regosols / Technosols",
+      "codes": [
+        "RG",
+        "TC"
+      ],
+      "shared_border_px": 8645,
+      "delta_e2000": 40.76,
+      "delta_L": 30.88,
+      "delta_e_deuteranopia": 35.84,
+      "delta_e_protanopia": 35.72,
+      "delta_e_under_deepest_shade": 46.42,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Solonchaks",
+      "codes": [
+        "AR",
+        "SC"
+      ],
+      "shared_border_px": 6435,
+      "delta_e2000": 38.1,
+      "delta_L": 4.4,
+      "delta_e_deuteranopia": 40.66,
+      "delta_e_protanopia": 45.51,
+      "delta_e_under_deepest_shade": 37.01,
+      "pass_adjacent": true,
+      "pass_luminance": false,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Leptosols / Technosols",
+      "codes": [
+        "LP",
+        "TC"
+      ],
+      "shared_border_px": 5523,
+      "delta_e2000": 27.93,
+      "delta_L": 20.22,
+      "delta_e_deuteranopia": 15.67,
+      "delta_e_protanopia": 17.86,
+      "delta_e_under_deepest_shade": 31.48,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Solonchaks / Technosols",
+      "codes": [
+        "SC",
+        "TC"
+      ],
+      "shared_border_px": 5357,
+      "delta_e2000": 38.29,
+      "delta_L": 42.4,
+      "delta_e_deuteranopia": 43.17,
+      "delta_e_protanopia": 39.8,
+      "delta_e_under_deepest_shade": 48.65,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Solonchaks / Open Water",
+      "codes": [
+        "SC",
+        "WR"
+      ],
+      "shared_border_px": 3293,
+      "delta_e2000": 36.2,
+      "delta_L": 29.95,
+      "delta_e_deuteranopia": 38.1,
+      "delta_e_protanopia": 30.69,
+      "delta_e_under_deepest_shade": 43.46,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Leptosols",
+      "codes": [
+        "CM",
+        "LP"
+      ],
+      "shared_border_px": 3078,
+      "delta_e2000": 23.15,
+      "delta_L": 10.59,
+      "delta_e_deuteranopia": 13.42,
+      "delta_e_protanopia": 12.79,
+      "delta_e_under_deepest_shade": 20.86,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Calcisols",
+      "codes": [
+        "AR",
+        "CL"
+      ],
+      "shared_border_px": 2787,
+      "delta_e2000": 18.51,
+      "delta_L": 16.83,
+      "delta_e_deuteranopia": 23.08,
+      "delta_e_protanopia": 27.26,
+      "delta_e_under_deepest_shade": 16.06,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Leptosols",
+      "codes": [
+        "AR",
+        "LP"
+      ],
+      "shared_border_px": 2071,
+      "delta_e2000": 26.06,
+      "delta_L": 17.78,
+      "delta_e_deuteranopia": 33.11,
+      "delta_e_protanopia": 27.92,
+      "delta_e_under_deepest_shade": 34.06,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Gleysols / Technosols",
+      "codes": [
+        "GL",
+        "TC"
+      ],
+      "shared_border_px": 1279,
+      "delta_e2000": 43.19,
+      "delta_L": 29.33,
+      "delta_e_deuteranopia": 21.7,
+      "delta_e_protanopia": 24.25,
+      "delta_e_under_deepest_shade": 47.99,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Regosols",
+      "codes": [
+        "CM",
+        "RG"
+      ],
+      "shared_border_px": 1275,
+      "delta_e2000": 21.3,
+      "delta_L": 21.24,
+      "delta_e_deuteranopia": 19.52,
+      "delta_e_protanopia": 19.91,
+      "delta_e_under_deepest_shade": 12.48,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Gleysols",
+      "codes": [
+        "CM",
+        "GL"
+      ],
+      "shared_border_px": 941,
+      "delta_e2000": 37.66,
+      "delta_L": 19.69,
+      "delta_e_deuteranopia": 33.24,
+      "delta_e_protanopia": 29.45,
+      "delta_e_under_deepest_shade": 32.19,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Regosols / Open Water",
+      "codes": [
+        "RG",
+        "WR"
+      ],
+      "shared_border_px": 838,
+      "delta_e2000": 38.84,
+      "delta_L": 18.43,
+      "delta_e_deuteranopia": 51.7,
+      "delta_e_protanopia": 46.67,
+      "delta_e_under_deepest_shade": 43.23,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Regosols",
+      "codes": [
+        "AR",
+        "RG"
+      ],
+      "shared_border_px": 784,
+      "delta_e2000": 10.31,
+      "delta_L": 7.12,
+      "delta_e_deuteranopia": 14.58,
+      "delta_e_protanopia": 11.93,
+      "delta_e_under_deepest_shade": 20.46,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Technosols / Open Water",
+      "codes": [
+        "TC",
+        "WR"
+      ],
+      "shared_border_px": 656,
+      "delta_e2000": 27.59,
+      "delta_L": 12.45,
+      "delta_e_deuteranopia": 19.06,
+      "delta_e_protanopia": 17.07,
+      "delta_e_under_deepest_shade": 23.26,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Gleysols / Open Water",
+      "codes": [
+        "GL",
+        "WR"
+      ],
+      "shared_border_px": 647,
+      "delta_e2000": 22.03,
+      "delta_L": 16.88,
+      "delta_e_deuteranopia": 18.22,
+      "delta_e_protanopia": 21.26,
+      "delta_e_under_deepest_shade": 30.55,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Fluvisols",
+      "codes": [
+        "CL",
+        "FL"
+      ],
+      "shared_border_px": 636,
+      "delta_e2000": 37.21,
+      "delta_L": 40.03,
+      "delta_e_deuteranopia": 64.8,
+      "delta_e_protanopia": 56.9,
+      "delta_e_under_deepest_shade": 45.88,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Open Water",
+      "codes": [
+        "CL",
+        "WR"
+      ],
+      "shared_border_px": 596,
+      "delta_e2000": 47.35,
+      "delta_L": 42.39,
+      "delta_e_deuteranopia": 80.5,
+      "delta_e_protanopia": 76.15,
+      "delta_e_under_deepest_shade": 53.6,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Kastanozems / Leptosols",
+      "codes": [
+        "KS",
+        "LP"
+      ],
+      "shared_border_px": 539,
+      "delta_e2000": 25.13,
+      "delta_L": 6.42,
+      "delta_e_deuteranopia": 15.51,
+      "delta_e_protanopia": 13.91,
+      "delta_e_under_deepest_shade": 25.1,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Technosols",
+      "codes": [
+        "FL",
+        "TC"
+      ],
+      "shared_border_px": 502,
+      "delta_e2000": 41.41,
+      "delta_L": 14.81,
+      "delta_e_deuteranopia": 13.29,
+      "delta_e_protanopia": 22.72,
+      "delta_e_under_deepest_shade": 43.36,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Leptosols / Open Water",
+      "codes": [
+        "LP",
+        "WR"
+      ],
+      "shared_border_px": 497,
+      "delta_e2000": 23.75,
+      "delta_L": 7.77,
+      "delta_e_deuteranopia": 29.04,
+      "delta_e_protanopia": 27.43,
+      "delta_e_under_deepest_shade": 27.12,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Technosols",
+      "codes": [
+        "CM",
+        "TC"
+      ],
+      "shared_border_px": 431,
+      "delta_e2000": 28.32,
+      "delta_L": 9.63,
+      "delta_e_deuteranopia": 22.68,
+      "delta_e_protanopia": 22.08,
+      "delta_e_under_deepest_shade": 29.89,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Solonchaks",
+      "codes": [
+        "FL",
+        "SC"
+      ],
+      "shared_border_px": 410,
+      "delta_e2000": 45.88,
+      "delta_L": 27.59,
+      "delta_e_deuteranopia": 40.92,
+      "delta_e_protanopia": 41.63,
+      "delta_e_under_deepest_shade": 40.71,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Regosols",
+      "codes": [
+        "FL",
+        "RG"
+      ],
+      "shared_border_px": 341,
+      "delta_e2000": 32.25,
+      "delta_L": 16.07,
+      "delta_e_deuteranopia": 22.93,
+      "delta_e_protanopia": 14.2,
+      "delta_e_under_deepest_shade": 27.89,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Gleysols / Regosols",
+      "codes": [
+        "GL",
+        "RG"
+      ],
+      "shared_border_px": 331,
+      "delta_e2000": 27.56,
+      "delta_L": 1.55,
+      "delta_e_deuteranopia": 34.09,
+      "delta_e_protanopia": 26.95,
+      "delta_e_under_deepest_shade": 28.06,
+      "pass_adjacent": true,
+      "pass_luminance": false,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Fluvisols",
+      "codes": [
+        "AR",
+        "FL"
+      ],
+      "shared_border_px": 301,
+      "delta_e2000": 38.99,
+      "delta_L": 23.19,
+      "delta_e_deuteranopia": 36.43,
+      "delta_e_protanopia": 25.68,
+      "delta_e_under_deepest_shade": 44.64,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Gleysols",
+      "codes": [
+        "FL",
+        "GL"
+      ],
+      "shared_border_px": 298,
+      "delta_e2000": 20.87,
+      "delta_L": 14.52,
+      "delta_e_deuteranopia": 23.0,
+      "delta_e_protanopia": 23.54,
+      "delta_e_under_deepest_shade": 16.94,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Open Water",
+      "codes": [
+        "FL",
+        "WR"
+      ],
+      "shared_border_px": 232,
+      "delta_e2000": 30.87,
+      "delta_L": 2.36,
+      "delta_e_deuteranopia": 30.63,
+      "delta_e_protanopia": 35.95,
+      "delta_e_under_deepest_shade": 31.72,
+      "pass_adjacent": true,
+      "pass_luminance": false,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Gleysols / Leptosols",
+      "codes": [
+        "GL",
+        "LP"
+      ],
+      "shared_border_px": 220,
+      "delta_e2000": 16.76,
+      "delta_L": 9.1,
+      "delta_e_deuteranopia": 18.53,
+      "delta_e_protanopia": 16.14,
+      "delta_e_under_deepest_shade": 24.4,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Fluvisols",
+      "codes": [
+        "CM",
+        "FL"
+      ],
+      "shared_border_px": 141,
+      "delta_e2000": 38.91,
+      "delta_L": 5.17,
+      "delta_e_deuteranopia": 10.29,
+      "delta_e_protanopia": 7.38,
+      "delta_e_under_deepest_shade": 36.91,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": false
+    },
+    {
+      "pair": "Gleysols / Solonchaks",
+      "codes": [
+        "GL",
+        "SC"
+      ],
+      "shared_border_px": 119,
+      "delta_e2000": 34.16,
+      "delta_L": 13.07,
+      "delta_e_deuteranopia": 22.95,
+      "delta_e_protanopia": 18.12,
+      "delta_e_under_deepest_shade": 32.4,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Luvisols",
+      "codes": [
+        "CM",
+        "LV"
+      ],
+      "shared_border_px": 112,
+      "delta_e2000": 9.94,
+      "delta_L": 8.7,
+      "delta_e_deuteranopia": 6.52,
+      "delta_e_protanopia": 7.45,
+      "delta_e_under_deepest_shade": 15.81,
+      "pass_adjacent": false,
+      "pass_luminance": true,
+      "pass_cvd": false
+    },
+    {
+      "pair": "Arenosols / Technosols",
+      "codes": [
+        "AR",
+        "TC"
+      ],
+      "shared_border_px": 104,
+      "delta_e2000": 50.11,
+      "delta_L": 38.0,
+      "delta_e_deuteranopia": 48.18,
+      "delta_e_protanopia": 45.88,
+      "delta_e_under_deepest_shade": 56.66,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Luvisols / Regosols",
+      "codes": [
+        "LV",
+        "RG"
+      ],
+      "shared_border_px": 104,
+      "delta_e2000": 32.26,
+      "delta_L": 29.94,
+      "delta_e_deuteranopia": 25.2,
+      "delta_e_protanopia": 26.15,
+      "delta_e_under_deepest_shade": 21.08,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Gleysols",
+      "codes": [
+        "CL",
+        "GL"
+      ],
+      "shared_border_px": 81,
+      "delta_e2000": 27.58,
+      "delta_L": 25.51,
+      "delta_e_deuteranopia": 52.68,
+      "delta_e_protanopia": 45.48,
+      "delta_e_under_deepest_shade": 35.29,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Fluvisols / Leptosols",
+      "codes": [
+        "FL",
+        "LP"
+      ],
+      "shared_border_px": 69,
+      "delta_e2000": 22.39,
+      "delta_L": 5.41,
+      "delta_e_deuteranopia": 5.64,
+      "delta_e_protanopia": 7.35,
+      "delta_e_under_deepest_shade": 22.92,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": false
+    },
+    {
+      "pair": "Gypsisols / Regosols",
+      "codes": [
+        "GY",
+        "RG"
+      ],
+      "shared_border_px": 62,
+      "delta_e2000": 29.59,
+      "delta_L": 16.02,
+      "delta_e_deuteranopia": 41.44,
+      "delta_e_protanopia": 44.2,
+      "delta_e_under_deepest_shade": 34.32,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Cambisols",
+      "codes": [
+        "CL",
+        "CM"
+      ],
+      "shared_border_px": 61,
+      "delta_e2000": 38.86,
+      "delta_L": 45.2,
+      "delta_e_deuteranopia": 65.27,
+      "delta_e_protanopia": 67.82,
+      "delta_e_under_deepest_shade": 48.05,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Open Water",
+      "codes": [
+        "AR",
+        "WR"
+      ],
+      "shared_border_px": 60,
+      "delta_e2000": 47.81,
+      "delta_L": 25.55,
+      "delta_e_deuteranopia": 63.88,
+      "delta_e_protanopia": 57.17,
+      "delta_e_under_deepest_shade": 52.1,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Histosols / Regosols",
+      "codes": [
+        "HS",
+        "RG"
+      ],
+      "shared_border_px": 59,
+      "delta_e2000": 40.91,
+      "delta_L": 40.15,
+      "delta_e_deuteranopia": 31.84,
+      "delta_e_protanopia": 29.82,
+      "delta_e_under_deepest_shade": 25.38,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Histosols / Leptosols",
+      "codes": [
+        "HS",
+        "LP"
+      ],
+      "shared_border_px": 30,
+      "delta_e2000": 31.3,
+      "delta_L": 29.5,
+      "delta_e_deuteranopia": 15.32,
+      "delta_e_protanopia": 15.86,
+      "delta_e_under_deepest_shade": 21.74,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Calcisols / Gypsisols",
+      "codes": [
+        "CL",
+        "GY"
+      ],
+      "shared_border_px": 28,
+      "delta_e2000": 28.39,
+      "delta_L": 7.94,
+      "delta_e_deuteranopia": 36.13,
+      "delta_e_protanopia": 40.26,
+      "delta_e_under_deepest_shade": 31.02,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Chernozems / Leptosols",
+      "codes": [
+        "CH",
+        "LP"
+      ],
+      "shared_border_px": 24,
+      "delta_e2000": 34.05,
+      "delta_L": 39.84,
+      "delta_e_deuteranopia": 17.4,
+      "delta_e_protanopia": 17.31,
+      "delta_e_under_deepest_shade": 22.29,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Acrisols / Leptosols",
+      "codes": [
+        "AC",
+        "LP"
+      ],
+      "shared_border_px": 23,
+      "delta_e2000": 29.96,
+      "delta_L": 11.05,
+      "delta_e_deuteranopia": 14.93,
+      "delta_e_protanopia": 13.99,
+      "delta_e_under_deepest_shade": 27.83,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Kastanozems",
+      "codes": [
+        "CM",
+        "KS"
+      ],
+      "shared_border_px": 16,
+      "delta_e2000": 7.13,
+      "delta_L": 4.16,
+      "delta_e_deuteranopia": 5.34,
+      "delta_e_protanopia": 3.5,
+      "delta_e_under_deepest_shade": 6.66,
+      "pass_adjacent": false,
+      "pass_luminance": false,
+      "pass_cvd": false
+    },
+    {
+      "pair": "Calcisols / Histosols",
+      "codes": [
+        "CL",
+        "HS"
+      ],
+      "shared_border_px": 15,
+      "delta_e2000": 58.61,
+      "delta_L": 64.11,
+      "delta_e_deuteranopia": 75.5,
+      "delta_e_protanopia": 74.14,
+      "delta_e_under_deepest_shade": 66.75,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Solonchaks",
+      "codes": [
+        "CM",
+        "SC"
+      ],
+      "shared_border_px": 7,
+      "delta_e2000": 39.79,
+      "delta_L": 32.76,
+      "delta_e_deuteranopia": 48.02,
+      "delta_e_protanopia": 47.71,
+      "delta_e_under_deepest_shade": 31.52,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Gypsisols / Leptosols",
+      "codes": [
+        "GY",
+        "LP"
+      ],
+      "shared_border_px": 5,
+      "delta_e2000": 28.09,
+      "delta_L": 26.67,
+      "delta_e_deuteranopia": 43.71,
+      "delta_e_protanopia": 41.7,
+      "delta_e_under_deepest_shade": 36.77,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Chernozems / Cambisols",
+      "codes": [
+        "CH",
+        "CM"
+      ],
+      "shared_border_px": 4,
+      "delta_e2000": 31.76,
+      "delta_L": 29.25,
+      "delta_e_deuteranopia": 18.85,
+      "delta_e_protanopia": 14.97,
+      "delta_e_under_deepest_shade": 24.4,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Histosols / Open Water",
+      "codes": [
+        "HS",
+        "WR"
+      ],
+      "shared_border_px": 4,
+      "delta_e2000": 36.45,
+      "delta_L": 21.72,
+      "delta_e_deuteranopia": 29.9,
+      "delta_e_protanopia": 27.53,
+      "delta_e_under_deepest_shade": 30.82,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Leptosols / Luvisols",
+      "codes": [
+        "LP",
+        "LV"
+      ],
+      "shared_border_px": 4,
+      "delta_e2000": 29.48,
+      "delta_L": 19.28,
+      "delta_e_deuteranopia": 13.57,
+      "delta_e_protanopia": 14.18,
+      "delta_e_under_deepest_shade": 33.1,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Cambisols / Open Water",
+      "codes": [
+        "CM",
+        "WR"
+      ],
+      "shared_border_px": 3,
+      "delta_e2000": 38.33,
+      "delta_L": 2.81,
+      "delta_e_deuteranopia": 43.11,
+      "delta_e_protanopia": 38.26,
+      "delta_e_under_deepest_shade": 36.86,
+      "pass_adjacent": true,
+      "pass_luminance": false,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Arenosols / Histosols",
+      "codes": [
+        "AR",
+        "HS"
+      ],
+      "shared_border_px": 2,
+      "delta_e2000": 49.78,
+      "delta_L": 47.27,
+      "delta_e_deuteranopia": 45.0,
+      "delta_e_protanopia": 40.44,
+      "delta_e_under_deepest_shade": 55.99,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    },
+    {
+      "pair": "Histosols / Kastanozems",
+      "codes": [
+        "HS",
+        "KS"
+      ],
+      "shared_border_px": 2,
+      "delta_e2000": 24.54,
+      "delta_L": 23.07,
+      "delta_e_deuteranopia": 19.83,
+      "delta_e_protanopia": 15.5,
+      "delta_e_under_deepest_shade": 15.08,
+      "pass_adjacent": true,
+      "pass_luminance": true,
+      "pass_cvd": true
+    }
+  ],
+  "adjacent_pairs_failing": [
+    "Cambisols / Fluvisols",
+    "Cambisols / Luvisols",
+    "Fluvisols / Leptosols",
+    "Cambisols / Kastanozems"
+  ],
+  "major_adjacent_pairs_failing": []
+}

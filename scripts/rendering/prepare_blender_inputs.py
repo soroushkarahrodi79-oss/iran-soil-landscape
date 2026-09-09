@@ -84,6 +84,23 @@ def main() -> None:
     base[wet] = hex_to_rgb(cfg["surface"]["cartographic_water_srgb"])
     Image.fromarray(base, "RGB").save(OUT / "iran_render_basecolor.png")
 
+    # --- class-ID texture for the unlit registration pass ---
+    # Encodes the soil class itself, not its display colour, as evenly spaced grey levels
+    # so a rendered pixel decodes back to exactly one class with a wide error margin.
+    ids = np.asarray(Image.open(RENDER / "iran_soil_ids_render.tif"))
+    present = sorted(int(v) for v in np.unique(ids) if v != 0)
+    step = 255 // (len(present) + 1)
+    id_to_level = {pid: (i + 1) * step for i, pid in enumerate(present)}
+    idtex = np.zeros(ids.shape, dtype=np.uint8)
+    for pid, level in id_to_level.items():
+        idtex[ids == pid] = level
+    Image.fromarray(np.dstack([idtex] * 3), "RGB").save(OUT / "iran_class_id_texture.png")
+    (OUT / "class_id_levels.json").write_text(json.dumps(
+        {"step": step, "level_by_project_int": id_to_level,
+         "note": "grey level = (index+1)*step; 0 = outside Iran. Display colours are irrelevant "
+                 "to this texture: it carries class identity for the unlit registration pass."},
+        indent=2) + chr(10), encoding="utf-8")
+
     # --- geometry the Blender script needs (kilometres; LAEA metres / 1000) ---
     bounds_m = sub["render_grid"]["bounds_laea"]
     meta = {

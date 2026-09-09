@@ -128,6 +128,31 @@ def build_material(job: dict) -> bpy.types.Material:
     return mat
 
 
+def build_unlit_material(job: dict) -> bpy.types.Material:
+    """Pure emission of the class-ID texture: geometry test, not a picture.
+
+    No sun, no shadow, no ambient, no BSDF. A rendered pixel is the class code itself, so
+    any disagreement with the source raster is a geometric/UV fault and cannot be excused
+    as shading. This is what separates registration accuracy from cartographic readability.
+    """
+    mat = bpy.data.materials.new("iran_class_id_unlit")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    nt.nodes.remove(nt.nodes["Principled BSDF"])
+    out = nt.nodes["Material Output"]
+
+    tex = nt.nodes.new("ShaderNodeTexImage")
+    tex.image = bpy.data.images.load(job["class_id_png"])
+    tex.image.colorspace_settings.name = "sRGB"
+    tex.interpolation = "Closest"
+    tex.extension = "EXTEND"
+    emit = nt.nodes.new("ShaderNodeEmission")
+    emit.inputs["Strength"].default_value = 1.0
+    nt.links.new(tex.outputs["Color"], emit.inputs["Color"])
+    nt.links.new(emit.outputs["Emission"], out.inputs["Surface"])
+    return mat
+
+
 def build_lighting(job: dict) -> bpy.types.Object:
     lig = job["lighting"]
     sun_data = bpy.data.lights.new("sun", type="SUN")
@@ -172,6 +197,13 @@ def place_camera(cam: bpy.types.Object, spec: dict, job: dict, distance_km: floa
     cam.rotation_euler = (tilt, 0.0, 0.0)
     rx, ry = spec["resolution"]
     margin = float(spec["ortho_margin"])
+    fit = spec.get("sensor_fit", "AUTO")
+    cam.data.sensor_fit = fit
+    if fit == "HORIZONTAL":
+        # Deterministic: ortho_scale is the width, so render pixels map 1:1 onto grid
+        # columns. Required for the ID pass, where a half-pixel drift would be the result.
+        cam.data.ortho_scale = margin * ext_x
+        return
     # ortho_scale spans the LONGER sensor axis (sensor fit AUTO)
     need_x = ext_x
     need_y = ext_y * math.cos(tilt) + 2.0 * job["max_relief_km"] * math.sin(tilt)
@@ -236,8 +268,30 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     scene = bpy.context.scene
     results = []
+    lit_material = terrain.data.materials[0]
+    unlit_material = None
+    world_bg = scene.world.node_tree.nodes["Background"]
+    world_strength = world_bg.inputs["Strength"].default_value
+
     for spec in job["renders"]:
         cam_spec = job["cameras"][spec["camera"]]
+        unlit = bool(spec.get("unlit"))
+        if unlit:
+            if unlit_material is None:
+                unlit_material = build_unlit_material(job)
+            terrain.data.materials[0] = unlit_material
+            sun.hide_render = True
+            world_bg.inputs["Strength"].default_value = 0.0
+            scene.cycles.use_denoising = False        # denoising would blend class codes
+            scene.cycles.pixel_filter_type = "BOX"    # no cross-pixel antialiasing:
+            scene.cycles.filter_width = 0.01          # a blended edge is not a class
+        else:
+            terrain.data.materials[0] = lit_material
+            sun.hide_render = False
+            world_bg.inputs["Strength"].default_value = world_strength
+            scene.cycles.use_denoising = bool(job["render"]["use_denoise"])
+            scene.cycles.pixel_filter_type = "BLACKMAN_HARRIS"
+            scene.cycles.filter_width = 1.5
         terrain.scale.z = float(spec["exaggeration"])
         aim_sun(sun, spec["sun_azimuth_deg"], spec["sun_elevation_deg"], reach_km=8000.0)
         place_camera(cam, cam_spec, job, distance_km=12000.0)
