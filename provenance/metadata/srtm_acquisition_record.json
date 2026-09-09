@@ -1,0 +1,10 @@
+{
+  "created_utc": "2026-09-09T11:43:53.555242+00:00",
+  "product": "SRTMGL3.003",
+  "auth": "netrc:_netrc",
+  "tiles_total": 198,
+  "downloaded": 197,
+  "skipped_present": 1,
+  "failed": [],
+  "endpoint": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/SRTMGL3.003/"
+}

@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-09-09T11:47:58.316463+00:00",
+  "product": "SRTMGL3.003",
+  "tiles_used": 198,
+  "source_crs": "EPSG:4326 (SRTM tiles)",
+  "target_crs_proj4": "+proj=laea +lat_0=32 +lon_0=53 +datum=WGS84 +units=m +no_defs +type=crs",
+  "resample": "bilinear",
+  "clip": "iran_boundary.gpkg cropToCutline",
+  "output": "data/processed/dem/iran_dem_90m.tif",
+  "output_nodata": -32768,
+  "vertical_datum": "EGM96",
+  "units": "metres",
+  "vertical_exaggeration": "none (scientific DEM)"
+}

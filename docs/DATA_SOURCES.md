@@ -23,7 +23,10 @@ Required citation: *FAO & IIASA. Harmonized World Soil Database version 2.01. Ro
 
 Natural Earth describes this theme as WGS 84 geographic data and as a de facto country representation. The extraction criterion is exactly `ADM0_A3 == "IRN"`; no geometry will be redrawn, dissolved with a different source, or manually edited. Natural Earth says its data are public domain; the map should still credit “Made with Natural Earth” as good scholarly practice. The project uses its country polygon only, not a political claim beyond the provider’s representation.
 
-## Terrain — SOURCE SELECTED / BLOCKED_USER_AUTH
+## Terrain — DOWNLOADED / PROCESSED (2026-09-09)
+
+**198/198 SRTMGL3 v003 tiles acquired via Earthdata Login and processed** into `data/processed/dem/iran_dem_90m.tif` (LAEA, bilinear, clipped to the frozen boundary; elevation −64 to 5588 m, mean 1252 m; QA in `provenance/metadata/dem_qa.json`, per-tile checksums in `provenance/checksums/srtm_sha256.txt`). Terrain modifies no soil classification. Cartographic water (Natural Earth 10m ocean v5.1.1 + lakes v5.0.0) acquired, kept separate from HWSD (D-012). Details below.
+
 
 **Selected national SOURCE_DEM: NASA/USGS SRTMGL3 v003 (~90 m, 3 arc-second)** — chosen over SRTMGL1 (~30 m) on storage/adequacy grounds (DECISIONS D-011); 30 m is reserved for possible future insets. Terrain's only role is **topographic context**; it never modifies soil classification (D-013).
 

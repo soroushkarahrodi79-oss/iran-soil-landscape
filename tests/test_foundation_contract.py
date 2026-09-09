@@ -74,7 +74,9 @@ def test_hwsd_dataset_license_is_4_0_report_is_3_0_igo():
 
 def test_downloaded_rows_have_checksums():
     for row in _manifest_rows():
-        if row["status"] == "SOURCE_DOWNLOADED_VERIFIED":
+        # Single-file downloads must carry a 64-char sha256. Multi-file products
+        # (local_raw_path is a directory) keep per-file checksums in provenance/checksums/.
+        if row["status"] == "SOURCE_DOWNLOADED_VERIFIED" and not row["local_raw_path"].endswith("/"):
             assert len((row["sha256"] or "").strip()) == 64, row["dataset_id"]
 
 
@@ -135,6 +137,39 @@ def test_gitignore_protects_credentials():
     for rel in ("_netrc", ".netrc", ".urs_cookies", ".env"):
         out = subprocess.run(["git", "check-ignore", rel], cwd=ROOT, capture_output=True, text=True)
         assert out.stdout.strip() == rel, f"{rel} is not gitignored"
+
+
+def test_soil_truth_unchanged_since_freeze():
+    import hashlib
+    frozen = ROOT / "provenance/checksums/soil_truth_frozen_2026-09-08.txt"
+    if not frozen.exists():
+        pytest.skip("freeze file absent")
+    for line in frozen.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        want, rel = line.split()[0], line.split()[-1].lstrip("*")
+        p = ROOT / rel
+        if not p.exists():
+            pytest.skip(f"{rel} not present locally")
+        got = hashlib.sha256(p.read_bytes()).hexdigest()
+        assert got == want, f"SOIL TRUTH CHANGED: {rel}"
+
+
+DEM = ROOT / "data/processed/dem/iran_dem_90m.tif"
+DEM_QA = ROOT / "provenance/metadata/dem_qa.json"
+
+
+def test_dem_elevation_and_crs_plausible():
+    if not DEM_QA.exists():
+        pytest.skip("dem_qa.json not generated yet")
+    qa = json.loads(DEM_QA.read_text(encoding="utf-8"))
+    assert qa["nodata"] == -32768
+    assert qa["valid_pixels"] > 0
+    # Iran: lowest ~ Caspian coast (-28 m; SRTM water noise can reach ~-100 m),
+    # highest Damavand ~5610 m. Bounds catch nodata leakage / absurd values.
+    assert -120 <= qa["elev_min_m"] <= 60, qa["elev_min_m"]
+    assert 3500 <= qa["elev_max_m"] <= 6000, qa["elev_max_m"]
+    assert 0 <= qa["nodata_share_pct"] < 60
 
 
 def test_srtm_tile_manifest_coverage_and_official_endpoint():

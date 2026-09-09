@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-09-09T11:47:58.216099+00:00",
+  "dimensions": [
+    18095,
+    19955
+  ],
+  "pixel_size_m": [
+    90.0,
+    90.0
+  ],
+  "crs": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298...",
+  "nodata": -32768,
+  "valid_pixels": 200309700,
+  "nodata_pixels": 160776025,
+  "nodata_share_pct": 44.526,
+  "elev_min_m": -64.0,
+  "elev_max_m": 5588.0,
+  "elev_mean_m": 1251.61,
+  "elev_std_m": 687.7,
+  "elev_median_m_approx": 1224.8,
+  "below_sea_level_pixels": 1232385,
+  "note": "Elevation in metres, vertical datum EGM96. NoData outside the frozen Iran boundary (cropToCutline) and any residual source voids; SRTMGL3 v003 is void-filled so interior source voids are ~0. Below-sea-level pixels are Caspian-margin/water noise. Median is histogram-approximate (memory-safe). Real elevation; no exaggeration."
+}
