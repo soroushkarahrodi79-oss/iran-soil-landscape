@@ -1,0 +1,94 @@
+{
+  "thresholds": {
+    "relief_contrast_min": 0.06,
+    "shadow_burden_max": 0.02,
+    "note": "fixed before measurement; selection = lowest exaggeration meeting both"
+  },
+  "pixels_measured_iran_land": 2772469,
+  "class_edge_pixels_excluded_share": 0.0794,
+  "by_exaggeration": {
+    "1x": {
+      "relief_contrast_std": 0.0334,
+      "shadow_burden_below_0.5": 0.0,
+      "mean_shading": 0.9821,
+      "p01_shading": 0.8884,
+      "meets_relief_threshold": false,
+      "within_shadow_budget": true
+    },
+    "2x": {
+      "relief_contrast_std": 0.059,
+      "shadow_burden_below_0.5": 0.0001,
+      "mean_shading": 0.978,
+      "p01_shading": 0.7826,
+      "meets_relief_threshold": false,
+      "within_shadow_budget": true
+    },
+    "3x": {
+      "relief_contrast_std": 0.0838,
+      "shadow_burden_below_0.5": 0.0016,
+      "mean_shading": 0.9725,
+      "p01_shading": 0.6795,
+      "meets_relief_threshold": true,
+      "within_shadow_budget": true
+    },
+    "4x": {
+      "relief_contrast_std": 0.1076,
+      "shadow_burden_below_0.5": 0.0066,
+      "mean_shading": 0.9654,
+      "p01_shading": 0.5617,
+      "meets_relief_threshold": true,
+      "within_shadow_budget": true
+    }
+  },
+  "selected_exaggeration": "3x",
+  "camera_test": {
+    "at_exaggeration": "3x",
+    "oblique_tilt_deg": 55,
+    "oblique_north_south_compression": 0.5736,
+    "oblique_relief_silhouette_px": 17.4,
+    "frame_width_px": 2500,
+    "note": "Relief silhouette is what the oblique adds: the tallest point in Iran rises this many pixels above the datum in a frame this wide. Compression is what it costs: north-south scale is multiplied by cos(tilt), so the map no longer has one scale and areas cannot be compared."
+  },
+  "registration_on_render": {
+    "pixels": 2772469,
+    "class_agreement": 0.99876,
+    "disagreeing_pixels": 3440,
+    "render": "iran_3d_3x_topdown.png"
+  },
+  "lighting_test": {
+    "by_variant": {
+      "low": {
+        "relief_contrast_std": 0.1007,
+        "shadow_burden_below_0.5": 0.0395,
+        "mean_shading": 0.7141,
+        "p01_shading": 0.3593,
+        "meets_relief_threshold": true,
+        "within_shadow_budget": false,
+        "sun_elevation_deg": 22,
+        "sun_azimuth_deg": 315
+      },
+      "default": {
+        "relief_contrast_std": 0.0838,
+        "shadow_burden_below_0.5": 0.0016,
+        "mean_shading": 0.9725,
+        "p01_shading": 0.6795,
+        "meets_relief_threshold": true,
+        "within_shadow_budget": true,
+        "sun_elevation_deg": 40,
+        "sun_azimuth_deg": 315
+      },
+      "high": {
+        "relief_contrast_std": 0.0617,
+        "shadow_burden_below_0.5": 0.0,
+        "mean_shading": 1.1689,
+        "p01_shading": 0.935,
+        "meets_relief_threshold": true,
+        "within_shadow_budget": true,
+        "sun_elevation_deg": 58,
+        "sun_azimuth_deg": 315
+      }
+    },
+    "selected": "default",
+    "rule": "most relief contrast among variants within the shadow budget"
+  }
+}

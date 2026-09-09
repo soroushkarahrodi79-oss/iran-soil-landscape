@@ -195,6 +195,94 @@ def test_dem_elevation_and_crs_plausible():
     assert 0 <= qa["nodata_share_pct"] < 60
 
 
+# --- 3D prototype invariants (Blender scene is generated, never hand-authored) ---
+import yaml  # noqa: E402
+
+RENDER_CFG = ROOT / "config/render_3d.yaml"
+BLENDER_INPUTS = ROOT / "data/processed/render/blender/blender_inputs.json"
+SCENE_SCRIPT = ROOT / "scripts/rendering/blender_build_scene.py"
+PROOF_3D = ROOT / "outputs/proof/3d"
+
+
+def test_blender_scene_and_toolchain_are_not_git_tracked():
+    # The .blend is regenerable from the script; the portable Blender build is tooling.
+    for rel in ("blender/iran_soil_landscapes_prototype.blend",
+                "tools/blender-4.5.13-windows-x64/blender.exe"):
+        out = subprocess.run(["git", "check-ignore", rel], cwd=ROOT, capture_output=True, text=True)
+        assert out.stdout.strip() == rel, f"{rel} is not gitignored"
+
+
+def test_soil_texture_is_sampled_categorically_and_palette_is_not_regraded():
+    # Two ways a render could silently corrupt the science: bilinear sampling would
+    # invent blended soil colours between classes, and a filmic/AgX view transform
+    # would re-grade the documented palette. Both must stay locked in the script.
+    src = SCENE_SCRIPT.read_text(encoding="utf-8")
+    assert src.count('interpolation = "Closest"') >= 2, "categorical textures must sample Closest"
+    assert 'view_transform = "Standard"' in src, "palette must not be re-graded by a view transform"
+    assert "ORTHO" in src, "map cameras must be orthographic (constant scale)"
+
+
+def test_render_display_colours_never_collide_with_a_soil_class():
+    # Context land (outside Iran) and cartographic water are display-only. If either
+    # matched a soil colour, a reader could mistake 'no data' for a mapped soil.
+    cfg = yaml.safe_load(RENDER_CFG.read_text(encoding="utf-8"))
+    palette = yaml.safe_load(PALETTE.read_text(encoding="utf-8"))["wrb2_rsg_colours"]
+    used = {v.upper() for v in palette.values()}
+    for key in ("context_land_srgb", "cartographic_water_srgb"):
+        assert cfg["surface"][key].upper() not in used, f"{key} collides with a soil class colour"
+
+
+def test_prototype_mesh_is_one_vertex_per_heightmap_sample():
+    if not BLENDER_INPUTS.exists():
+        pytest.skip("blender inputs not prepared yet")
+    m = json.loads(BLENDER_INPUTS.read_text(encoding="utf-8"))
+    mesh = m["mesh"]
+    assert mesh["verts"] == mesh["width"] * mesh["height"], "mesh duplicates or drops samples"
+    # Elevation must stay inside the DEM's plausible envelope: the mesh is a decimation,
+    # never a rescaling, so no exaggeration may be baked into the geometry.
+    assert -120 <= m["elevation_m"]["min"] <= 60, m["elevation_m"]["min"]
+    assert 3500 <= m["elevation_m"]["max"] <= 6000, m["elevation_m"]["max"]
+
+
+def test_prototype_renders_match_configured_resolution():
+    if not (PROOF_3D / "iran_3d_1x_topdown.png").exists():
+        pytest.skip("prototype renders not produced yet")
+    from PIL import Image
+    cfg = yaml.safe_load(RENDER_CFG.read_text(encoding="utf-8"))
+    for cam in ("topdown", "oblique"):
+        want = tuple(cfg["cameras"][cam]["resolution"])
+        for k in cfg["exaggeration_tests"]:
+            p = PROOF_3D / f"iran_3d_{k}x_{cam}.png"
+            if p.exists():
+                assert Image.open(p).size == want, f"{p.name} is {Image.open(p).size}, want {want}"
+
+
+PROTO_QA = ROOT / "provenance/metadata/prototype_3d_qa.json"
+
+
+def test_exaggeration_choice_is_the_lowest_that_passes_its_own_thresholds():
+    # Guards the selection against being edited to a preferred answer after the fact:
+    # it must still be the LOWEST exaggeration meeting both pre-set criteria.
+    if not PROTO_QA.exists():
+        pytest.skip("3D prototype QA not run yet")
+    qa = json.loads(PROTO_QA.read_text(encoding="utf-8"))
+    passing = [k for k, v in qa["by_exaggeration"].items()
+               if v["meets_relief_threshold"] and v["within_shadow_budget"]]
+    assert qa["selected_exaggeration"] == (passing[0] if passing else None)
+    chosen = qa["by_exaggeration"][qa["selected_exaggeration"]]
+    assert chosen["shadow_burden_below_0.5"] <= qa["thresholds"]["shadow_burden_max"]
+
+
+def test_render_still_shows_the_soil_class_the_substrate_says():
+    # End-to-end: mesh + UVs + texture sampling + render must not move a class.
+    if not PROTO_QA.exists():
+        pytest.skip("3D prototype QA not run yet")
+    reg = json.loads(PROTO_QA.read_text(encoding="utf-8"))["registration_on_render"]
+    if reg is None:
+        pytest.skip("selected render absent")
+    assert reg["class_agreement"] >= 0.99, reg
+
+
 def test_srtm_tile_manifest_coverage_and_official_endpoint():
     if not SRTM_TILES.exists():
         pytest.skip("srtm tile manifest not generated")
