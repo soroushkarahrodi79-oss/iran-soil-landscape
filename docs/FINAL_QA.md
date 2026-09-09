@@ -39,7 +39,7 @@ construction" argument.
 
 ### B. Shaded cartographic class readability
 
-Separately, on the finished shaded map: **99.934%** of 2,772,469 Iran land pixels still
+Separately, on the finished shaded map: **99.931%** of 2,772,469 Iran land pixels still
 classify to their substrate class after 2x relief shading. This answers "can a reader still
 tell which class this is once it is shaded?" — a legibility figure, not a spatial one.
 
@@ -54,7 +54,7 @@ Since Leptosols is 40.7% of the map, the chromaticity metric reassigned a slice 
 country to an invisible class and reported **95.874%**, a readability failure no reader could
 ever experience. Classifying in full **CIELAB** keeps lightness, which is exactly what
 separates a mid grey from a near-black, and shading at 2x is mild enough (mean 0.978) for
-lightness to stay informative. The corrected figure, 99.934%, is *better* than the
+lightness to stay informative. The corrected figure, 99.931%, is *better* than the
 prototype's, as expected from a palette with larger inter-class separation.
 
 ## Final scientific QA — 21/21 machine-checked
@@ -77,10 +77,10 @@ prototype's, as expected from a palette with larger inter-class separation.
 | 14 | No unsupported scale-bar claim | PASS — 0.274% measured, tolerance printed |
 | 15 | Publication claim ceiling respected | PASS — forbidden phrasings absent |
 | 16 | Master lossless, 4:5, 6000 × 7500 | PASS |
-| 17 | LinkedIn asset derived from the master | PASS — 2160 × 2700 Lanczos downsample |
+| 17 | LinkedIn asset derived from the master | PASS at the time — **superseded** by D-020: the feed sheet is now composed from the same render, checked by hash |
 | 18 | Geographic name spellings | PASS — reviewed against the label list |
 | 19 | Geometric registration, unlit | PASS — 100.0000%, offset (0,0) |
-| 20 | Shaded class readability, published map | PASS — 99.934% (CIELAB) |
+| 20 | Shaded class readability, published map | PASS — 99.931% (CIELAB) |
 | 21 | Palette: high-contact neighbours separable | PASS — none failing |
 
 ## Visual QA — human-scale inspection
@@ -118,3 +118,72 @@ Disk stayed between 13 and 15 GB free throughout, above the 10 GB floor.
 - DEM nodata (4.5% of the grid) renders at sea level beneath the water layer.
 - Six classes below 0.02% of Iran are named in the legend but grouped, since each is
   individually invisible at map scale.
+
+---
+
+# LinkedIn visual polish gate (base `6f1319f`)
+
+Typography, layout and mobile readability only. Soil geometry, soil IDs, DEM, water
+geometry, projection, camera, 2× exaggeration, classification and statistics are untouched;
+the frozen hashes re-verify unchanged in `qa_final_publication.py`.
+
+## Mobile readability, measured then looked at
+
+The requirement was legibility at ~540 × 675. That was tested, not assumed: the composed
+2160 × 2700 sheet is reduced to 540 × 675 and every type size is converted to the pixel
+height a reader actually gets there (`pt / 72 × dpi × 0.25`).
+
+**The first attempt failed.** At the +20–25% uplift the gate specified, the title, map,
+labels and the top four classes with percentages were readable, but the **methodology line
+and the attribution were not** — 4.7 px and 4.5 px respectively. A 20–25% uplift is enough
+for short bold labels and not enough for body copy at feed size, so those two were raised
+further and the deviation is recorded here rather than hidden.
+
+| Element | pt | px at 540 | Minimum | Verdict |
+| --- | --- | --- | --- | --- |
+| Title | 54 | 20.2 | 14.0 | ok |
+| Map labels (land) | 15.0 | 5.6 | 5.0 | ok |
+| Legend class name | 15.0 | 5.6 | 5.0 | ok |
+| Legend percentage | 13.2 | 4.9 | 4.8 | ok |
+| **Methodology line** | **24.0** | **9.0** | 8.5 | ok (raised beyond the 20–25% band) |
+| **Attribution** | **19.0** | **7.1** | 6.5 | ok (raised beyond the 20–25% band) |
+
+Visual confirmation at 540 × 675: title immediately readable; the map is clearly the
+dominant element; ALBORZ, ZAGROS, DASHT-E KAVIR, LUT DESERT, KHUZESTAN PLAIN, Caspian Sea
+and Persian Gulf all readable; the top four classes and their percentages readable; the
+methodology line readable without zoom; the credit line recognisable.
+
+**One honest marginal:** *Lake Urmia* and *Gulf of Oman* — the two smallest water labels,
+both near a frame edge — are legible but tight at 540 px. The other seven labels are clear.
+They were not enlarged further because the map-label size is already at the top of the
+band the gate specified, and both sit over busy areas where a larger halo would cover data.
+
+## Figure/ground
+
+Outside-Iran terrain moved from `#BFBAB2` to `#D2CFC9`, raising ΔE00 against the dominant
+Leptosols grey from 14.9 to 20.0 while keeping Calcisols at 11.5, above the project's
+ΔE00 ≥ 10 threshold. No soil palette colour was altered. Full candidate table in
+`FINAL_CARTOGRAPHY.md`.
+
+A latent defect surfaced here: the legend's "Outside Iran" swatch had its colour
+**hard-coded** in the layout script and would have kept displaying the superseded grey
+after the render changed — a legend contradicting its own map. Both non-soil swatches now
+read from `config/render_3d.yaml`, and `test_legend_non_soil_swatches_come_from_config`
+fails if a colour literal reappears in the legend.
+
+## Sheet architecture
+
+The LinkedIn asset is now **composed**, not downsampled: larger type at the same pixel size
+cannot be produced by resampling, so the previous gate's "derive from the master" rule no
+longer expresses the right constraint. The constraint that matters is preserved and is now
+machine-checked — **both sheets draw the same scientific render**, proven by
+`map_render_sha256` in each sheet's `.build.json` (`bf29af3c1c19…` for both).
+
+Map frame: 0.800 → 0.864 of sheet width (**+8.0%**, within the 8–12% asked).
+
+## Machine-checked QA after this gate
+
+`qa_final_publication.py` now runs **23 checks, all passing**, including three that did not
+exist before: that both sheets draw the same render (by hash), that LinkedIn type clears its
+feed-size minimum, and that the LinkedIn map frame is genuinely larger than the master's.
+Shaded readability was recomputed against the re-rendered map: **99.931%**.

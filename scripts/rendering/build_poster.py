@@ -49,12 +49,44 @@ INK_SOFT = "#5A6570"
 WATER_INK = "#2F5D82"
 
 FIG_W, FIG_H = 20.0, 25.0          # inches, 4:5 portrait
-MAP_LEFT, MAP_RIGHT = 0.10, 0.90
-MAP_TOP = 0.885                     # top of the map axes, figure fraction
-NOTES_TOP = 0.095                   # fixed anchor: explanation never floats into the legend
 LEGEND_COLS = 5
 MAP_CROP = 0.015                    # trims the terrain slab's lit edge (a DEM-bbox artefact)
 LEGEND_MINOR_MAX = 0.05             # share % below which classes are grouped in the legend
+
+# Two layouts over ONE scientific render. The map pixels, projection, camera, exaggeration
+# and classification are identical in both; only furniture and type differ.
+#   master    the archival sheet: full citations, licence text, method paragraphs
+#   linkedin  a feed-first sheet: larger map, larger type, one method line, short credit
+# The LinkedIn sheet is a re-composition, not a downsample of the master — bigger type at
+# the same pixel size cannot be reached by resampling.
+LAYOUTS = {
+    "master": {
+        "map_left": 0.10, "map_right": 0.90, "map_top": 0.885,
+        "footer_top": 0.095,
+        "label_land_pt": 12.5, "label_water_pt": 13.0,
+        "legend_head_pt": 13.5, "legend_name_pt": 12.0, "legend_pct_pt": 11.0,
+        "legend_pct_colour": INK_SOFT, "legend_row_h": 0.0235, "legend_sub": True,
+        "meta_block": True, "footer": "full",
+        "scale_note": "equal-area projection; distance scale accurate to ±{dev:.1f}% across the map",
+    },
+    "linkedin": {
+        "map_left": 0.068, "map_right": 0.932, "map_top": 0.900,   # map frame +8%
+        "footer_top": 0.090,
+        "label_land_pt": 15.0, "label_water_pt": 15.5,     # +20% / +19%
+        "legend_head_pt": 15.0, "legend_name_pt": 15.0, "legend_pct_pt": 13.2,  # +25% / +20%
+        "legend_pct_colour": INK, "legend_row_h": 0.026, "legend_sub": False,
+        "nonsoil_gap": 0.026, "nonsoil_row": 0.024,
+        # Sized from the 540 px mobile test, not from a percentage: at 2160 px these are
+        # ~36 px and ~29 px, which survive the 4x reduction. The 20-25% uplift asked for
+        # elsewhere is not enough for body copy at feed size.
+        "method_pt": 24.0, "method_wrap": 100, "attrib_pt": 19.0, "attrib_y": 0.012,
+        "meta_block": False, "footer": "short",
+        "scale_note": "Scale variation <0.3%",
+    },
+}
+LAYOUTS["master"].update({"nonsoil_gap": 0.030, "nonsoil_row": 0.024,
+                          "method_pt": 9.5, "method_wrap": 95,
+                          "attrib_pt": 9.5, "attrib_y": 0.021})
 
 
 def pick_font() -> str:
@@ -85,7 +117,7 @@ def load_classes() -> tuple[list[dict], list[dict], list[dict]]:
     return soils, nonsoil, minor
 
 
-def draw_map(fig, map_png: Path, furniture: dict, font: str) -> None:
+def draw_map(fig, map_png: Path, furniture: dict, font: str, L: dict) -> None:
     img = Image.open(map_png).convert("RGBA")
     w, h = img.size
     cw, ch = int(w * MAP_CROP), int(h * MAP_CROP)
@@ -95,9 +127,9 @@ def draw_map(fig, map_png: Path, furniture: dict, font: str) -> None:
     arr = np.asarray(flat.convert("RGB"))
 
     aspect = img.size[0] / img.size[1]
-    width_frac = MAP_RIGHT - MAP_LEFT
+    width_frac = L["map_right"] - L["map_left"]
     height_frac = width_frac * FIG_W / aspect / FIG_H
-    ax = fig.add_axes((MAP_LEFT, MAP_TOP - height_frac, width_frac, height_frac))
+    ax = fig.add_axes((L["map_left"], L["map_top"] - height_frac, width_frac, height_frac))
     ax.imshow(arr, interpolation="lanczos")
     ax.set_axis_off()
 
@@ -111,7 +143,7 @@ def draw_map(fig, map_png: Path, furniture: dict, font: str) -> None:
         water = lab["style"] == "water"
         ax.text(x, y, lab["text"].upper() if not water else lab["text"],
                 transform=ax.transAxes, ha="center", va="center",
-                fontsize=13 if water else 12.5, fontfamily=font,
+                fontsize=L["label_water_pt"] if water else L["label_land_pt"], fontfamily=font,
                 fontstyle="italic" if water else "normal",
                 fontweight="normal" if water else "semibold",
                 color=WATER_INK if water else INK,
@@ -132,10 +164,9 @@ def draw_map(fig, map_png: Path, furniture: dict, font: str) -> None:
     for frac, text in ((0.0, "0"), (0.5, f"{bar_km // 2}"), (1.0, f"{bar_km} km")):
         ax.text(x0 + bar * frac, y0 + 0.012, text, transform=ax.transAxes,
                 ha="center", va="bottom", fontsize=9.5, color=INK, fontfamily=font)
-    ax.text(x0, y0 - 0.006, f"equal-area projection; distance scale accurate to "
-                            f"±{sb['worst_deviation_percent']:.1f}% across the map",
+    ax.text(x0, y0 - 0.006, L["scale_note"].format(dev=sb["worst_deviation_percent"]),
             transform=ax.transAxes, ha="left", va="top",
-            fontsize=8, color=INK_SOFT, fontfamily=font)
+            fontsize=8 if L["footer"] == "full" else 9.5, color=INK_SOFT, fontfamily=font)
 
     # --- north indicator: subtle, and honest about convergence ---
     nx, ny = 0.963, 0.052
@@ -149,29 +180,37 @@ def draw_map(fig, map_png: Path, furniture: dict, font: str) -> None:
             fontsize=7.5, color=INK_SOFT, fontfamily=font)
 
 
-def draw_title(fig, font: str) -> None:
+def draw_title(fig, font: str, L: dict) -> None:
     fig.text(0.055, 0.958, TITLE, ha="left", va="center", fontsize=54,
              fontfamily=font, fontweight="bold", color=INK)
     fig.text(0.055, 0.930, SUBTITLE, ha="left", va="center", fontsize=21,
              fontfamily=font, color=INK_SOFT)
     fig.add_artist(plt.Line2D([0.055, 0.945], [0.911, 0.911], color=INK,
                               linewidth=1.1, alpha=0.35))
-    fig.text(0.945, 0.930, "Dominant WRB-correlated soil groups\nHWSD v2.01 · SRTMGL3 terrain",
-             ha="right", va="center", fontsize=11.5, fontfamily=font,
-             color=INK_SOFT, linespacing=1.5)
+    if L["meta_block"]:
+        # Dropped on the feed sheet: it repeats the method line and competes with the title
+        # at thumbnail size.
+        fig.text(0.945, 0.930, "Dominant WRB-correlated soil groups\nHWSD v2.01 · SRTMGL3 terrain",
+                 ha="right", va="center", fontsize=11.5, fontfamily=font,
+                 color=INK_SOFT, linespacing=1.5)
 
 
-def draw_legend(fig, soils, nonsoil, minor, font: str, top: float) -> float:
-    fig.text(0.055, top, "SOIL REFERENCE GROUPS", ha="left", va="top", fontsize=13.5,
+def draw_legend(fig, soils, nonsoil, minor, font: str, top: float, L: dict,
+                surface: dict) -> float:
+    head, name_pt, pct_pt = L["legend_head_pt"], L["legend_name_pt"], L["legend_pct_pt"]
+    fig.text(0.055, top, "SOIL REFERENCE GROUPS", ha="left", va="top", fontsize=head,
              fontfamily=font, fontweight="bold", color=INK)
-    fig.text(0.055, top - 0.017, "WRB-2022-correlated dominant group per HWSD v2.01 mapping "
-                                 "unit, ordered by mapped share of Iran",
-             ha="left", va="top", fontsize=10.5, fontfamily=font, color=INK_SOFT)
+    y_start = top - 0.026
+    if L["legend_sub"]:
+        fig.text(0.055, top - 0.017, "WRB-2022-correlated dominant group per HWSD v2.01 mapping "
+                                     "unit, ordered by mapped share of Iran",
+                 ha="left", va="top", fontsize=10.5, fontfamily=font, color=INK_SOFT)
+        y_start = top - 0.043
 
     cols = LEGEND_COLS
     col_w = (0.945 - 0.055) / cols
-    row_h, sw = 0.0235, 0.015
-    y_start = top - 0.043
+    row_h = L["legend_row_h"]
+    sw = 0.015 if L["footer"] == "full" else 0.018
     for i, cls in enumerate(soils):
         cx = 0.055 + (i % cols) * col_w
         cy = y_start - (i // cols) * row_h
@@ -179,43 +218,39 @@ def draw_legend(fig, soils, nonsoil, minor, font: str, top: float) -> float:
                                      transform=fig.transFigure, facecolor=cls["hex"],
                                      edgecolor=INK, linewidth=0.5, alpha=1.0))
         fig.text(cx + sw + 0.008, cy - 0.009, cls["name"], ha="left", va="center",
-                 fontsize=12, fontfamily=font, color=INK)
-        fig.text(cx + col_w - 0.022, cy - 0.009, f"{cls['share']:.1f}%", ha="right",
-                 va="center", fontsize=11, fontfamily=font, color=INK_SOFT)
+                 fontsize=name_pt, fontfamily=font, color=INK)
+        fig.text(cx + col_w - 0.018, cy - 0.009, f"{cls['share']:.1f}%", ha="right",
+                 va="center", fontsize=pct_pt, fontfamily=font,
+                 color=L["legend_pct_colour"])
     y = y_start - ((len(soils) - 1) // cols + 1) * row_h
 
     names = ", ".join(c["name"] for c in minor)
     fig.text(0.055, y - 0.004, f"Also mapped, each below 0.02% of Iran: {names} "
                                f"(combined {sum(c['share'] for c in minor):.3f}%).",
-             ha="left", va="top", fontsize=10, fontfamily=font, color=INK_SOFT)
+             ha="left", va="top", fontsize=10 if L["footer"] == "full" else 11,
+             fontfamily=font, color=INK_SOFT)
 
-    y -= 0.030
-    fig.text(0.055, y, "NON-SOIL", ha="left", va="top", fontsize=13.5,
+    y -= L["nonsoil_gap"]
+    fig.text(0.055, y, "NON-SOIL", ha="left", va="top", fontsize=head,
              fontfamily=font, fontweight="bold", color=INK)
-    y -= 0.022
-    for i, cls in enumerate(nonsoil):
+    y -= L["nonsoil_row"]
+    entries = [(c["hex"], f"{c['name']} (HWSD accounting class)") for c in nonsoil]
+    # Swatches read from configuration, never hard-coded: a legend chip that has drifted
+    # from the rendered colour is a factual error in the map.
+    entries.append((surface["cartographic_water_srgb"], "Seas and lakes (Natural Earth)"))
+    entries.append((surface["context_land_srgb"], "Outside Iran — no soil data shown"))
+    for i, (hexcol, text) in enumerate(entries):
         cx = 0.055 + i * col_w
         fig.patches.append(Rectangle((cx, y - sw * FIG_W / FIG_H), sw, sw * FIG_W / FIG_H,
-                                     transform=fig.transFigure, facecolor=cls["hex"],
+                                     transform=fig.transFigure, facecolor=hexcol,
                                      edgecolor=INK, linewidth=0.5))
-        fig.text(cx + sw + 0.008, y - 0.009, f"{cls['name']} (HWSD accounting class)",
-                 ha="left", va="center", fontsize=11.5, fontfamily=font, color=INK)
-    cx = 0.055 + max(len(nonsoil), 1) * col_w
-    fig.patches.append(Rectangle((cx, y - sw * FIG_W / FIG_H), sw, sw * FIG_W / FIG_H,
-                                 transform=fig.transFigure,
-                                 facecolor="#6E93B8", edgecolor=INK, linewidth=0.5))
-    fig.text(cx + sw + 0.008, y - 0.009, "Seas and lakes (Natural Earth)",
-             ha="left", va="center", fontsize=11.5, fontfamily=font, color=INK)
-    cx += col_w
-    fig.patches.append(Rectangle((cx, y - sw * FIG_W / FIG_H), sw, sw * FIG_W / FIG_H,
-                                 transform=fig.transFigure,
-                                 facecolor="#BFBAB2", edgecolor=INK, linewidth=0.5))
-    fig.text(cx + sw + 0.008, y - 0.009, "Outside Iran — no soil data shown",
-             ha="left", va="center", fontsize=11.5, fontfamily=font, color=INK)
+        fig.text(cx + sw + 0.008, y - 0.009, text, ha="left", va="center",
+                 fontsize=11.5 if L["footer"] == "full" else name_pt * 0.86,
+                 fontfamily=font, color=INK)
     return y - 0.030
 
 
-def draw_notes(fig, font: str, top: float) -> None:
+def draw_notes(fig, font: str, top: float, L: dict) -> None:
     import textwrap
 
     def wrap(text: str, width: int = 95) -> str:
@@ -225,6 +260,22 @@ def draw_notes(fig, font: str, top: float) -> None:
 
     fig.add_artist(plt.Line2D([0.055, 0.945], [top + 0.004, top + 0.004],
                               color=INK, linewidth=0.8, alpha=0.25))
+
+    if L["footer"] == "short":
+        # Feed sheet: one method statement and one credit line. Every qualification the
+        # full sheet makes is still made here — dominance, native support, exaggeration,
+        # and that terrain detail is not soil detail — just in one sentence each.
+        method = ("Dominant WRB-correlated soil groups from HWSD v2.01 (~1 km native "
+                  "support). Terrain: SRTMGL3.003, vertically exaggerated 2× for "
+                  "visualization. Terrain detail does not increase soil-data resolution.")
+        fig.text(0.055, top - 0.012, wrap(method, L["method_wrap"]), ha="left", va="top",
+                 fontsize=L["method_pt"], fontfamily=font, color=INK, linespacing=1.4)
+        fig.text(0.055, L["attrib_y"], "Data: FAO & IIASA · NASA/USGS · Natural Earth · "
+                                       "CC BY-NC-SA 4.0",
+                 ha="left", va="bottom", fontsize=L["attrib_pt"], fontfamily=font,
+                 color=INK_SOFT)
+        return
+
     left = (
         "Each colour is the DOMINANT soil group of the HWSD v2.01 mapping unit at that "
         "location — the most extensive soil in a unit that usually contains several. It is "
@@ -266,31 +317,36 @@ def main() -> None:
     ap.add_argument("--width", type=int, default=2500, help="output width px (height = 1.25x)")
     ap.add_argument("--out", default=str(ROOT / "outputs/proof/poster"))
     ap.add_argument("--vector", action="store_true", help="also write PDF and SVG")
+    ap.add_argument("--layout", choices=tuple(LAYOUTS), default="master")
+    ap.add_argument("--stem", default="iran_soil_landscapes")
     args = ap.parse_args()
 
+    L = LAYOUTS[args.layout]
     furniture = json.loads(FURNITURE.read_text(encoding="utf-8"))
     if furniture["labels_failed_verification"]:
         raise SystemExit(f"labels failed verification: {furniture['labels_failed_verification']}")
+    surface = yaml.safe_load((ROOT / "config/render_3d.yaml").read_text(encoding="utf-8"))["surface"]
     font = pick_font()
     soils, nonsoil, minor = load_classes()
 
     dpi = args.width / FIG_W
     fig = plt.figure(figsize=(FIG_W, FIG_H), dpi=dpi, facecolor=PAPER)
-    draw_title(fig, font)
-    draw_map(fig, Path(args.map), furniture, font)
+    draw_title(fig, font, L)
+    draw_map(fig, Path(args.map), furniture, font, L)
 
     img = Image.open(args.map)
     aspect = img.size[0] / img.size[1]
-    map_bottom = MAP_TOP - (MAP_RIGHT - MAP_LEFT) * FIG_W / aspect / FIG_H
-    legend_bottom = draw_legend(fig, soils, nonsoil, minor, font, top=map_bottom - 0.024)
-    if legend_bottom < NOTES_TOP:
-        raise SystemExit(f"legend overruns the explanation block "
-                         f"({legend_bottom:.3f} < {NOTES_TOP}); layout must be adjusted")
-    draw_notes(fig, font, top=NOTES_TOP)
+    map_bottom = L["map_top"] - (L["map_right"] - L["map_left"]) * FIG_W / aspect / FIG_H
+    legend_bottom = draw_legend(fig, soils, nonsoil, minor, font,
+                                top=map_bottom - 0.024, L=L, surface=surface)
+    if legend_bottom < L["footer_top"]:
+        raise SystemExit(f"legend overruns the footer block "
+                         f"({legend_bottom:.3f} < {L['footer_top']}); layout must be adjusted")
+    draw_notes(fig, font, top=L["footer_top"], L=L)
 
     out_dir = Path(args.out).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
-    stem = f"iran_soil_landscapes_{args.width}x{int(args.width * 1.25)}"
+    stem = f"{args.stem}_{args.width}x{int(args.width * 1.25)}"
     png = out_dir / f"{stem}.png"
     fig.savefig(png, dpi=dpi, facecolor=PAPER)
     written = [png]
@@ -300,12 +356,32 @@ def main() -> None:
             fig.savefig(v, facecolor=PAPER)
             written.append(v)
     plt.close(fig)
+
+    # Build record. The LinkedIn sheet is a re-composition rather than a downsample of the
+    # master, so "derived from the master" is no longer the invariant to check. What must
+    # hold is that both sheets draw the SAME scientific render, and this records the hash
+    # that proves it.
+    import hashlib
+    map_path = Path(args.map)
+    (out_dir / f"{stem}.build.json").write_text(json.dumps({
+        "layout": args.layout,
+        "map_render": map_path.name,
+        "map_render_sha256": hashlib.sha256(map_path.read_bytes()).hexdigest(),
+        "output_px": [args.width, int(args.width * 1.25)],
+        "figure_in": [FIG_W, FIG_H],
+        "type_pt": {"title": 54, "map_label_land": L["label_land_pt"],
+                    "legend_name": L["legend_name_pt"], "legend_pct": L["legend_pct_pt"],
+                    "method": L["method_pt"], "attribution": L["attrib_pt"]},
+        "map_width_fraction": round(L["map_right"] - L["map_left"], 4),
+    }, indent=2) + chr(10), encoding="utf-8")
+
     for w in written:
         size = Image.open(w).size if w.suffix == ".png" else None
         rel = w.relative_to(ROOT) if w.is_relative_to(ROOT) else w
         print(f"wrote {rel} "
               f"({w.stat().st_size / 1e6:.1f} MB{'' if size is None else f', {size[0]}x{size[1]}'})")
-    print(f"font: {font}; map: {Path(args.map).name}; labels: {len(furniture['labels'])}")
+    print(f"layout: {args.layout}; font: {font}; map: {Path(args.map).name}; "
+          f"labels: {len(furniture['labels'])}; map width {L['map_right'] - L['map_left']:.2f} of sheet")
 
 
 if __name__ == "__main__":

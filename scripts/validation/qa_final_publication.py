@@ -182,11 +182,27 @@ def check_outputs(results: list) -> None:
                     "detail": f"{m.size[0]}x{m.size[1]}"})
     d = Image.open(LINKEDIN)
     rec = json.loads((LINKEDIN.parent / "linkedin_derivative.json").read_text(encoding="utf-8"))
-    results.append({"check": "LinkedIn asset is a downsample of the master, not an upscale",
-                    "pass": d.size == (2160, 2700) and rec["master_size"] == [6000, 7500]
-                            and d.size[0] < 6000,
-                    "detail": f"{d.size[0]}x{d.size[1]} from {rec['master_size']}, "
-                              f"{rec['file_size_mb']} MB"})
+    master_build = json.loads(
+        (MASTER.parent / (MASTER.stem + ".build.json")).read_text(encoding="utf-8"))
+    # The feed sheet is a re-composition, not a downsample, so the invariant is that both
+    # sheets draw the SAME scientific render — proven by hash, not by resemblance.
+    same_render = rec["map_render_sha256"] == master_build["map_render_sha256"]
+    results.append({"check": "LinkedIn sheet draws the same scientific render as the master",
+                    "pass": same_render and d.size == (2160, 2700),
+                    "detail": f"{d.size[0]}x{d.size[1]}, map {rec['map_render']} "
+                              f"sha {rec['map_render_sha256'][:12]}… "
+                              f"{'matches' if same_render else 'DIFFERS FROM'} master"})
+    results.append({"check": "LinkedIn type clears its feed-size minimum at 540 px",
+                    "pass": not rec["failing_elements"],
+                    "detail": rec["failing_elements"] or
+                              f"method {rec['type_at_preview_size']['method']['preview_px']} px, "
+                              f"attribution "
+                              f"{rec['type_at_preview_size']['attribution']['preview_px']} px"})
+    results.append({"check": "LinkedIn map frame enlarged over the master",
+                    "pass": rec["map_width_fraction"] > master_build["map_width_fraction"],
+                    "detail": f"{master_build['map_width_fraction']:.3f} -> "
+                              f"{rec['map_width_fraction']:.3f} of sheet width "
+                              f"(+{(rec['map_width_fraction'] / master_build['map_width_fraction'] - 1) * 100:.1f}%)"})
     results.append({"check": "archival master is lossless",
                     "pass": MASTER.suffix.lower() in (".png", ".tif", ".tiff"),
                     "detail": MASTER.suffix})

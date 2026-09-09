@@ -105,3 +105,29 @@ HWSD v2.01 is CC BY-NC-SA 4.0, so the ShareAlike notice must stay on the asset a
 must stay non-commercial: no boosted/sponsored placement, no paywall, no "hire me" framing
 on the asset itself. For anything commercial, contact FAO (copyright@fao.org) first. This is
 a practical summary, not legal advice.
+
+---
+
+## LinkedIn sheet (visual polish gate)
+
+The feed asset is now composed with its own layout rather than downsampled from the master.
+The map, projection, camera, 2× exaggeration, classification and statistics are identical —
+both sheets draw the same render, checked by hash — but the furniture is sized for a phone.
+
+| | On the sheet | Where the full version lives |
+| --- | --- | --- |
+| Method | one statement: dominance, ~1 km native support, 2× exaggeration, and that terrain detail is not soil detail | master sheet, PDF, `METHODS.md` |
+| Credit | `Data: FAO & IIASA · NASA/USGS · Natural Earth · CC BY-NC-SA 4.0` | master sheet, PDF, `LICENSES.md` |
+| Scale note | `Scale variation <0.3%` | `FINAL_CARTOGRAPHY.md` |
+
+Every qualification the archival sheet makes is still made on the feed sheet — it is
+shortened, not weakened. The licence identifier stays on the face of the image, which is
+what the ShareAlike obligation requires; the full citation with DOI moves to the post text
+and the master.
+
+**Post the full attribution in the post body**, since the on-image credit is now compact:
+
+> Soils: FAO & IIASA, Harmonized World Soil Database v2.01, Rome and Laxenburg
+> (DOI 10.4060/cc3823en), licensed CC BY-NC-SA 4.0. Terrain: NASA/USGS SRTMGL3.003.
+> Boundary and water: Made with Natural Earth. Projection: Lambert azimuthal equal-area.
+> This map is released under CC BY-NC-SA 4.0.

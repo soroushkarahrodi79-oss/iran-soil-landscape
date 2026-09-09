@@ -88,7 +88,7 @@
     {
       "check": "shaded class readability on the published map (NOT registration)",
       "pass": true,
-      "detail": "0.99934 over 2,772,469 px at 2x, final palette, CIELAB nearest-class"
+      "detail": "0.99931 over 2,772,469 px at 2x, final palette, CIELAB nearest-class"
     },
     {
       "check": "master is 4:5 and >= 6000x7500",
@@ -96,9 +96,19 @@
       "detail": "6000x7500"
     },
     {
-      "check": "LinkedIn asset is a downsample of the master, not an upscale",
+      "check": "LinkedIn sheet draws the same scientific render as the master",
       "pass": true,
-      "detail": "2160x2700 from [6000, 7500], 3.01 MB"
+      "detail": "2160x2700, map iran_map_2x_topdown_5400x4897.png sha bf29af3c1c19\u2026 matches master"
+    },
+    {
+      "check": "LinkedIn type clears its feed-size minimum at 540 px",
+      "pass": true,
+      "detail": "method 9.0 px, attribution 7.1 px"
+    },
+    {
+      "check": "LinkedIn map frame enlarged over the master",
+      "pass": true,
+      "detail": "0.800 -> 0.864 of sheet width (+8.0%)"
     },
     {
       "check": "archival master is lossless",

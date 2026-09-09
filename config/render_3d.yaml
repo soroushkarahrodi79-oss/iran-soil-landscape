@@ -14,7 +14,10 @@ mesh:
   nodata_elev_m: 0         # DEM nodata rendered at sea level (render-only; the DEM is untouched)
 
 surface:
-  context_land_srgb: "#BFBAB2"      # terrain outside Iran: neutral grey, no soil implied
+  context_land_srgb: "#D2CFC9"      # terrain outside Iran: light neutral. Measured, not picked:
+                                    # dE00 20.0 from Leptosols (the dominant grey, so Iran reads
+                                    # as figure against ground), 11.5 from Calcisols at the border,
+                                    # 7.6 from the paper. Lighter still would collapse into both.
   cartographic_water_srgb: "#6E93B8"
   land_roughness: 0.92              # matte: cartographic, not glossy
   water_roughness: 0.18

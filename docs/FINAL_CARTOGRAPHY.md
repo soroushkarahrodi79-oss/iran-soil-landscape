@@ -47,8 +47,9 @@ display colours changed, driven by `scripts/validation/qa_palette_final.py`.
 | Chernozems | CH | `#2B2B2B` | 0.0004% |
 | Acrisols | AC | `#C1440E` | 0.0004% |
 
-Non-class display colours: cartographic water `#6E93B8`, terrain outside Iran `#BFBAB2`,
-paper `#F4F1EA`. Both are tested not to collide with any soil colour.
+Non-class display colours: cartographic water `#6E93B8`, terrain outside Iran `#D2CFC9`
+(revised in the LinkedIn polish gate — see below), paper `#F4F1EA`. Both are tested not to
+collide with any soil colour.
 
 ### What the palette QA changed, and why
 
@@ -140,3 +141,63 @@ anchor stays on verified Gulf of Oman water and only the text is nudged upward.
   the long-standing cartographic convention that hydronyms are italic.
 - Text is composed **outside** Blender and exported as vector PDF and SVG alongside the
   raster, so no type is rasterised unless the raster output is used.
+
+---
+
+## Two sheets over one scientific render (LinkedIn polish gate)
+
+The map itself is untouched by this gate. Projection, camera, 2× exaggeration, soil
+geometry, soil IDs, DEM, water geometry, classification and statistics are all as accepted
+at `6f1319f`; the frozen hashes are re-verified in `FINAL_QA.md`. What changed is furniture
+and type, and the sheet count.
+
+| | `master` sheet | `linkedin` sheet |
+| --- | --- | --- |
+| Purpose | archival / print | mobile feed |
+| Map frame | 0.800 of sheet width | **0.864 (+8%)** |
+| Top-right metadata block | present | **removed** |
+| Map labels | 12.5 pt land / 13.0 water | **15.0 / 15.5 (+20% / +19%)** |
+| Legend class names | 12.0 pt | **15.0 pt (+25%)** |
+| Legend percentages | 11.0 pt, soft grey | **13.2 pt (+20%), full ink** |
+| Method text | two paragraph columns | **one statement** |
+| Attribution on face | full citations + DOI + licence sentence | **one credit line** |
+| Scale note | "equal-area projection; distance scale accurate to ±0.3%…" | **"Scale variation <0.3%"** |
+| Full citations, DOI, licence text | on the sheet | in the master, PDF and `LICENSES.md` |
+
+**The LinkedIn sheet is a re-composition, not a downsample.** The previous gate required the
+LinkedIn asset to be derived from the master, which was right when the two differed only in
+size — but larger type at the same pixel count cannot be reached by resampling. The
+invariant that actually matters is preserved and is now checked by hash: **both sheets draw
+the same scientific render**, recorded in each sheet's `.build.json` as
+`map_render_sha256`. `qa_final_publication.py` fails if they diverge.
+
+Class ordering by mapped share and the grouped treatment of the six classes below 0.02% are
+unchanged, as are the `SOIL REFERENCE GROUPS` / `NON-SOIL` split, the HWSD Open Water
+accounting class, and the separate Natural Earth water entry.
+
+### Background outside Iran
+
+`context_land_srgb` moved `#BFBAB2` → **`#D2CFC9`**. No soil palette colour was touched.
+
+The value was measured, not picked. Lightening the surround helps Iran read as figure
+against ground, but pushes the surround toward Calcisols (`#F2E8C6`, 16.8% of Iran, and a
+class that reaches the border) and toward the paper:
+
+| Candidate | L\* | ΔE00 vs Leptosols | ΔE00 vs Calcisols | ΔE00 vs paper |
+| --- | --- | --- | --- | --- |
+| `#BFBAB2` (previous) | 75.7 | 14.9 | 14.1 | 12.8 |
+| **`#D2CFC9` (chosen)** | **83.2** | **20.0** | **11.5** | **7.6** |
+| `#DCD9D3` | 86.8 | 22.2 | 10.5 | 5.2 |
+| `#E8E5DE` | 91.0 | 24.8 | 9.6 | 2.6 |
+
+`#D2CFC9` raises separation from the dominant Leptosols grey by a third while keeping
+Calcisols above the ΔE00 ≥ 10 threshold used throughout the project and keeping the map
+frame distinguishable from the paper. Anything lighter buys Leptosols contrast by spending
+Calcisols contrast — inside Iran, where it matters more.
+
+This is the one change that is baked into the render rather than the composition, so it
+required a single Blender re-run of the accepted scene with no other parameter altered.
+
+A related defect was found and fixed while doing it: the legend's "Outside Iran" swatch had
+its colour **hard-coded** in the layout script, so it would have kept showing the old grey
+after the render changed. Both non-soil swatches now read from `config/render_3d.yaml`.

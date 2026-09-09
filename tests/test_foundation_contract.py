@@ -365,6 +365,52 @@ def test_publication_claim_ceiling_is_not_breached():
                     assert negated, f"{rel}: unqualified claim {phrase!r}"
 
 
+MASTER_BUILD = ROOT / "outputs/master/iran_soil_landscapes_6000x7500.build.json"
+LINKEDIN_REC = ROOT / "outputs/linkedin/linkedin_derivative.json"
+
+
+def test_both_sheets_draw_the_same_scientific_render():
+    # The feed sheet is a re-composition, not a downsample, so resemblance proves nothing.
+    # What must hold is that the map pixels come from one render.
+    if not (MASTER_BUILD.exists() and LINKEDIN_REC.exists()):
+        pytest.skip("sheets not composed yet")
+    m = json.loads(MASTER_BUILD.read_text(encoding="utf-8"))
+    l = json.loads(LINKEDIN_REC.read_text(encoding="utf-8"))
+    assert l["map_render_sha256"] == m["map_render_sha256"], "sheets drew different renders"
+    assert l["asset_px"] == [2160, 2700]
+
+
+def test_linkedin_type_clears_feed_size_minimums():
+    if not LINKEDIN_REC.exists():
+        pytest.skip("LinkedIn sheet not built")
+    rec = json.loads(LINKEDIN_REC.read_text(encoding="utf-8"))
+    assert rec["failing_elements"] == [], rec["failing_elements"]
+    # the two elements that failed the first 540 px inspection
+    for el in ("method", "attribution"):
+        assert rec["type_at_preview_size"][el]["pass"], el
+
+
+def test_linkedin_map_frame_is_larger_than_the_master():
+    if not (MASTER_BUILD.exists() and LINKEDIN_REC.exists()):
+        pytest.skip("sheets not composed yet")
+    m = json.loads(MASTER_BUILD.read_text(encoding="utf-8"))["map_width_fraction"]
+    l = json.loads(LINKEDIN_REC.read_text(encoding="utf-8"))["map_width_fraction"]
+    change = l / m - 1.0
+    assert 0.0795 <= change <= 0.1205, (
+        f"map frame changed by {change * 100:.1f}%, wanted 8-12%")
+
+
+def test_legend_non_soil_swatches_come_from_config():
+    # A hard-coded legend chip silently drifts from the render. This one already had.
+    src = (ROOT / "scripts/rendering/build_poster.py").read_text(encoding="utf-8")
+    assert 'surface["context_land_srgb"]' in src
+    assert 'surface["cartographic_water_srgb"]' in src
+    legend = src.split("def draw_legend")[1].split("def draw_notes")[0]
+    # a Python comment also starts with "#", so look for a colour literal specifically
+    literal = re.search(r"[\"']#[0-9A-Fa-f]{6}[\"']", legend)
+    assert not literal, f"colour literal {literal.group()} reappeared in the legend"
+
+
 def test_master_outputs_are_not_git_tracked():
     for rel in ("outputs/master/x.png", "outputs/linkedin/x.png"):
         out = subprocess.run(["git", "check-ignore", rel], cwd=ROOT,

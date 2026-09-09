@@ -172,3 +172,36 @@ high ground; basin labels on low ground. The Gulf of Oman is the documented comp
 bounding box cuts through the gulf, so the anchor stays on verified Gulf of Oman water at 98%
 of frame height and only the **text** is offset upward — moving the anchor would have placed
 the name over the Strait of Hormuz, a different feature.
+
+## D-020 — Two sheets over one render; feed sheet is composed, not downsampled (2026-09-10)
+
+**Decision:** publish an archival `master` sheet and a `linkedin` sheet from a single
+scientific render, and drop the earlier requirement that the LinkedIn asset be a downsample
+of the master.
+
+That earlier rule was correct while the two differed only in size, and it protected a real
+risk: a separately recreated social image drifts from the map and eventually from its
+claims. But feed legibility requires *larger type at a smaller pixel count*, which
+resampling cannot produce. The protection is therefore re-expressed rather than dropped:
+each sheet records the SHA-256 of the map render it drew, and `qa_final_publication.py`
+plus `test_both_sheets_draw_the_same_scientific_render` fail if the two diverge. Full
+citations, DOI and licence prose stay on the master, the PDF and `LICENSES.md`; the feed
+sheet carries the licence identifier and a compact credit, which is what ShareAlike
+requires on the artefact.
+
+**Also decided:** body copy on the feed sheet is sized from the 540 px inspection
+(methodology 24 pt, attribution 19 pt) rather than from the 20–25% uplift specified for
+labels and legend text. At 20–25% both failed the readability requirement in the same
+gate, so the two instructions could not both be satisfied; the readability requirement was
+treated as the binding one and the deviation is recorded in `FINAL_QA.md`.
+
+## D-021 — Outside-Iran background lightened to #D2CFC9 (2026-09-10)
+
+**Decision:** `context_land_srgb` `#BFBAB2` → `#D2CFC9`. No soil palette colour touched.
+
+Chosen by measurement against the competing constraint: lightening the surround improves
+figure/ground against Leptosols (ΔE00 14.9 → 20.0) but pushes it toward Calcisols, which
+reaches the border (14.1 → 11.5), and toward the paper (12.8 → 7.6). `#D2CFC9` is the
+lightest value that keeps Calcisols above the project's ΔE00 ≥ 10 threshold. This is the
+one change baked into the render rather than the composition, so it required a single
+re-run of the accepted scene with every other parameter unchanged.
