@@ -157,6 +157,29 @@ def test_soil_truth_unchanged_since_freeze():
 
 DEM = ROOT / "data/processed/dem/iran_dem_90m.tif"
 DEM_QA = ROOT / "provenance/metadata/dem_qa.json"
+RENDER_META = ROOT / "provenance/metadata/render_substrate.json"
+
+
+def test_dem_unchanged_since_freeze():
+    import hashlib
+    frozen = ROOT / "provenance/checksums/dem_frozen_2026-09-09.txt"
+    if not frozen.exists() or not DEM.exists():
+        pytest.skip("dem freeze or DEM not present")
+    want = frozen.read_text(encoding="utf-8").split()[0]
+    got = hashlib.sha256(DEM.read_bytes()).hexdigest()
+    assert got == want, "SOURCE DEM CHANGED since freeze"
+
+
+def test_render_substrate_grid_and_classes_match_source():
+    if not RENDER_META.exists():
+        pytest.skip("render substrate not built")
+    m = json.loads(RENDER_META.read_text(encoding="utf-8"))
+    assert max(m["render_grid"]["width"], m["render_grid"]["height"]) == 4096
+    assert "LAEA" in m["render_grid"]["crs"]
+    # soil texture must use exactly the classes actually present (no invented class)
+    n_csv = len(list(csv.DictReader(SOIL_CSV.open(encoding="utf-8")))) if SOIL_CSV.exists() else None
+    if n_csv is not None:
+        assert m["soil_classes_present"] == n_csv
 
 
 def test_dem_elevation_and_crs_plausible():

@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-09-09T14:30:13.316767+00:00",
+  "render_grid": {
+    "crs": "LAEA lat0=32 lon0=53",
+    "width": 4096,
+    "height": 3714,
+    "pixel_size_m": [
+      438.46435546875,
+      438.48949919224555
+    ],
+    "bounds_laea": [
+      -774335.1534848248,
+      -737483.5627034066,
+      1021614.8465151752,
+      891066.4372965934
+    ]
+  },
+  "source_dem": "data/processed/dem/iran_dem_90m.tif",
+  "dem_downsample": {
+    "from": [
+      18095,
+      19955
+    ],
+    "to": [
+      3714,
+      4096
+    ],
+    "method": "bilinear",
+    "long_px": 4096
+  },
+  "heightmap_normalization": {
+    "elev_min_m": -34,
+    "elev_max_m": 5470,
+    "u16": "0=elev_min .. 65535=elev_max; nodata->0"
+  },
+  "soil_resample": "nearest (categorical); ids from data/processed/soils/iran_dominant_soil_group.tif",
+  "soil_classes_present": 16,
+  "water_source": "ne_10m_ocean + ne_10m_lakes (rasterized in LAEA); NOT merged into HWSD",
+  "note": "Render-only derivatives. Scientific soil/DEM rasters untouched. All layers share one LAEA grid so registration is exact by construction."
+}
