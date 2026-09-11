@@ -1,4 +1,4 @@
-# Project status — updated 2026-09-08 (DATA_GATE_COMPLETE)
+# Project status — updated 2026-09-11 (SRTMGL3_ACQUIRED / DEM_PROCESSED)
 
 | Exit criterion | Status | Evidence / reason |
 | --- | --- | --- |
@@ -12,9 +12,9 @@
 | Dominant-soil raster + statistics | DONE | `iran_hwsd_mapping_units.tif`, `iran_dominant_soil_group.tif`, `soil_groups_iran.csv` (16 classes). |
 | Area QA | DONE | `area_qa.json`; B = C+E+F exactly; A−B = 0.081 % explained by nodata. |
 | Plain 2D proof | DONE | `outputs/proof/iran_soils_proof_v01.png` (2D categorical, no terrain/AI). |
-| Automated tests | DONE (10 passed) | Provenance guards + scientific invariants (shares≈100 %, reconciliation, palette coverage). |
-| DEM / SRTM | BLOCKED_USER_ACTION | Requires the user's authenticated EarthExplorer/Earthdata download. |
-| QGIS / Blender production | NOT_STARTED | Out of scope until `GO_3D_CARTOGRAPHY`. |
+| Automated tests | DONE (35 passed) | Provenance guards + scientific invariants (shares≈100 %, reconciliation, palette coverage, DEM freeze, terrain/render checks). |
+| DEM / SRTM | DONE | 198/198 required SRTMGL3 v003 tiles are `DOWNLOADED_VERIFIED`; the 198-tile DEM was processed to `data/processed/dem/iran_dem_90m.tif` and frozen by SHA-256. Earthdata authentication is no longer an active blocker. |
+| Terrain/cartography outputs | GENERATED | Terrain QA, render substrate, 3D proofs, poster, archival master, and LinkedIn derivative were generated; their QA records do not constitute soil field validation. |
 
 ## Verification/correction trail
 
@@ -26,7 +26,6 @@
 - Dominant WRB-2022 RSG of Iran: Leptosols 40.7 %, Regosols 18.7 %, Solonchaks 18.6 %, Calcisols 16.8 % (12 more classes; 0 unmapped SMUs).
 - Boundary area 1,622,510 km²; classified soil area 1,612,385 km²; non-soil (water) 8,817 km²; nodata-in-polygon 1,334 km².
 
-## Remaining blockers / next gate
+## Current terrain status
 
-1. **SRTMGL1 terrain** requires the user's authenticated EarthExplorer/Earthdata download (no bypass, no mirror). Everything else for terrain is ready.
-2. Optional polish before publication: QGIS inspection project, palette refinement, and the master/LinkedIn render specs — all deferred until `GO_3D_CARTOGRAPHY`.
+There is no active Earthdata authentication blocker for the recorded run. SRTMGL3 provides topographic context only: it does not create soil observations, increase HWSD soil resolution or thematic accuracy, resolve HWSD uncertainty, or provide field validation/ground truth.
