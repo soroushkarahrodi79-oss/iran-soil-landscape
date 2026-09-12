@@ -1,0 +1,160 @@
+{
+  "map_frame": {
+    "ortho_width_km": 1831.869,
+    "ortho_height_km": 1661.139,
+    "extent_km": [
+      1795.95,
+      1628.55
+    ],
+    "crs": "LAEA lat_0=32 lon_0=53"
+  },
+  "scale_bar": {
+    "samples": 71,
+    "map_over_true_distance_min": 0.99825,
+    "map_over_true_distance_max": 1.00274,
+    "worst_deviation_percent": 0.274,
+    "verdict": "bar permissible, annotated with the measured tolerance"
+  },
+  "north_indicator": {
+    "grid_convergence_deg_max": 5.787,
+    "verdict": "single arrow permissible; exact on the central meridian, deviating up to 5.8 deg at the extreme corners"
+  },
+  "labels": [
+    {
+      "text": "Caspian Sea",
+      "lon": 51.4,
+      "lat": 38.2,
+      "style": "water",
+      "check": "water",
+      "frac_x": 0.35588,
+      "frac_y": 0.13172,
+      "median_elev_m": null,
+      "water_fraction": 1.0,
+      "dominant_class_here": "outside Iran",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Persian Gulf",
+      "lon": 51.0,
+      "lat": 27.6,
+      "style": "water",
+      "check": "water",
+      "frac_x": 0.32466,
+      "frac_y": 0.83872,
+      "median_elev_m": null,
+      "water_fraction": 1.0,
+      "dominant_class_here": "outside Iran",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Gulf of Oman",
+      "lon": 59.3,
+      "lat": 25.3,
+      "style": "water",
+      "check": "water",
+      "frac_x": 0.77909,
+      "frac_y": 0.98245,
+      "median_elev_m": null,
+      "water_fraction": 1.0,
+      "dominant_class_here": "outside Iran",
+      "verified": true,
+      "text_dy_frac": -0.028,
+      "inside_frame": true
+    },
+    {
+      "text": "Lake Urmia",
+      "lon": 45.5,
+      "lat": 37.6,
+      "style": "water",
+      "check": "water",
+      "frac_x": 0.071,
+      "frac_y": 0.15808,
+      "median_elev_m": 1267.0,
+      "water_fraction": 1.0,
+      "dominant_class_here": "Open Water",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Alborz",
+      "lon": 52.0,
+      "lat": 36.1,
+      "style": "land",
+      "check": "highland",
+      "frac_x": 0.38332,
+      "frac_y": 0.27226,
+      "median_elev_m": 3223.0,
+      "water_fraction": 0.0,
+      "dominant_class_here": "Leptosols",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Zagros",
+      "lon": 49.6,
+      "lat": 32.6,
+      "style": "land",
+      "check": "highland",
+      "frac_x": 0.25832,
+      "frac_y": 0.50316,
+      "median_elev_m": 2374.0,
+      "water_fraction": 0.0,
+      "dominant_class_here": "Leptosols",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Dasht-e Kavir",
+      "lon": 54.6,
+      "lat": 34.4,
+      "style": "land",
+      "check": "lowland",
+      "frac_x": 0.51283,
+      "frac_y": 0.38534,
+      "median_elev_m": 721.0,
+      "water_fraction": 0.0,
+      "dominant_class_here": "Regosols",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Lut Desert",
+      "lon": 58.5,
+      "lat": 30.9,
+      "style": "land",
+      "check": "lowland",
+      "frac_x": 0.71935,
+      "frac_y": 0.6117,
+      "median_elev_m": 344.0,
+      "water_fraction": 0.0,
+      "dominant_class_here": "Solonchaks",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    },
+    {
+      "text": "Khuzestan Plain",
+      "lon": 48.9,
+      "lat": 31.4,
+      "style": "land",
+      "check": "lowland",
+      "frac_x": 0.21973,
+      "frac_y": 0.58187,
+      "median_elev_m": 21.0,
+      "water_fraction": 0.0,
+      "dominant_class_here": "Solonchaks",
+      "verified": true,
+      "text_dy_frac": 0.0,
+      "inside_frame": true
+    }
+  ],
+  "labels_failed_verification": []
+}

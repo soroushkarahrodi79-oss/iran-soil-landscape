@@ -1,0 +1,15 @@
+{
+  "tool": "Blender",
+  "version": "4.5.13 LTS",
+  "build_hash": "daeeeca98fb0",
+  "acquired_utc": "2026-09-09",
+  "official_url": "https://download.blender.org/release/Blender4.5/blender-4.5.13-windows-x64.zip",
+  "sha256": "b5fdf800ce65fa2f209e8f68d02667e4d720fa1c42f247c72d1882ab04decba6",
+  "sha256_source": "https://download.blender.org/release/Blender4.5/blender-4.5.13.sha256",
+  "sha256_verified": true,
+  "install": "portable ZIP extracted to tools/blender-4.5.13-windows-x64/ (gitignored); no system install, no administrator rights, reversible by deleting the folder",
+  "licence": "GNU GPL v2 or later (the application; renders produced with it are unencumbered)",
+  "render_device": "CUDA, NVIDIA GeForce MX130 (2 GB VRAM)",
+  "engine_decision": "Cycles. EEVEE renders headless on this machine only through a software-GL fallback: 105.8 s for a 64x64 probe frame versus 2.1 s for Cycles on the GPU.",
+  "known_constraint": "2 GB VRAM is exhausted partway through a multi-frame session; mitigated by CPU denoising and 512 px auto-tiles, with an automatic CPU retry per frame."
+}

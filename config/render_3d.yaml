@@ -1,0 +1,64 @@
+# Deterministic parameters for the Blender 3D cartographic prototype.
+#
+# Held in configuration (not inside the .blend, not hard-coded) so every render is
+# reproducible from the frozen substrate: delete the .blend and the renders, re-run
+# scripts/rendering/run_3d_prototype.py, and the same images come back.
+#
+# Every colour here is DISPLAY-ONLY and is never a soil class. Cartographic water is
+# Natural Earth hydrography (D-012), not an HWSD class; terrain outside Iran is drawn
+# neutral so no soil is implied where we have no soil data.
+
+mesh:
+  long_px: 1536            # mesh posting along the long grid axis (~1.17 km at 4096 px grid)
+  unit_km: true            # 1 Blender unit = 1 km (keeps ortho scales legible)
+  nodata_elev_m: 0         # DEM nodata rendered at sea level (render-only; the DEM is untouched)
+
+surface:
+  context_land_srgb: "#D2CFC9"      # terrain outside Iran: light neutral. Measured, not picked:
+                                    # dE00 20.0 from Leptosols (the dominant grey, so Iran reads
+                                    # as figure against ground), 11.5 from Calcisols at the border,
+                                    # 7.6 from the paper. Lighter still would collapse into both.
+  cartographic_water_srgb: "#6E93B8"
+  land_roughness: 0.92              # matte: cartographic, not glossy
+  water_roughness: 0.18
+  water_threshold: 128              # water mask is 0/255; midpoint split
+
+lighting:
+  # NW illumination at a moderate elevation is the cartographic convention: it avoids
+  # the relief-inversion illusion that light-from-the-south produces.
+  sun_azimuth_deg: 315
+  sun_elevation_deg: 40
+  sun_strength: 3.0
+  sun_angular_diameter_deg: 3.0     # slightly soft shadow edges; no stylised glow
+  world_strength: 0.35              # neutral ambient fill only — no HDRI, no colour cast
+  variants:                         # LIGHTING_TEST
+    - {name: low,     azimuth_deg: 315, elevation_deg: 22}
+    - {name: default, azimuth_deg: 315, elevation_deg: 40}
+    - {name: high,    azimuth_deg: 315, elevation_deg: 58}
+
+cameras:
+  # Orthographic in both cases: a perspective camera would vary scale across the map.
+  topdown:
+    tilt_deg: 0
+    resolution: [2500, 2267]        # matches the 4096 x 3714 render grid aspect
+    ortho_margin: 1.02
+  oblique:
+    tilt_deg: 55                    # from vertical; viewer to the south looking north
+    resolution: [2500, 1500]
+    ortho_margin: 1.02
+  idpass:
+    # Registration test camera: one render pixel per render-grid cell, no margin, width
+    # pinned to the sensor so the mapping is exact rather than inferred.
+    tilt_deg: 0
+    resolution: [4096, 3714]
+    ortho_margin: 1.0
+    sensor_fit: HORIZONTAL
+
+render:
+  engine: CYCLES                    # physically-based; EEVEE headless falls back to software GL here
+  samples: 48                       # measured clean at 1:1 for this matte diffuse scene
+  noise_threshold: 0.01
+  use_denoise: true
+  film_transparent: true            # neutral PNG alpha; background is a layout choice, not a map claim
+
+exaggeration_tests: [1, 2, 3, 4]    # VERTICAL_EXAGGERATION_TEST

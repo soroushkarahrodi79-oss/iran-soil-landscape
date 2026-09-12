@@ -114,3 +114,94 @@ The project will **not** claim the render retains every native SRTM sample, and 
 ## D-014 — Soil-truth freeze (2026-09-08)
 
 The four soil-truth products are frozen as immutable unless a documented defect is found: `iran_hwsd_mapping_units.tif`, `iran_dominant_soil_group.tif`, `soil_groups_iran.csv`, `iran_boundary.gpkg`. SHA-256 recorded in `provenance/checksums/soil_truth_frozen_2026-09-08.txt`; reproducible checkpoint tagged `data-gate-v1` at commit `df8cd5f`. No cosmetic alteration of soil geography is permitted.
+
+## D-015 — Vertical exaggeration: 2× selected for publication (2026-09-09)
+
+**Decision:** publish at **2×**, not the 3× that the prototype's pre-declared rule selected.
+
+The rule was "lowest exaggeration whose relief contrast ≥ 0.060 with shadow burden ≤ 0.020",
+applied honestly at the prototype gate: 2× measured **0.0590**, missing by 0.001. Because the
+gap is under 2% of the threshold, the two are effectively tied on readability, and where two
+options are equivalent the one that distorts real elevation less wins. 2× also loses an order
+of magnitude less soil colour to shade (0.0001 vs 0.0016). **3× remains documented as a valid
+alternative**, not an error. Threshold and measurements were left untouched; only the
+preference between two passing-adjacent options was exercised.
+
+## D-016 — Registration semantics: geometry and readability measured separately (2026-09-09)
+
+**Decision:** never report a shaded reclassification score as spatial registration accuracy.
+
+The prototype's 99.876% was measured on a lit render, so lighting and tone entered it; a real
+geometric offset could have hidden inside it. Geometry is now proven by an **unlit class-ID
+pass** — pure emission of a class-code texture, 1 sample, box filter, no denoise, one render
+pixel per grid cell — decoded back through the camera's own geometry, with a ±3 px offset
+search. Result: **100.0000%** over 8,432,268 px, best offset (0,0). The shaded figure is
+retained but relabelled as **cartographic class readability**.
+
+## D-017 — Final palette revision (display colours only) (2026-09-09)
+
+**Decision:** revise eight display colours; change no class, boundary or ID.
+
+Measurement (CIEDE2000, self-tested against Sharma et al. 2005; pairs weighted by the
+boundary each shares in Iran; re-scored under simulated deuteranopia/protanopia) found the
+prototype palette put **Arenosols, Calcisols and Regosols in one near-identical beige
+cluster** (ΔE00 4.5–8.6), covering 37% of the country. Calcisols, Regosols, Arenosols,
+Leptosols, Cambisols, Fluvisols, Luvisols and Technosols were re-specified until **every pair
+sharing ≥20,000 boundary pixels passes ΔE00 ≥ 10 in normal vision and under both
+dichromacies**. Two iterations were themselves corrections of collisions the previous
+iteration introduced. Final hex values are recorded in `config/soil_palette.yaml` and
+tabulated in `FINAL_CARTOGRAPHY.md`.
+
+## D-018 — Scale bar and north arrow: measured before drawn (2026-09-09)
+
+**Decision:** include both, each annotated with its measured error.
+
+The CRS is equal-**area**, so distance is not preserved and a bar was not assumed. Across 71
+sample pairs, map-to-geodesic distance ratios ranged 0.99825–1.00274 — a worst deviation of
+**0.274%**, about ±1.1 km on the 400 km bar drawn. The bar is therefore included and labelled
+"distance scale accurate to ±0.3% across the map" (gate option B). Grid convergence reaches
+**5.79°** at the extreme corners, so the north arrow is small, is exact only on the central
+meridian, and is labelled "±6°". Had either measurement been material, the element would have
+been omitted rather than decorated.
+
+## D-019 — Label placement is verified against the rasters (2026-09-09)
+
+**Decision:** every physical-geography label must pass a data test before it is drawn, and the
+poster build aborts if one fails. Sea labels must land on Natural Earth water; range labels on
+high ground; basin labels on low ground. The Gulf of Oman is the documented compromise: the DEM
+bounding box cuts through the gulf, so the anchor stays on verified Gulf of Oman water at 98%
+of frame height and only the **text** is offset upward — moving the anchor would have placed
+the name over the Strait of Hormuz, a different feature.
+
+## D-020 — Two sheets over one render; feed sheet is composed, not downsampled (2026-09-10)
+
+**Decision:** publish an archival `master` sheet and a `linkedin` sheet from a single
+scientific render, and drop the earlier requirement that the LinkedIn asset be a downsample
+of the master.
+
+That earlier rule was correct while the two differed only in size, and it protected a real
+risk: a separately recreated social image drifts from the map and eventually from its
+claims. But feed legibility requires *larger type at a smaller pixel count*, which
+resampling cannot produce. The protection is therefore re-expressed rather than dropped:
+each sheet records the SHA-256 of the map render it drew, and `qa_final_publication.py`
+plus `test_both_sheets_draw_the_same_scientific_render` fail if the two diverge. Full
+citations, DOI and licence prose stay on the master, the PDF and `LICENSES.md`; the feed
+sheet carries the licence identifier and a compact credit, which is what ShareAlike
+requires on the artefact.
+
+**Also decided:** body copy on the feed sheet is sized from the 540 px inspection
+(methodology 24 pt, attribution 19 pt) rather than from the 20–25% uplift specified for
+labels and legend text. At 20–25% both failed the readability requirement in the same
+gate, so the two instructions could not both be satisfied; the readability requirement was
+treated as the binding one and the deviation is recorded in `FINAL_QA.md`.
+
+## D-021 — Outside-Iran background lightened to #D2CFC9 (2026-09-10)
+
+**Decision:** `context_land_srgb` `#BFBAB2` → `#D2CFC9`. No soil palette colour touched.
+
+Chosen by measurement against the competing constraint: lightening the surround improves
+figure/ground against Leptosols (ΔE00 14.9 → 20.0) but pushes it toward Calcisols, which
+reaches the border (14.1 → 11.5), and toward the paper (12.8 → 7.6). `#D2CFC9` is the
+lightest value that keeps Calcisols above the project's ΔE00 ≥ 10 threshold. This is the
+one change baked into the render rather than the composition, so it required a single
+re-run of the accepted scene with every other parameter unchanged.

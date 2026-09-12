@@ -1,0 +1,121 @@
+{
+  "checks": [
+    {
+      "check": "frozen inputs unchanged (soil)",
+      "pass": true,
+      "detail": "all hashes match"
+    },
+    {
+      "check": "frozen inputs unchanged (dem)",
+      "pass": true,
+      "detail": "all hashes match"
+    },
+    {
+      "check": "render class IDs == frozen soil table",
+      "pass": true,
+      "detail": "16 classes; missing [], extra []"
+    },
+    {
+      "check": "unlit ID pass: no geometric offset",
+      "pass": true,
+      "detail": "agreement 1.000000, best offset [0, 0]"
+    },
+    {
+      "check": "palette: all high-contact neighbours separable",
+      "pass": true,
+      "detail": "none failing"
+    },
+    {
+      "check": "labels verified against the rasters",
+      "pass": true,
+      "detail": "9 labels, none failing"
+    },
+    {
+      "check": "scale bar supported by measurement",
+      "pass": true,
+      "detail": "worst distance deviation 0.274%"
+    },
+    {
+      "check": "poster states: FAO & IIASA attribution",
+      "pass": true,
+      "detail": "FAO & IIASA"
+    },
+    {
+      "check": "poster states: HWSD version",
+      "pass": true,
+      "detail": "v2.01"
+    },
+    {
+      "check": "poster states: licence notice on the map",
+      "pass": true,
+      "detail": "CC BY-NC-SA 4.0"
+    },
+    {
+      "check": "poster states: terrain source",
+      "pass": true,
+      "detail": "SRTMGL3"
+    },
+    {
+      "check": "poster states: Natural Earth credit",
+      "pass": true,
+      "detail": "Natural Earth"
+    },
+    {
+      "check": "poster states: exaggeration disclosed",
+      "pass": true,
+      "detail": "2\u00d7 vertical"
+    },
+    {
+      "check": "poster states: native soil resolution stated",
+      "pass": true,
+      "detail": "~1 km resolution"
+    },
+    {
+      "check": "poster states: dominant-not-point wording",
+      "pass": true,
+      "detail": "not the soil at any single"
+    },
+    {
+      "check": "poster states: equal-area projection named",
+      "pass": true,
+      "detail": "Lambert azimuthal equal-area"
+    },
+    {
+      "check": "no claim beyond the publication ceiling",
+      "pass": true,
+      "detail": "none present"
+    },
+    {
+      "check": "shaded class readability on the published map (NOT registration)",
+      "pass": true,
+      "detail": "0.99931 over 2,772,469 px at 2x, final palette, CIELAB nearest-class"
+    },
+    {
+      "check": "master is 4:5 and >= 6000x7500",
+      "pass": true,
+      "detail": "6000x7500"
+    },
+    {
+      "check": "LinkedIn sheet draws the same scientific render as the master",
+      "pass": true,
+      "detail": "2160x2700, map iran_map_2x_topdown_5400x4897.png sha bf29af3c1c19\u2026 matches master"
+    },
+    {
+      "check": "LinkedIn type clears its feed-size minimum at 540 px",
+      "pass": true,
+      "detail": "method 9.0 px, attribution 7.1 px"
+    },
+    {
+      "check": "LinkedIn map frame enlarged over the master",
+      "pass": true,
+      "detail": "0.800 -> 0.864 of sheet width (+8.0%)"
+    },
+    {
+      "check": "archival master is lossless",
+      "pass": true,
+      "detail": ".png"
+    }
+  ],
+  "failed": 0,
+  "verdict": "PASS"
+}

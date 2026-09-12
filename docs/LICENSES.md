@@ -12,3 +12,15 @@ This repository does not include any raw source data. Source archives are ignore
 ## Publication implications (summary)
 
 The published map derives from HWSD v2.01, so **CC BY-NC-SA 4.0 is the binding constraint** (Natural Earth and SRTM add none). In short: **attribute** FAO & IIASA on every asset, **carry a "CC BY-NC-SA 4.0" notice on the map itself** (ShareAlike), and **keep publication non-commercial**. The NonCommercial line is the main grey zone (portfolio/LinkedIn posts are normally fine; paid promotion or client solicitation may not be). Full audit, precautions, and the "not legal advice / contact copyright@fao.org for commercial use" caveat are in [PUBLICATION_NOTES.md](PUBLICATION_NOTES.md).
+
+## As published (publication gate)
+
+The released assets carry, on the map face: the FAO & IIASA citation with the HWSD v2.01
+DOI, the NASA/USGS SRTMGL3.003 credit, the Natural Earth credit, and the explicit line
+**"This map is a derivative of HWSD v2.01 and is released under CC BY-NC-SA 4.0"** — the
+ShareAlike obligation discharged on the artefact itself, not only in the post text.
+
+Blender 4.5.13 LTS (GPL-2.0-or-later) is used as a tool; renders it produces carry no
+licence obligation. The portable build is stored under `tools/` and is gitignored, so no
+Blender binary is redistributed by this repository. Segoe UI is used as an installed system
+font and **no font file is distributed**.
