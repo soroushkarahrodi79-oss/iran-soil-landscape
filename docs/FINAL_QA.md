@@ -187,3 +187,45 @@ Map frame: 0.800 → 0.864 of sheet width (**+8.0%**, within the 8–12% asked).
 exist before: that both sheets draw the same render (by hash), that LinkedIn type clears its
 feed-size minimum, and that the LinkedIn map frame is genuinely larger than the master's.
 Shaded readability was recomputed against the re-rendered map: **99.931%**.
+
+---
+
+## CARTOGRAPHIC_FURNITURE_V1_1 — re-verification (2026-09-12)
+
+Composition-only gate. Scientific integrity was checked before and after; nothing moved.
+
+| Frozen artefact | Before | After |
+| --- | --- | --- |
+| Soil truth hashes | match | match |
+| DEM hash | match | match |
+| Scientific render `iran_map_2x_topdown_5400x4897.png` | `bf29af3c1c19854a…` | `bf29af3c1c19854a…` |
+| Class list | 16 classes, no missing, no extra | same |
+| Class shares (LP/RG/SC/CL/AR) | 40.7 / 18.7 / 18.6 / 16.8 / 2.1 | same |
+| Registration (unlit ID pass) | agreement 1.000000, offset [0,0] | same |
+| 2× exaggeration, orthographic camera, LAEA | unchanged | unchanged |
+| Water geometry | unchanged | unchanged |
+| Palette | 16 colours | unchanged (`KEEP_EXISTING_PALETTE`) |
+
+`qa_final_publication.py`: **28/28 checks pass** (23 before this gate; five added here —
+label edge clearance, the Gulf of Oman label on water, the keyline verdict, the palette
+verdict, and that the published pair is the one `config/publication.yaml` declares).
+
+`python -m pytest -q tests`: **52 passed** (35 before; 17 added in
+`tests/test_furniture_v11.py`).
+
+Shaded class readability on the published map, re-measured against the final palette:
+**0.99931** over 2,772,469 px — unchanged, as expected from an unchanged render.
+
+### Deviations recorded
+
+* The national boundary stroke the gate permitted was **built and then rejected** on its own
+  measurement rather than adopted. Reason and figures in
+  `docs/CARTOGRAPHIC_FURNITURE_V1_1.md`; the decision is enforced by
+  `test_national_keyline_follows_its_own_measurement`, which fails if the stroke is drawn
+  while the verdict says otherwise, or vice versa.
+* The palette residual the gate permitted to be adjusted was **searched and kept**. The
+  search found zero acceptable candidates out of 1,368, and the verdict is enforced by
+  `test_palette_is_unchanged_unless_the_residual_search_said_otherwise`.
+* A graticule was not tested. The clutter standard the gate set (default: reject) and the
+  fact that the sheet already carries a measured scale bar and a north indicator made it a
+  cost with no stated benefit.

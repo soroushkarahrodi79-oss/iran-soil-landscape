@@ -201,3 +201,42 @@ required a single Blender re-run of the accepted scene with no other parameter a
 A related defect was found and fixed while doing it: the legend's "Outside Iran" swatch had
 its colour **hard-coded** in the layout script, so it would have kept showing the old grey
 after the render changed. Both non-soil swatches now read from `config/render_3d.yaml`.
+
+---
+
+## Cartographic furniture v1.1 (composition gate)
+
+The map is untouched by this gate. The scientific render is **byte-identical** to the one
+above — `bf29af3c1c19854a…`, now frozen in its own right at
+`provenance/checksums/scientific_render_frozen_2026-09-12.txt` — and projection, camera, 2×
+exaggeration, classification, statistics and palette are all as accepted at `40e8205`.
+What changed is the sheet. The full record is `docs/CARTOGRAPHIC_FURNITURE_V1_1.md`; the
+short version:
+
+| | v1.0 feed sheet | v1.1 feed sheet (`v11_b`) |
+| --- | --- | --- |
+| Map field | no neatline; the map floated on the paper | **2.4 pt keyline, ΔL\* 30.2 against the paper at 540 px** |
+| National keyline | none | **still none — built, measured, rejected** |
+| Left rail | map at 0.068, everything else at 0.055 | **one rail at 0.068 for every element** |
+| Vertical stops | assorted | **exact multiples of 0.0045 of sheet height** |
+| Legend | one flat row of nine | **two tiers split at 10% share; 16.5 pt lead** |
+| Percentages | right-aligned to an equal-column rail | **paired with their names in measured blocks** |
+| Rare classes | 11 pt soft grey, and printing the wrong bound (0.05%) | **13.5 pt semibold lead, bound derived from the classes (0.02%)** |
+| Scale labels | 9.5 pt → 3.6 px at 540, illegible | **14 pt → 5.25 px, with a tick hierarchy** |
+| North indicator | 1.4 pt arrow at x 0.963, half in the margin, "±6°" | **2.0 pt needle inset to 0.920, "grid north ±6°"** |
+| Gulf of Oman label | anchor verified on water, **text drawn on land** | **text verified on Gulf of Oman water at 57.16°E** |
+| Lake Urmia label | 0.027 from the frame edge, clutter 0.050 | **0.060 clearance, clutter 0.012** |
+| Method strip | one wrapped paragraph | **rule + semibold lead line + quieter qualification** |
+| Attribution | 19 pt, `#5A6570` | **21 pt, `#3E4954`** |
+| Title tracking | `fontstretch="expanded"` (a stand-in that can silently do nothing) | **glyphs placed at measured advances; real em tracking** |
+
+Three directions (A academic-minimal, B editorial-cartography, C exhibition-poster) were
+composed over the identical render and compared at feed size before B was selected;
+scorecard and proof sheets are in the gate document and under
+`outputs/proof/furniture_v11/`.
+
+v1.0 is superseded, not replaced: its files stay on disk, its `master` and `linkedin`
+layouts — and its own scale bar and north arrow — stay in `build_poster.py`, and
+`config/publication.yaml` records both versions. A recomposition is visually the v1.0 sheet
+but not byte-identical to the archived files; the two reasons are recorded in the gate
+document.

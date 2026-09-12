@@ -1,0 +1,31 @@
+# Which composed sheets are the published pair, and which layout made each one.
+#
+# The outputs themselves are gitignored — they are regenerable, and the repository stores
+# the method rather than the product — so this file is where "what is published" lives.
+# Superseding a version adds a row to `superseded` instead of overwriting the old files:
+# v1.0 stays on disk and stays reproducible from its own layout key.
+#
+# qa_final_publication.py and tests/test_foundation_contract.py resolve the published pair
+# through this file, so a new version cannot be declared without the QA following it.
+
+version: v1.1
+gate: CARTOGRAPHIC_FURNITURE_V1_1
+scientific_render: outputs/proof/3d/iran_map_2x_topdown_5400x4897.png
+
+master:
+  path: outputs/master/iran_soil_landscapes_v1_1_6000x7500.png
+  layout: v11_master
+  vector: [pdf, svg]
+
+linkedin:
+  path: outputs/linkedin/iran_soil_landscapes_v1_1_2160x2700.png
+  layout: v11_b
+  direction: B_editorial_cartography
+
+superseded:
+  - version: v1.0
+    gate: FINAL_PUBLICATION_CARTOGRAPHY + LinkedIn polish
+    master: outputs/master/iran_soil_landscapes_6000x7500.png
+    linkedin: outputs/linkedin/iran_soil_landscapes_linkedin_2160x2700.png
+    layouts: [master, linkedin]
+    note: preserved on disk and still composable; superseded, not deleted

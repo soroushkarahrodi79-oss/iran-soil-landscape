@@ -1,0 +1,9 @@
+# The scientific map render the published sheets draw.
+#
+# Composition gates may change the sheet around this image; they may not change the image.
+# Projection, orthographic camera, 2x vertical exaggeration, soil classification, class IDs,
+# DEM, water geometry and palette are all baked into it, so a changed hash here means the
+# map itself moved and the scientific gates have to be re-run — it is not a layout edit.
+#
+# Frozen at gate CARTOGRAPHIC_FURNITURE_V1_1, unchanged from FINAL_PUBLICATION_CARTOGRAPHY.
+bf29af3c1c19854a3640f23eb629e57b90ff3ffdf2e533690f131bc83f324822 *outputs/proof/3d/iran_map_2x_topdown_5400x4897.png

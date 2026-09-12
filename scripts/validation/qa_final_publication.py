@@ -21,15 +21,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import _geoenv  # noqa: E402,F401
 
 import numpy as np  # noqa: E402
+import yaml  # noqa: E402
 from PIL import Image  # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 ROOT = Path(__file__).resolve().parents[2]
 META = ROOT / "provenance/metadata"
-MASTER = ROOT / "outputs/master/iran_soil_landscapes_6000x7500.png"
-LINKEDIN = ROOT / "outputs/linkedin/iran_soil_landscapes_linkedin_2160x2700.png"
 POSTER_SRC = ROOT / "scripts/rendering/build_poster.py"
 OUT = META / "final_publication_qa.json"
+
+# The published pair is declared in configuration, not hard-coded here: superseding a
+# version must not leave the QA re-checking the sheet it replaced.
+PUBLICATION = yaml.safe_load((ROOT / "config/publication.yaml").read_text(encoding="utf-8"))
+MASTER = ROOT / PUBLICATION["master"]["path"]
+LINKEDIN = ROOT / PUBLICATION["linkedin"]["path"]
 
 
 def check_frozen(results: list) -> None:
@@ -79,6 +84,39 @@ def check_geometry(results: list) -> None:
                     "pass": fq["scale_bar"]["worst_deviation_percent"] < 2.0,
                     "detail": f"worst distance deviation "
                               f"{fq['scale_bar']['worst_deviation_percent']:.3f}%"})
+
+
+def check_furniture(results: list) -> None:
+    """The v1.1 gate's own invariants, re-checked against the published sheet."""
+    fq = json.loads((META / "map_furniture_qa.json").read_text(encoding="utf-8"))
+    bad = [lab["text"] for lab in fq["labels"]
+           if lab["text_edge_clearance_frac"] < fq["text_placement"]["min_edge_clearance_frac"]]
+    results.append({"check": "every drawn label clears the map edge",
+                    "pass": not bad,
+                    "detail": bad or f"min clearance "
+                                     f"{min(l['text_edge_clearance_frac'] for l in fq['labels']):.3f} "
+                                     f"of the drawn frame"})
+    sea = [lab for lab in fq["labels"] if lab["style"] == "water"]
+    off = [lab["text"] for lab in sea
+           if lab["text"] == "Gulf of Oman" and not lab["text_on_water"]]
+    results.append({"check": "the Gulf of Oman label is drawn on Gulf of Oman water",
+                    "pass": not off,
+                    "detail": off or f"text at {next(l['text_lon'] for l in sea if l['text'] == 'Gulf of Oman'):.2f}E, "
+                                     f"on water"})
+    kd = json.loads((META / "keyline_decision_v11.json").read_text(encoding="utf-8"))
+    src = POSTER_SRC.read_text(encoding="utf-8")
+    drawn = '"boundary_pt": 0.0' not in src
+    results.append({"check": "national keyline follows its own measurement",
+                    "pass": (kd["verdict"] == "REJECT_KEYLINE") != drawn,
+                    "detail": f"{kd['verdict']}; stroke {'drawn' if drawn else 'not drawn'}"})
+    pr = json.loads((META / "palette_residual_v11.json").read_text(encoding="utf-8"))
+    pal_unchanged = all(
+        yaml.safe_load((ROOT / "config/soil_palette.yaml").read_text(encoding="utf-8"))
+        ["wrb2_rsg_colours"][c] == pr["accepted_palette"][c] for c in pr["codes"])
+    results.append({"check": "palette follows the residual search verdict",
+                    "pass": (pr["verdict"] == "KEEP_EXISTING_PALETTE") == pal_unchanged,
+                    "detail": f"{pr['verdict']}; palette "
+                              f"{'unchanged' if pal_unchanged else 'CHANGED'}"})
 
 
 def check_poster_claims(results: list) -> None:
@@ -198,6 +236,12 @@ def check_outputs(results: list) -> None:
                               f"method {rec['type_at_preview_size']['method']['preview_px']} px, "
                               f"attribution "
                               f"{rec['type_at_preview_size']['attribution']['preview_px']} px"})
+    results.append({"check": "published pair is the version config declares",
+                    "pass": rec["asset"] == Path(PUBLICATION["linkedin"]["path"]).name
+                            and rec["layout"] == PUBLICATION["linkedin"]["layout"],
+                    "detail": f"{PUBLICATION['version']}: {rec['asset']} "
+                              f"[{rec['layout']}] / {MASTER.name} "
+                              f"[{master_build['layout']}]"})
     results.append({"check": "LinkedIn map frame enlarged over the master",
                     "pass": rec["map_width_fraction"] > master_build["map_width_fraction"],
                     "detail": f"{master_build['map_width_fraction']:.3f} -> "
@@ -213,6 +257,7 @@ def main() -> None:
     check_frozen(results)
     check_classes(results)
     check_geometry(results)
+    check_furniture(results)
     check_poster_claims(results)
     check_shaded_readability(results)
     check_outputs(results)

@@ -12,6 +12,11 @@ pixel height a reader actually gets at that size, so "readable" is a number rath
 opinion.
 
     python scripts/rendering/build_linkedin.py --asset outputs/linkedin/<file>.png
+
+The record is written twice: once beside the asset under its own name, so an earlier
+published version keeps its evidence when a new one is composed, and once as
+`linkedin_derivative.json`, which always describes the currently published feed asset and
+is what the final QA and the tests read.
 """
 from __future__ import annotations
 
@@ -34,7 +39,17 @@ FIG_W_IN = 20.0                    # the poster's physical width, from build_pos
 # What each element has to survive at preview size. Body copy needs more than a label,
 # because a label is short, bold and haloed while a sentence is not.
 NEEDED_PX = {"title": 14.0, "map_label_land": 5.0, "legend_name": 5.0,
-             "legend_pct": 4.8, "method": 8.5, "attribution": 6.5}
+             "legend_pct": 4.8, "method": 8.5, "attribution": 6.5,
+             # v1.1 furniture: each of these is text a reader has to actually read at feed
+             # size, and each was below its minimum, or absent, before this gate.
+             "subtitle": 4.6, "legend_head": 4.6, "legend_major": 5.2, "rare": 4.6,
+             "nonsoil": 4.4, "scale_label": 4.8, "scale_note": 3.9, "north": 5.0,
+             "north_note": 3.9}
+EXTRA_KEYS = {"subtitle_pt": "subtitle", "legend_head_pt": "legend_head",
+              "legend_major_pt": "legend_major", "rare_pt": "rare",
+              "nonsoil_pt": "nonsoil", "scale_label_pt": "scale_label",
+              "scale_note_pt": "scale_note", "north_pt": "north",
+              "north_note_pt": "north_note"}
 
 
 def main() -> None:
@@ -61,8 +76,12 @@ def main() -> None:
     # em height a reader gets at preview size: pt -> inches -> asset px -> preview px
     dpi = img.size[0] / FIG_W_IN
     shrink = PREVIEW[0] / img.size[0]
+    sizes = dict(build["type_pt"])
+    for key, name in EXTRA_KEYS.items():
+        if key in build.get("type_pt_extra", {}):
+            sizes[name] = build["type_pt_extra"][key]
     metrics, failing = {}, []
-    for name, pt in build["type_pt"].items():
+    for name, pt in sizes.items():
         px = pt / 72.0 * dpi * shrink
         need = NEEDED_PX.get(name)
         ok = need is None or px >= need
@@ -81,6 +100,11 @@ def main() -> None:
         "map_render": build["map_render"],
         "map_render_sha256": build["map_render_sha256"],
         "map_width_fraction": build["map_width_fraction"],
+        "layout": build["layout"],
+        "variant": build.get("variant"),
+        "grid": build.get("grid"),
+        "furniture": build.get("furniture"),
+        "labels_moved": build.get("labels_moved", []),
         "type_at_preview_size": metrics,
         "failing_elements": failing,
         "file_size_mb": round(mb, 2),
@@ -88,8 +112,9 @@ def main() -> None:
         "within_budget": mb <= SIZE_BUDGET_MB,
         "note": "Platform limits change; verify against current LinkedIn guidance before posting.",
     }
-    (asset.parent / "linkedin_derivative.json").write_text(
-        json.dumps(record, indent=2) + chr(10), encoding="utf-8")
+    blob = json.dumps(record, indent=2) + chr(10)
+    (asset.parent / f"{asset.stem}.linkedin.json").write_text(blob, encoding="utf-8")
+    (asset.parent / "linkedin_derivative.json").write_text(blob, encoding="utf-8")
 
     print(f"asset {asset.name} ({img.size[0]}x{img.size[1]}, {mb:.2f} MB)")
     print(f"preview {out.name} ({PREVIEW[0]}x{PREVIEW[1]})")

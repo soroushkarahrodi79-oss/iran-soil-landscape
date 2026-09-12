@@ -58,7 +58,9 @@ Scripts intentionally fail closed when an expected source, schema field, or inva
 
 ## Publication outputs
 
-The workflow has generated a 6000 × 7500 px archival master and a controlled 2160 × 2700 px (4:5) LinkedIn derivative. Their completion is a cartographic production result, not evidence that the HWSD soil classes are field-validated or that terrain resolves uncertainty inherited from HWSD.
+The workflow has generated a 6000 × 7500 px archival master and a 2160 × 2700 px (4:5) feed sheet, both composed over one scientific render whose hash each records. Their completion is a cartographic production result, not evidence that the HWSD soil classes are field-validated or that terrain resolves uncertainty inherited from HWSD.
+
+The current pair is **v1.1**, declared in [config/publication.yaml](config/publication.yaml). v1.1 changed composition only — typography, grid, legend hierarchy, map furniture and label placement — over a render frozen by hash at `provenance/checksums/scientific_render_frozen_2026-09-12.txt`; see [docs/CARTOGRAPHIC_FURNITURE_V1_1.md](docs/CARTOGRAPHIC_FURNITURE_V1_1.md), which also records the national keyline and the palette adjustment that were built, measured and rejected. v1.0 is superseded rather than deleted and stays reproducible from its own layout keys.
 
 ## Citation
 

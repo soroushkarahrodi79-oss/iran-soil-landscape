@@ -205,3 +205,43 @@ reaches the border (14.1 → 11.5), and toward the paper (12.8 → 7.6). `#D2CFC
 lightest value that keeps Calcisols above the project's ΔE00 ≥ 10 threshold. This is the
 one change baked into the render rather than the composition, so it required a single
 re-run of the accepted scene with every other parameter unchanged.
+
+## D-022 — Cartographic furniture v1.1: composition only, and three decisions made by measurement (2026-09-12)
+
+**Decision:** publish a v1.1 pair composed with the `v11_b` (feed) and `v11_master`
+(archival) layouts, superseding v1.0 without deleting it. `config/publication.yaml` declares
+which pair is published; both v1.0 layouts stay in `build_poster.py` so v1.0 remains
+reproducible. Full record in `docs/CARTOGRAPHIC_FURNITURE_V1_1.md`.
+
+The gate changed composition only. The scientific render is byte-identical to v1.0's and is
+now frozen by hash in its own right
+(`provenance/checksums/scientific_render_frozen_2026-09-12.txt`), so a future composition
+gate that silently moved the map would fail a test rather than ship.
+
+Three sub-decisions were resolved by measuring rather than by taste, and two of them came
+out as "no".
+
+**No national keyline.** Built from the project's own Natural Earth geometry, simplified to
+one render pixel, then rejected: no stroke width both survives the 540 px feed reduction
+(needs ≥ 2.27 pt) and stays inside HWSD's ~1 km native support (needs ≤ 0.7 pt), and the
+border ring already separates from the surround at mean ΔE00 22.1 with none of its 21,157 px
+below the ΔE00 ≥ 10 threshold. A visible stroke would have tinted ~0.9% of mapped Iran — the
+outermost, most contact-sensitive band — to sharpen an edge that is already sharp.
+
+**No palette change.** The Arenosols/Solonchaks greyscale residual (ΔL\* 4.4) was searched,
+not re-asserted: 1,368 lightness-only candidates, hue and chroma held. Every one of the 513
+that reached ΔL\* ≥ 8 regressed another pair. Two flaws in the first search had to be fixed
+before it could say that honestly — it originally forbade only *new* low-luminance pairs
+(letting a candidate pass by weakening the already-weakest pair) and ignored the two display
+surfaces that every coastal class is actually drawn against. **KEEP_EXISTING_PALETTE.**
+
+**Yes to a neatline, at a weight read out of the downsampled image.** 2.4 pt at 55% ink —
+0.90 px at 540, measured ΔL\* 30.2 against the paper. 1.6 pt reads at only ΔL\* 17.8 and
+leaves the map half-floating; 3.0 pt doubled reads as a card.
+
+**Also decided:** the drawn text of a label is now verified, not just its anchor. v1.0
+verified "Gulf of Oman" on Natural Earth water and then offset the text 2.8% of the frame
+upward to escape the bottom edge, which put it on the Makran coast — a sea label over land
+that every existing check passed. Offsets are now searched for under measured constraints
+(edge clearance in the *cropped* frame, class-edge clutter, and for a sea label, staying on
+the water body it names within a longitude window). Anchors are unchanged; two labels moved.
