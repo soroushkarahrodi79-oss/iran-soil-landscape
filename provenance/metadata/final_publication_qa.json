@@ -36,6 +36,26 @@
       "detail": "worst distance deviation 0.274%"
     },
     {
+      "check": "every drawn label clears the map edge",
+      "pass": true,
+      "detail": "min clearance 0.033 of the drawn frame"
+    },
+    {
+      "check": "the Gulf of Oman label is drawn on Gulf of Oman water",
+      "pass": true,
+      "detail": "text at 57.16E, on water"
+    },
+    {
+      "check": "national keyline follows its own measurement",
+      "pass": true,
+      "detail": "REJECT_KEYLINE; stroke not drawn"
+    },
+    {
+      "check": "palette follows the residual search verdict",
+      "pass": true,
+      "detail": "KEEP_EXISTING_PALETTE; palette unchanged"
+    },
+    {
       "check": "poster states: FAO & IIASA attribution",
       "pass": true,
       "detail": "FAO & IIASA"
@@ -103,7 +123,12 @@
     {
       "check": "LinkedIn type clears its feed-size minimum at 540 px",
       "pass": true,
-      "detail": "method 9.0 px, attribution 7.1 px"
+      "detail": "method 9.0 px, attribution 7.9 px"
+    },
+    {
+      "check": "published pair is the version config declares",
+      "pass": true,
+      "detail": "v1.1: iran_soil_landscapes_v1_1_2160x2700.png [v11_b] / iran_soil_landscapes_v1_1_6000x7500.png [v11_master]"
     },
     {
       "check": "LinkedIn map frame enlarged over the master",

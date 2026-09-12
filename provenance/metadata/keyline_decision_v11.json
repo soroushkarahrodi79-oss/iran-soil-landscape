@@ -1,0 +1,66 @@
+{
+  "gain": {
+    "iran_mean_vs_outside_delta_e2000": 11.85,
+    "iran_mean_vs_outside_delta_L": 13.65,
+    "border_ring_px": 21157,
+    "border_ring_delta_e2000_mean": 22.13,
+    "border_ring_delta_e2000_p10": 11.46,
+    "border_ring_share_below_threshold": 0.0,
+    "threshold": 10.0
+  },
+  "border_length_km": 8374.0,
+  "mapped_iran_km2": 1612385.0,
+  "bill_by_linewidth": [
+    {
+      "linewidth_pt": 0.6,
+      "px_at_540": 0.225,
+      "resolves_at_540": false,
+      "ground_width_km": 0.86,
+      "within_one_hwsd_pixel": true,
+      "soil_area_under_stroke_km2": 7176.0,
+      "share_of_mapped_iran_percent": 0.45
+    },
+    {
+      "linewidth_pt": 0.9,
+      "px_at_540": 0.338,
+      "resolves_at_540": false,
+      "ground_width_km": 1.29,
+      "within_one_hwsd_pixel": false,
+      "soil_area_under_stroke_km2": 10764.0,
+      "share_of_mapped_iran_percent": 0.67
+    },
+    {
+      "linewidth_pt": 1.2,
+      "px_at_540": 0.45,
+      "resolves_at_540": false,
+      "ground_width_km": 1.71,
+      "within_one_hwsd_pixel": false,
+      "soil_area_under_stroke_km2": 14352.0,
+      "share_of_mapped_iran_percent": 0.89
+    },
+    {
+      "linewidth_pt": 1.6,
+      "px_at_540": 0.6,
+      "resolves_at_540": false,
+      "ground_width_km": 2.29,
+      "within_one_hwsd_pixel": false,
+      "soil_area_under_stroke_km2": 19137.0,
+      "share_of_mapped_iran_percent": 1.19
+    },
+    {
+      "linewidth_pt": 2.0,
+      "px_at_540": 0.75,
+      "resolves_at_540": false,
+      "ground_width_km": 2.86,
+      "within_one_hwsd_pixel": false,
+      "soil_area_under_stroke_km2": 23921.0,
+      "share_of_mapped_iran_percent": 1.48
+    }
+  ],
+  "visual_proof": {
+    "keyline_on": "keyline_proof_keyline_on_nw_corner.png",
+    "keyline_off": "keyline_proof_keyline_off_nw_corner.png"
+  },
+  "verdict": "REJECT_KEYLINE",
+  "reason": "no width both resolves at 540 px and stays inside HWSD's ~1 km support, and the silhouette already separates at dE00 11.85 >= 10.0 without one"
+}

@@ -1,0 +1,46 @@
+{
+  "residual_pair": [
+    "Arenosols",
+    "Solonchaks"
+  ],
+  "codes": [
+    "AR",
+    "SC"
+  ],
+  "shared_border_px": 6435,
+  "accepted_palette": {
+    "AR": "#E3B15A",
+    "SC": "#E3B9D6"
+  },
+  "accepted": {
+    "shared_border_px": 6435,
+    "delta_e2000": 38.102,
+    "delta_L": 4.399,
+    "delta_e_deuteranopia": 40.661,
+    "delta_e_protanopia": 45.514,
+    "delta_e_under_deepest_shade": 37.006
+  },
+  "search": {
+    "method": "CIELCh lightness only; hue and chroma held so class identity survives",
+    "l_range": 9.0,
+    "l_step": 0.5,
+    "delta_L_target": 8.0,
+    "constraints": [
+      "no new high-contact \u0394E00 failure (normal, deuteranopia, protanopia)",
+      "no new pair below the \u0394L* floor",
+      "no regression under the deepest measured 2x shading",
+      "in sRGB gamut"
+    ],
+    "rejected_counts": {
+      "out_of_gamut": 0,
+      "target_not_met": 855,
+      "new_major_failure": 0,
+      "shade_regression": 0,
+      "regressed_another_pair": 513
+    },
+    "acceptable_candidates": 0
+  },
+  "best_candidate": null,
+  "verdict": "KEEP_EXISTING_PALETTE",
+  "note": "The palette is baked into the Blender render, so adopting a candidate is a re-render of the scientific map, not a layout change."
+}

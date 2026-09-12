@@ -131,3 +131,29 @@ and the master.
 > (DOI 10.4060/cc3823en), licensed CC BY-NC-SA 4.0. Terrain: NASA/USGS SRTMGL3.003.
 > Boundary and water: Made with Natural Earth. Projection: Lambert azimuthal equal-area.
 > This map is released under CC BY-NC-SA 4.0.
+
+---
+
+## Published asset — v1.1 (cartographic furniture gate)
+
+The published pair is now:
+
+| Asset | File |
+| --- | --- |
+| Archival master | `outputs/master/iran_soil_landscapes_v1_1_6000x7500.png` (+ `.pdf`, `.svg`) |
+| Feed sheet | `outputs/linkedin/iran_soil_landscapes_v1_1_2160x2700.png` |
+
+`config/publication.yaml` is the source of truth for which pair is published; the final QA
+and the tests resolve through it. The v1.0 files are preserved on disk and remain
+reproducible from their own layout keys.
+
+**Nothing about the allowed framing, the claim ceiling, the licence position or the post
+copy changes.** The map, the statistics and the palette are identical to v1.0 — this gate
+changed typography, layout and furniture only, and the scientific render is frozen by hash.
+The suggested post copy above still applies verbatim, including the full attribution block,
+which is still required in the post body because the on-image credit is compact.
+
+One wording correction reached the sheet: the rare-class line previously read "each below
+0.02% of Iran" and, in the last v1.0 build, "each below 0.05%" — the grouping threshold
+rather than a figure the classes meet. It now reads **"Minor mapped RSGs (each <0.02% of
+Iran)"**, with the bound derived from the largest minor share (Kastanozems, 0.015%).
