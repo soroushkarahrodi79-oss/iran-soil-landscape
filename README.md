@@ -2,7 +2,9 @@
 
 **Status:** SRTMGL3_ACQUIRED / DEM_PROCESSED — HWSD v2.01 + Natural Earth were acquired, verified, and processed into a dominant WRB-2022 soil-group map of Iran. SRTMGL3 acquisition is complete for all **198/198 required tiles**, and the DEM was processed successfully. Earthdata authentication is no longer an active blocker. Terrain is used only as topographic context.
 
-Iran Soil Landscapes is a reproducible geospatial-cartography project to produce a terrain-enhanced depiction of **dominant soil groups in Iran according to the Harmonized World Soil Database (HWSD) v2.01 schema**. The intended publication is a professional LinkedIn and portfolio work. This repository is the source of record for source acquisition, transformations, quality controls, and cartographic outputs.
+Iran Soil Landscapes is a reproducible geospatial-cartography project for mapping **dominant soil groups in Iran according to the Harmonized World Soil Database (HWSD) v2.01 schema**. The repository records source acquisition, transformations, quality controls, and cartographic specifications. Soil classification comes from HWSD; SRTM terrain is visual context only.
+
+[Methods and sources](docs/METHODS.md) · [Area accounting and QA](provenance/metadata/area_qa.json) · [Reproducibility checks](docs/QA_PLAN.md)
 
 ## Scientific objective
 
@@ -22,7 +24,7 @@ The exact URLs, licenses, dates, and open questions are in [docs/DATA_SOURCES.md
 
 ## Current result
 
-Dominant WRB-2022 Reference Soil Group of Iran from HWSD v2.01 (rule: `SEQUENCE=1` component per SMU; see [docs/HWSD_SCHEMA.md](docs/HWSD_SCHEMA.md)). Leading classes by area: **Leptosols 40.7 %**, **Regosols 18.7 %**, **Solonchaks 18.6 %**, **Calcisols 16.8 %**. Boundary area 1,622,510 km² (Natural Earth 1:10m), classified soil area 1,612,385 km²; full accounting in `provenance/metadata/area_qa.json`. The plain soil-data proof is `outputs/proof/iran_soils_proof_v01.png`; generated terrain-context outputs include `outputs/proof/iran_dem_hillshade_qa_v01.png` and the poster files under `outputs/proof/poster/`. The SRTMGL3 DEM and its derivatives add topographic context only: they create no soil observations, do not increase HWSD's native spatial resolution or thematic accuracy, and are not field validation or ground truth.
+The current dominant-soil result and area accounting are recorded in [area_qa.json](provenance/metadata/area_qa.json): **Leptosols 40.7 %**, **Regosols 18.7 %**, **Solonchaks 18.6 %**, and **Calcisols 16.8 %** of classified soil area. Rendered proof maps and poster files are regenerable but gitignored under [publication.yaml](config/publication.yaml), so the current GitHub branch has no map image to preview. SRTMGL3 adds topographic context only: it creates no soil observations, does not increase HWSD’s native spatial resolution or thematic accuracy, and is not field validation or ground truth.
 
 ## Workflow
 
@@ -54,11 +56,11 @@ Scripts intentionally fail closed when an expected source, schema field, or inva
 
 ## Layout
 
-`config/` project settings; `docs/` project records; `data/raw/` immutable downloads; `data/interim/` working products; `data/processed/` documented derived products; `scripts/` reproducible pipeline code; `tests/` invariant checks; `provenance/` manifests and checksums; `outputs/proof/` scientific and terrain-context QA/cartographic outputs; `qgis/` inspection project; `blender/` scripted terrain rendering.
+`config/` project settings; `docs/` project records; `data/raw/` immutable downloads; `data/interim/` working products; `data/processed/` documented derived products; `scripts/` reproducible pipeline code; `tests/` invariant checks; `provenance/` manifests and checksums; `outputs/` regenerable rendered products (gitignored); `qgis/` inspection project; `blender/` scripted terrain rendering.
 
 ## Publication outputs
 
-The workflow has generated a 6000 × 7500 px archival master and a 2160 × 2700 px (4:5) feed sheet, both composed over one scientific render whose hash each records. Their completion is a cartographic production result, not evidence that the HWSD soil classes are field-validated or that terrain resolves uncertainty inherited from HWSD.
+The configured v1.1 publication pair defines a 6000 × 7500 px archival master and a 2160 × 2700 px (4:5) feed sheet, composed over one hash-locked scientific render. The [publication QA record](provenance/metadata/final_publication_qa.json) reports its checks; rendered files are regenerable and gitignored, so they are not viewable from the current repository. Cartographic production does not establish field validation or reduce uncertainty inherited from HWSD.
 
 The current pair is **v1.1**, declared in [config/publication.yaml](config/publication.yaml). v1.1 changed composition only — typography, grid, legend hierarchy, map furniture and label placement — over a render frozen by hash at `provenance/checksums/scientific_render_frozen_2026-09-12.txt`; see [docs/CARTOGRAPHIC_FURNITURE_V1_1.md](docs/CARTOGRAPHIC_FURNITURE_V1_1.md), which also records the national keyline and the palette adjustment that were built, measured and rejected. v1.0 is superseded rather than deleted and stays reproducible from its own layout keys.
 
